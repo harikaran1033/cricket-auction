@@ -1,0 +1,47 @@
+@import 'tailwindcss' source(none);
+@source '../**/*.{js,jsx,tsx}';
+
+@import 'tw-animate-css';
+
+@layer utilities {
+  .glow-cyan {
+    box-shadow: 0 0 20px #00E5FF44, 0 0 40px #00E5FF22;
+  }
+  .glow-red {
+    box-shadow: 0 0 20px #FF3D0044, 0 0 40px #FF3D0022;
+  }
+  .glow-green {
+    box-shadow: 0 0 20px #00C85344, 0 0 40px #00C85322;
+  }
+  .text-glow-cyan {
+    text-shadow: 0 0 20px #00E5FF, 0 0 40px #00E5FF88;
+  }
+  .text-glow-red {
+    text-shadow: 0 0 20px #FF3D00, 0 0 40px #FF3D0088;
+  }
+  .auction-grid {
+    background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.15;
+  }
+}
+
+@keyframes bid-pulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.12); filter: drop-shadow(0 0 16px #00E5FF); }
+  100% { transform: scale(1); }
+}
+
+@keyframes sold-flash {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.bid-pulse {
+  animation: bid-pulse 0.5s ease-out;
+}
+
+.sold-flash {
+  animation: sold-flash 0.8s ease-in-out infinite;
+}

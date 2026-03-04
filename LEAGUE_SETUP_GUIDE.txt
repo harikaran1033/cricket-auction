@@ -1,0 +1,464 @@
+================================================================================
+                    LEAGUE & PLAYER SETUP GUIDE
+                    Cricket Auction Platform
+================================================================================
+
+This guide explains how to add new leagues, league players, and configure
+dynamic conditions like team count, overseas limits, purse, retention, and
+bid increments.
+
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+
+  1. Architecture Overview
+  2. Adding a New League
+  3. Adding Players to a League
+  4. Dynamic League Configuration
+  5. Seed Data Files Explained
+  6. Step-by-Step: Adding a New League (Example: PSL)
+  7. Important Notes & Troubleshooting
+
+
+================================================================================
+1. ARCHITECTURE OVERVIEW
+================================================================================
+
+There are 3 main models:
+
+  Player          → Global player master data (name, nationality, role, etc.)
+                     Not tied to any league. Reusable across leagues.
+
+  League          → League rules & configuration (IPL, PSL, BBL, etc.)
+                     Contains teams, purse, retention rules, bid increments.
+
+  LeaguePlayer    → Links a Player to a League with league-specific data
+                     (base price, previous team, stats, franchise price).
+
+Data flow:
+  1. Create/seed Player records (global player catalog)
+  2. Create a League with its rules
+  3. Create LeaguePlayer records linking players to the league
+
+
+================================================================================
+2. ADDING A NEW LEAGUE
+================================================================================
+
+A League document in MongoDB has these fields:
+
+  FIELD              TYPE          DESCRIPTION
+  ─────────────────────────────────────────────────────────────────────
+  name               String        Full name, e.g. "Pakistan Super League"
+  code               String        Short code, e.g. "PSL" (unique, uppercase)
+  totalTeams         Number        How many teams in the league (e.g. 6)
+  purse              Number        Total budget per team IN LAKHS (e.g. 14000 = 140 Cr)
+  maxSquadSize       Number        Max players per squad (e.g. 25)
+  minSquadSize       Number        Min players per squad (e.g. 18)
+  maxOverseas        Number        Max overseas players allowed per squad (e.g. 8)
+
+  teams              Array         List of teams:
+                                     { name: "Lahore Qalandars",
+                                       shortName: "LQ",
+                                       logo: "" }
+
+  retention          Object        Retention config:
+                                     maxRetentions: 4
+                                     slots: [
+                                       { slot: 1, cost: 1800, type: "capped" },
+                                       { slot: 2, cost: 1400, type: "capped" },
+                                       ...
+                                     ]
+
+  basePrices         Array[Number] Available base prices for auction (in lakhs)
+                                   e.g. [200, 150, 100, 75, 50, 30, 20]
+
+  bidIncrements      Array         Bid increment brackets:
+                                   [
+                                     { upTo: 100, increment: 5 },
+                                     { upTo: 200, increment: 10 },
+                                     { upTo: 500, increment: 15 },
+                                     { upTo: 1000, increment: 20 },
+                                     { upTo: 100000, increment: 25 }
+                                   ]
+
+  auctionSets        Array         Placeholder (auto-assigned at auction start):
+                                   [
+                                     { code: "M1", name: "Marquee Set 1",
+                                       phase: "marquee", roleFilter: "",
+                                       cappedOnly: null, order: 1 },
+                                     { code: "ACC", name: "Accelerated Round",
+                                       phase: "accelerated", roleFilter: "",
+                                       cappedOnly: null, order: 99 }
+                                   ]
+
+
+================================================================================
+3. ADDING PLAYERS TO A LEAGUE (LeaguePlayer)
+================================================================================
+
+Each LeaguePlayer links one Player to one League:
+
+  FIELD              TYPE          DESCRIPTION
+  ─────────────────────────────────────────────────────────────────────
+  player             ObjectId      Reference to Player document
+  league             ObjectId      Reference to League document
+  basePrice          Number        Starting auction price IN LAKHS (e.g. 200)
+  franchisePrice     Number        Retention cost IN LAKHS (e.g. 1800)
+  previousTeam       String        Full team name for RTM eligibility
+                                   e.g. "Chennai Super Kings"
+                                   Must EXACTLY match a team name in the League.
+                                   Leave empty "" for new/unattached players.
+  stats              Object        { matches, runs, wickets, average,
+                                     strikeRate, economy }
+  set                String        Auto-assigned at auction start (leave "")
+
+
+IMPORTANT: previousTeam must EXACTLY match the team name in league.teams[].name.
+  If it says "Chennai Super Kings" in the league, previousTeam must also be
+  "Chennai Super Kings" — not "CSK" or "chennai super kings".
+
+
+================================================================================
+4. DYNAMIC LEAGUE CONFIGURATION
+================================================================================
+
+All league settings are fully dynamic. Here's what you can customize:
+
+A) TEAM COUNT
+   Set totalTeams in the League document.
+   The maxTeams in the Room is set from league.totalTeams.
+
+B) OVERSEAS LIMIT
+   Set maxOverseas in the League document (e.g. 4 for PSL, 8 for IPL).
+   This limits how many overseas players a team can have.
+
+C) PURSE / BUDGET
+   Set purse in lakhs. Examples:
+     IPL: 12000 (120 Cr)
+     PSL: 3000  (30 Cr)
+
+D) RETENTION RULES
+   retention.maxRetentions → how many players a team can retain (also = max RTM cards)
+   retention.slots → cost per slot:
+     slot: slot number (1, 2, 3...)
+     cost: deduction from purse in lakhs
+     type: "capped" or "uncapped"
+
+   When RTM is enabled:
+     RTM cards per team = maxRetentions - number of players retained
+     Late joiners (joining after auction started) get full maxRetentions RTM cards.
+
+E) BID INCREMENTS
+   bidIncrements array controls minimum bid increment for each price range:
+     { upTo: 100, increment: 5 }   → bids up to 100L go up by 5L
+     { upTo: 200, increment: 10 }  → bids up to 200L go up by 10L
+     { upTo: 100000, increment: 25 } → anything above goes up by 25L
+
+F) BASE PRICES
+   basePrices array defines the available starting prices:
+     [200, 150, 100, 75, 50, 30, 20]
+   Players are assigned base prices in their LeaguePlayer record.
+
+G) AUCTION SETS
+   Sets are built AUTOMATICALLY at auction start based on player pool.
+   The engine groups players by:
+     - Capped vs Uncapped
+     - Role (Batsman, Bowler, All-Rounder, Wicket-Keeper)
+     - Base price (highest go to Marquee sets)
+   You don't need to manually assign sets.
+
+
+================================================================================
+5. SEED DATA FILES EXPLAINED
+================================================================================
+
+Location: server/src/seed/
+
+FILE                      PURPOSE
+─────────────────────────────────────────────────────────────────────
+index.js                  Seeds League + Player + LeaguePlayer for IPL
+                          Uses hardcoded player arrays and maps.
+                          Run: cd server/src/seed && node index.js
+
+seedPlayers.js            Seeds Player records from players.json
+
+seedLeaguePlayers.js      Seeds LeaguePlayer records from playersBaseprice.json
+                          Maps franchise abbreviations (CSK, MI) to full names.
+                          Run: cd server/src/seed && node seedLeaguePlayers.js
+
+players.json              Player master data (name, nationality, role, etc.)
+
+playersBaseprice.json     League-specific data per player:
+                          { name, basePrice, franchisePrice,
+                            franchiseName, isCapped }
+                          basePrice/franchisePrice are in absolute
+                          currency (e.g. 20000000 = 2 Cr = 200 lakhs)
+
+
+================================================================================
+6. STEP-BY-STEP: ADDING A NEW LEAGUE (Example: PSL)
+================================================================================
+
+OPTION A: Using a seed script (recommended)
+────────────────────────────────────────────
+
+Create a new file: server/src/seed/seedPSL.js
+
+```javascript
+require("dotenv").config({ path: require("path").resolve(__dirname, "../../.env") });
+const mongoose = require("mongoose");
+const { League, Player, LeaguePlayer } = require("../models");
+
+async function seedPSL() {
+  await mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/cricket-auction");
+  console.log("Connected to DB");
+
+  // 1. CREATE THE LEAGUE
+  const pslLeague = {
+    name: "Pakistan Super League",
+    code: "PSL",
+    totalTeams: 6,
+    purse: 3000,           // 30 Crore in lakhs
+    maxSquadSize: 20,
+    minSquadSize: 15,
+    maxOverseas: 4,        // Max 4 overseas per team
+    teams: [
+      { name: "Lahore Qalandars",    shortName: "LQ",  logo: "" },
+      { name: "Karachi Kings",       shortName: "KK",  logo: "" },
+      { name: "Islamabad United",    shortName: "IU",  logo: "" },
+      { name: "Peshawar Zalmi",      shortName: "PZ",  logo: "" },
+      { name: "Quetta Gladiators",   shortName: "QG",  logo: "" },
+      { name: "Multan Sultans",      shortName: "MS",  logo: "" },
+    ],
+    retention: {
+      maxRetentions: 3,    // Each team can retain up to 3
+      slots: [
+        { slot: 1, cost: 1000, type: "capped" },
+        { slot: 2, cost: 700,  type: "capped" },
+        { slot: 3, cost: 500,  type: "uncapped" },
+      ],
+    },
+    basePrices: [150, 100, 75, 50, 30, 20],
+    bidIncrements: [
+      { upTo: 100,    increment: 5 },
+      { upTo: 200,    increment: 10 },
+      { upTo: 500,    increment: 15 },
+      { upTo: 100000, increment: 20 },
+    ],
+    auctionSets: [
+      { code: "M1",  name: "Marquee Set 1", phase: "marquee",     roleFilter: "", cappedOnly: null, order: 1 },
+      { code: "ACC", name: "Accelerated",    phase: "accelerated", roleFilter: "", cappedOnly: null, order: 99 },
+    ],
+  };
+
+  // Delete old PSL if exists
+  await League.deleteMany({ code: "PSL" });
+  const league = await League.create(pslLeague);
+  console.log(`Created league: ${league.name} (${league.code})`);
+
+  // 2. CREATE PLAYERS (or reuse existing ones)
+  const pslPlayers = [
+    { name: "Babar Azam",       nationality: "Pakistani",    isOverseas: false, role: "Batsman",       battingStyle: "Right-Hand", bowlingStyle: "Right-Arm Off Spin", isCapped: true,  skills: ["Top Order", "Anchor", "Captain"] },
+    { name: "Shaheen Afridi",   nationality: "Pakistani",    isOverseas: false, role: "Bowler",        battingStyle: "Left-Hand",  bowlingStyle: "Left-Arm Fast",      isCapped: true,  skills: ["Fast Bowler", "Swing Bowling"] },
+    { name: "Alex Hales",       nationality: "English",      isOverseas: true,  role: "Batsman",       battingStyle: "Right-Hand", bowlingStyle: "",                   isCapped: true,  skills: ["Opening Batsman", "Power Hitter"] },
+    { name: "Shadab Khan",      nationality: "Pakistani",    isOverseas: false, role: "All-Rounder",   battingStyle: "Right-Hand", bowlingStyle: "Right-Arm Leg Spin", isCapped: true,  skills: ["All-Rounder", "Leg Spinner"] },
+    // ... add more players
+  ];
+
+  // Insert players (skip duplicates by name)
+  const createdPlayers = [];
+  for (const p of pslPlayers) {
+    let existing = await Player.findOne({ name: p.name });
+    if (!existing) {
+      existing = await Player.create(p);
+      console.log(`  Created player: ${p.name}`);
+    } else {
+      console.log(`  Player exists: ${p.name}`);
+    }
+    createdPlayers.push(existing);
+  }
+
+  // 3. CREATE LEAGUE-PLAYER LINKS
+  await LeaguePlayer.deleteMany({ league: league._id });
+
+  const leaguePlayers = createdPlayers.map((p) => ({
+    player: p._id,
+    league: league._id,
+    basePrice: 100,                          // Default base price in lakhs
+    franchisePrice: 0,                       // Set if player has retention cost
+    previousTeam: "",                        // Set to full team name for RTM eligibility
+                                             // e.g. "Lahore Qalandars"
+    stats: {
+      matches: 0,
+      runs: 0,
+      wickets: 0,
+      average: 0,
+      strikeRate: 0,
+      economy: 0,
+    },
+    set: "",  // Auto-assigned at auction start
+  }));
+
+  // Customize individual players:
+  const findLP = (name) => leaguePlayers.find((lp) => {
+    const player = createdPlayers.find(p => p._id.equals(lp.player));
+    return player?.name === name;
+  });
+
+  const babar = findLP("Babar Azam");
+  if (babar) {
+    babar.basePrice = 150;
+    babar.franchisePrice = 1000;
+    babar.previousTeam = "Karachi Kings";  // MUST match league team name exactly
+  }
+
+  const shaheen = findLP("Shaheen Afridi");
+  if (shaheen) {
+    shaheen.basePrice = 150;
+    shaheen.franchisePrice = 1000;
+    shaheen.previousTeam = "Lahore Qalandars";
+  }
+
+  await LeaguePlayer.insertMany(leaguePlayers);
+  console.log(`Created ${leaguePlayers.length} league-player links`);
+
+  console.log("\nDone! PSL league is ready.");
+  console.log("Users can now create rooms and select 'Pakistan Super League'.");
+
+  await mongoose.disconnect();
+  process.exit(0);
+}
+
+seedPSL().catch((err) => {
+  console.error("Error:", err);
+  process.exit(1);
+});
+```
+
+Run it:
+  cd server/src/seed
+  node seedPSL.js
+
+
+OPTION B: Using playersBaseprice.json format
+─────────────────────────────────────────────
+
+1. Create the League record first (use a script or MongoDB shell).
+
+2. Create a JSON file (e.g. pslPlayers.json):
+   [
+     {
+       "name": "Babar Azam",
+       "basePrice": 15000000,
+       "franchisePrice": 100000000,
+       "franchiseName": "KK",
+       "isCapped": true
+     },
+     ...
+   ]
+
+3. Update seedLeaguePlayers.js to:
+   - Add team name mapping for your league
+   - Change league code from "IPL" to "PSL"
+   - Update file path
+
+4. Run: node seedLeaguePlayers.js
+
+
+================================================================================
+7. IMPORTANT NOTES & TROUBLESHOOTING
+================================================================================
+
+A) previousTeam MUST EXACTLY MATCH league team names
+   The RTM system checks: leaguePlayer.previousTeam === room.joinedTeams[].teamName
+   If there's any mismatch (case, spacing, abbreviation), RTM won't trigger.
+   Check server console logs — they now show detailed RTM debug output.
+
+B) Currency is in LAKHS
+   1 Crore = 100 Lakhs
+   purse: 12000 means 120 Crore
+   basePrice: 200 means 2 Crore
+   The seed file playersBaseprice.json uses ABSOLUTE values (20000000 = 2 Cr).
+   The seed script converts: Math.floor(absoluteValue / 100000) = lakhs.
+
+C) Auction Sets are AUTO-GENERATED
+   You don't need to define player sets manually.
+   At auction start, the engine auto-generates sets based on:
+     - Marquee: Top ~10% capped players by base price
+     - Capped Batters, Bowlers, All-Rounders, Wicket-Keepers
+     - Uncapped Batters, Bowlers, All-Rounders, Wicket-Keepers
+     - Accelerated Round (for unsold players, reduced base prices)
+
+D) RTM Cards
+   RTM cards = maxRetentions - number of retained players
+   If a team retains 2 out of max 4 → they get 2 RTM cards
+   Late joiners (join during live auction) get full maxRetentions RTM cards
+
+E) Overseas Limit
+   maxOverseas in the League controls max overseas players per squad.
+   Currently this is set per league and enforced during retention.
+   During auction bidding, teams should self-manage their overseas count.
+
+F) Multiple Leagues
+   The system supports multiple leagues simultaneously.
+   Each room is tied to one league. Users pick the league when creating a room.
+   Make sure each league has a unique 'code' field.
+
+G) Environment Variables
+   MONGO_URI   → MongoDB connection string (default: mongodb://localhost:27017/cricket-auction)
+   PORT        → Server port (default: 4000)
+   CLIENT_URL  → Client URL for CORS (default: http://localhost:5173)
+
+H) Server Console RTM Logs
+   When a player timer expires, you'll see logs like:
+     [RTM] Checking RTM for "Virat Kohli" (previousTeam: "Royal Challengers Bengaluru")
+     [RTM] ✓ RTM eligible: Royal Challengers Bengaluru for "Virat Kohli"
+   Or if it fails:
+     [RTM] Skipped — previousTeam "RCB" not found in room. Joined teams: [Royal Challengers Bengaluru, ...]
+
+   This helps debug RTM issues.
+
+
+================================================================================
+QUICK REFERENCE: COMMON OPERATIONS
+================================================================================
+
+ADD A NEW TEAM TO EXISTING LEAGUE:
+  1. Open MongoDB shell or Compass
+  2. Find the League document
+  3. Push to teams array:
+     db.leagues.updateOne(
+       { code: "IPL" },
+       { $push: { teams: { name: "New Team", shortName: "NT", logo: "" } } }
+     )
+  4. Update totalTeams accordingly
+
+CHANGE PURSE FOR A LEAGUE:
+  db.leagues.updateOne({ code: "IPL" }, { $set: { purse: 15000 } })
+
+CHANGE MAX OVERSEAS:
+  db.leagues.updateOne({ code: "IPL" }, { $set: { maxOverseas: 6 } })
+
+CHANGE RETENTION SLOTS:
+  db.leagues.updateOne({ code: "IPL" }, { $set: {
+    "retention.maxRetentions": 5,
+    "retention.slots": [
+      { slot: 1, cost: 1800, type: "capped" },
+      { slot: 2, cost: 1400, type: "capped" },
+      { slot: 3, cost: 1100, type: "capped" },
+      { slot: 4, cost: 800,  type: "uncapped" },
+      { slot: 5, cost: 400,  type: "uncapped" }
+    ]
+  }})
+
+SET PREVIOUS TEAM FOR RTM:
+  db.leagueplayers.updateOne(
+    { player: <playerId>, league: <leagueId> },
+    { $set: { previousTeam: "Chennai Super Kings" } }
+  )
+
+================================================================================
+END OF GUIDE
+================================================================================

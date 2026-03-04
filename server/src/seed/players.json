@@ -1,0 +1,4815 @@
+[
+  {
+    "fullName": "Ruturaj Gaikwad",
+    "shortName": "R Gaikwad",
+    "nationality": "India",
+    "jerseyNumber": "31",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Auqib Dar",
+    "shortName": "A Dar",
+    "nationality": "India",
+    "jerseyNumber": "18",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Mohd Arshad Khan",
+    "shortName": "A Khan",
+    "nationality": "India",
+    "jerseyNumber": "37",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Ashok Sharma",
+    "shortName": "A Sharma",
+    "nationality": "India",
+    "jerseyNumber": "55",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Tejasvi Singh",
+    "shortName": "T Singh",
+    "nationality": "India",
+    "jerseyNumber": "11",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Daksh Kamra",
+    "shortName": "D Kamra",
+    "nationality": "India",
+    "jerseyNumber": "21",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Sarthak Ranjan",
+    "shortName": "S Ranjan",
+    "nationality": "India",
+    "jerseyNumber": "7",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Prashant Solanki",
+    "shortName": "P Solanki",
+    "nationality": "India",
+    "jerseyNumber": "29",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Digvesh Rathi",
+    "shortName": "D Rathi",
+    "nationality": "India",
+    "jerseyNumber": "63",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Manimaran Siddharth",
+    "shortName": "M Siddharth",
+    "nationality": "India",
+    "jerseyNumber": "43",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Shahbaz Ahmed",
+    "shortName": "S Ahmed",
+    "nationality": "India",
+    "jerseyNumber": "31",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Akshat Raghuwanshi",
+    "shortName": "A Raghuwanshi",
+    "nationality": "India",
+    "jerseyNumber": "24",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Mukul Choudhary",
+    "shortName": "M Choudhary",
+    "nationality": "India",
+    "jerseyNumber": "19",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Naman Tiwari",
+    "shortName": "N Tiwari",
+    "nationality": "India",
+    "jerseyNumber": "15",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Left-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Raj Angad Bawa",
+    "shortName": "R Bawa",
+    "nationality": "India",
+    "jerseyNumber": "72",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Mayank Markande",
+    "shortName": "M Markande",
+    "nationality": "India",
+    "jerseyNumber": "25",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Shashwat Nishant",
+    "shortName": "S Nishant",
+    "nationality": "India",
+    "jerseyNumber": "9",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Mayank Rawat",
+    "shortName": "M Rawat",
+    "nationality": "India",
+    "jerseyNumber": "14",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Atharva Ankolekar",
+    "shortName": "A Ankolekar",
+    "nationality": "India",
+    "jerseyNumber": "27",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Mohammad Izhar",
+    "shortName": "M Izhar",
+    "nationality": "India",
+    "jerseyNumber": "40",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Danish Malewar",
+    "shortName": "D Malewar",
+    "nationality": "India",
+    "jerseyNumber": "12",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Harpreet Brar",
+    "shortName": "H Brar",
+    "nationality": "India",
+    "jerseyNumber": "95",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Prabhsimran Singh",
+    "shortName": "P Singh",
+    "nationality": "India",
+    "jerseyNumber": "9",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Vishal Nishad",
+    "shortName": "V Nishad",
+    "nationality": "India",
+    "jerseyNumber": "6",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Pravin Dubey",
+    "shortName": "P Dubey",
+    "nationality": "India",
+    "jerseyNumber": "66",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Riyan Parag",
+    "shortName": "R Parag",
+    "nationality": "India",
+    "jerseyNumber": "17",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Tushar Deshpande",
+    "shortName": "T Deshpande",
+    "nationality": "India",
+    "jerseyNumber": "48",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Yudhvir Charak",
+    "shortName": "Y Charak",
+    "nationality": "India",
+    "jerseyNumber": "88",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Kuldeep Sen",
+    "shortName": "K Sen",
+    "nationality": "India",
+    "jerseyNumber": "29",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Sushant Mishra",
+    "shortName": "S Mishra",
+    "nationality": "India",
+    "jerseyNumber": "23",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Rasikh Dar",
+    "shortName": "R Dar",
+    "nationality": "India",
+    "jerseyNumber": "11",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Mangesh Yadav",
+    "shortName": "M Yadav",
+    "nationality": "India",
+    "jerseyNumber": "3",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Vicky Ostwal",
+    "shortName": "V Ostwal",
+    "nationality": "India",
+    "jerseyNumber": "19",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Harsh Dubey",
+    "shortName": "H Dubey",
+    "nationality": "India",
+    "jerseyNumber": "51",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Smaran Ravichandaran",
+    "shortName": "S Ravichandaran",
+    "nationality": "India",
+    "jerseyNumber": "10",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Shivam Mavi",
+    "shortName": "S Mavi",
+    "nationality": "India",
+    "jerseyNumber": "6",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Amit Kumar",
+    "shortName": "A Kumar",
+    "nationality": "India",
+    "jerseyNumber": "28",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Sanju Samson",
+    "shortName": "S Samson",
+    "nationality": "India",
+    "jerseyNumber": "11",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Shivam Dube",
+    "shortName": "S Dube",
+    "nationality": "India",
+    "jerseyNumber": "25",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Khaleel Ahmed",
+    "shortName": "K Ahmed",
+    "nationality": "India",
+    "jerseyNumber": "13",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Anshul Kamboj",
+    "shortName": "A Kamboj",
+    "nationality": "India",
+    "jerseyNumber": "47",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "MS Dhoni",
+    "shortName": "MS Dhoni",
+    "nationality": "India",
+    "jerseyNumber": "7",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Ayush Mhatre",
+    "shortName": "A Mhatre",
+    "nationality": "India",
+    "jerseyNumber": "18",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Urvil Patel",
+    "shortName": "U Patel",
+    "nationality": "India",
+    "jerseyNumber": "9",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Gurjapneet Singh",
+    "shortName": "G Singh",
+    "nationality": "India",
+    "jerseyNumber": "36",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Ramakrishna Ghosh",
+    "shortName": "R Ghosh",
+    "nationality": "India",
+    "jerseyNumber": "22",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Shreyas Gopal",
+    "shortName": "S Gopal",
+    "nationality": "India",
+    "jerseyNumber": "77",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Prashant Veer",
+    "shortName": "P Veer",
+    "nationality": "India",
+    "jerseyNumber": "28",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Kartik Sharma",
+    "shortName": "K Sharma",
+    "nationality": "India",
+    "jerseyNumber": "14",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Mukesh Choudhary",
+    "shortName": "M Choudhary",
+    "nationality": "India",
+    "jerseyNumber": "22",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Aman Khan",
+    "shortName": "A Khan",
+    "nationality": "India",
+    "jerseyNumber": "17",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Axar Patel",
+    "shortName": "A Patel",
+    "nationality": "India",
+    "jerseyNumber": "20",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "T Natarajan",
+    "shortName": "T Natarajan",
+    "nationality": "India",
+    "jerseyNumber": "44",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Mukesh Kumar",
+    "shortName": "M Kumar",
+    "nationality": "India",
+    "jerseyNumber": "49",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Mohammad Siraj",
+    "shortName": "M Siraj",
+    "nationality": "India",
+    "jerseyNumber": "73",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "R Sai Kishore",
+    "shortName": "R Sai Kishore",
+    "nationality": "India",
+    "jerseyNumber": "33",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Rahul Tewatia",
+    "shortName": "R Tewatia",
+    "nationality": "India",
+    "jerseyNumber": "77",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["batting_allrounder", "finisher"]
+  },
+  {
+    "fullName": "Washington Sundar",
+    "shortName": "W Sundar",
+    "nationality": "India",
+    "jerseyNumber": "5",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Ravi Bishnoi",
+    "shortName": "R Bishnoi",
+    "nationality": "India",
+    "jerseyNumber": "56",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Venkatesh Iyer",
+    "shortName": "V Iyer",
+    "nationality": "India",
+    "jerseyNumber": "25",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Abhishek Sharma",
+    "shortName": "A Sharma",
+    "nationality": "India",
+    "jerseyNumber": "4",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Jaydev Unadkat",
+    "shortName": "J Unadkat",
+    "nationality": "India",
+    "jerseyNumber": "77",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "KL Rahul",
+    "shortName": "KL Rahul",
+    "nationality": "India",
+    "jerseyNumber": "1",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "anchor"]
+  },
+  {
+    "fullName": "Karun Nair",
+    "shortName": "K Nair",
+    "nationality": "India",
+    "jerseyNumber": "69",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Kuldeep Yadav",
+    "shortName": "K Yadav",
+    "nationality": "India",
+    "jerseyNumber": "23",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm wrist spin",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Abhishek Porel",
+    "shortName": "A Porel",
+    "nationality": "India",
+    "jerseyNumber": "12",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Ashutosh Sharma",
+    "shortName": "A Sharma",
+    "nationality": "India",
+    "jerseyNumber": "20",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Sameer Rizvi",
+    "shortName": "S Rizvi",
+    "nationality": "India",
+    "jerseyNumber": "29",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Vipraj Nigam",
+    "shortName": "V Nigam",
+    "nationality": "India",
+    "jerseyNumber": "33",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Madhav Tiwari",
+    "shortName": "M Tiwari",
+    "nationality": "India",
+    "jerseyNumber": "41",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Ajay Mandal",
+    "shortName": "A Mandal",
+    "nationality": "India",
+    "jerseyNumber": "27",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Tripurana Vijay",
+    "shortName": "T Vijay",
+    "nationality": "India",
+    "jerseyNumber": "35",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Shubman Gill",
+    "shortName": "S Gill",
+    "nationality": "India",
+    "jerseyNumber": "77",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Sai Sudharsan",
+    "shortName": "S Sudharsan",
+    "nationality": "India",
+    "jerseyNumber": "23",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Mohammed Siraj",
+    "shortName": "M Siraj",
+    "nationality": "India",
+    "jerseyNumber": "73",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Prasidh Krishna",
+    "shortName": "P Krishna",
+    "nationality": "India",
+    "jerseyNumber": "24",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Ishant Sharma",
+    "shortName": "I Sharma",
+    "nationality": "India",
+    "jerseyNumber": "97",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Jayant Yadav",
+    "shortName": "J Yadav",
+    "nationality": "India",
+    "jerseyNumber": "20",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Sai Kishore",
+    "shortName": "R Sai Kishore",
+    "nationality": "India",
+    "jerseyNumber": "66",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Kumar Kushagra",
+    "shortName": "K Kushagra",
+    "nationality": "India",
+    "jerseyNumber": "16",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Anuj Rawat",
+    "shortName": "A Rawat",
+    "nationality": "India",
+    "jerseyNumber": "21",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Nishant Sindhu",
+    "shortName": "N Sindhu",
+    "nationality": "India",
+    "jerseyNumber": "10",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Shahrukh Khan",
+    "shortName": "S Khan",
+    "nationality": "India",
+    "jerseyNumber": "54",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Rahul Chahar",
+    "shortName": "R Chahar",
+    "nationality": "India",
+    "jerseyNumber": "28",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Sarfaraz Khan",
+    "shortName": "S Khan",
+    "nationality": "India",
+    "jerseyNumber": "97",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Auqib Nabi",
+    "shortName": "A Nabi",
+    "nationality": "India",
+    "jerseyNumber": "15",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Prithvi Shaw",
+    "shortName": "P Shaw",
+    "nationality": "India",
+    "jerseyNumber": "100",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Sahil Parakh",
+    "shortName": "S Parakh",
+    "nationality": "India",
+    "jerseyNumber": "21",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "M Shahrukh Khan",
+    "shortName": "S Khan",
+    "nationality": "India",
+    "jerseyNumber": "54",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Prithvi Raj",
+    "shortName": "P Raj",
+    "nationality": "India",
+    "jerseyNumber": "19",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Bhuvneshwar Kumar",
+    "shortName": "B Kumar",
+    "nationality": "India",
+    "jerseyNumber": "15",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Ravi Singh",
+    "shortName": "R Singh",
+    "nationality": "India",
+    "jerseyNumber": "18",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Brijesh Sharma",
+    "shortName": "B Sharma",
+    "nationality": "India",
+    "jerseyNumber": "12",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Aman Rao Perala",
+    "shortName": "A Perala",
+    "nationality": "India",
+    "jerseyNumber": "21",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Vignesh Puthur",
+    "shortName": "V Puthur",
+    "nationality": "India",
+    "jerseyNumber": "33",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Yash Raj Punja",
+    "shortName": "Y Punja",
+    "nationality": "India",
+    "jerseyNumber": "9",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+  "fullName": "Krains Fuletra",
+  "shortName": "K Fuletra",
+  "nationality": "India",
+  "jerseyNumber": "19",
+  "role": "Batsman",
+  "battingStyle": "Right-hand bat",
+  "bowlingStyle": "None",
+  "skillTags": ["middle_order", "anchor"]
+},
+  {
+    "fullName": "Kanishk Chouhan",
+    "shortName": "K Chouhan",
+    "nationality": "India",
+    "jerseyNumber": "27",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Satvik Deswal",
+    "shortName": "S Deswal",
+    "nationality": "India",
+    "jerseyNumber": "44",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Vihaan Malhotra",
+    "shortName": "V Malhotra",
+    "nationality": "India",
+    "jerseyNumber": "16",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Salil Arora",
+    "shortName": "S Arora",
+    "nationality": "India",
+    "jerseyNumber": "35",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Praful Hinge",
+    "shortName": "P Hinge",
+    "nationality": "India",
+    "jerseyNumber": "55",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Onkar Tarmale",
+    "shortName": "O Tarmale",
+    "nationality": "India",
+    "jerseyNumber": "6",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Sakib Hussain",
+    "shortName": "S Hussain",
+    "nationality": "India",
+    "jerseyNumber": "90",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Shivang Kumar",
+    "shortName": "S Kumar",
+    "nationality": "India",
+    "jerseyNumber": "14",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Krunal Pandya",
+    "shortName": "K Pandya",
+    "nationality": "India",
+    "jerseyNumber": "24",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Aniket Verma",
+    "shortName": "A Verma",
+    "nationality": "India",
+    "jerseyNumber": "7",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Arshad Khan",
+    "shortName": "A Khan",
+    "nationality": "India",
+    "jerseyNumber": "38",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Gurnoor Singh Brar",
+    "shortName": "G Brar",
+    "nationality": "India",
+    "jerseyNumber": "32",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Manav Suthar",
+    "shortName": "M Suthar",
+    "nationality": "India",
+    "jerseyNumber": "55",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Ajinkya Rahane",
+    "shortName": "A Rahane",
+    "nationality": "India",
+    "jerseyNumber": "27",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Varun Chakravarthy",
+    "shortName": "V Chakaravarthy",
+    "nationality": "India",
+    "jerseyNumber": "29",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Umran Malik",
+    "shortName": "U Malik",
+    "nationality": "India",
+    "jerseyNumber": "21",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Rahul Tripathi",
+    "shortName": "R Tripathi",
+    "nationality": "India",
+    "jerseyNumber": "52",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Kartik Tyagi",
+    "shortName": "K Tyagi",
+    "nationality": "India",
+    "jerseyNumber": "26",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+
+  {
+    "fullName": "Rinku Singh",
+    "shortName": "R Singh",
+    "nationality": "India",
+    "jerseyNumber": "35",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Manish Pandey",
+    "shortName": "M Pandey",
+    "nationality": "India",
+    "jerseyNumber": "9",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Angkrish Raghuvanshi",
+    "shortName": "A Raghuvanshi",
+    "nationality": "India",
+    "jerseyNumber": "18",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Vaibhav Arora",
+    "shortName": "V Arora",
+    "nationality": "India",
+    "jerseyNumber": "22",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Harshit Rana",
+    "shortName": "H Rana",
+    "nationality": "India",
+    "jerseyNumber": "19",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Ramandeep Singh",
+    "shortName": "R Singh",
+    "nationality": "India",
+    "jerseyNumber": "45",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Anukul Roy",
+    "shortName": "A Roy",
+    "nationality": "India",
+    "jerseyNumber": "32",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Rishabh Pant",
+    "shortName": "R Pant",
+    "nationality": "India",
+    "jerseyNumber": "17",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Mayank Yadav",
+    "shortName": "M Yadav",
+    "nationality": "India",
+    "jerseyNumber": "17",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Avesh Khan",
+    "shortName": "A Khan",
+    "nationality": "India",
+    "jerseyNumber": "65",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Abdul Samad",
+    "shortName": "A Samad",
+    "nationality": "India",
+    "jerseyNumber": "8",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm legbreak",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Ayush Badoni",
+    "shortName": "A Badoni",
+    "nationality": "India",
+    "jerseyNumber": "29",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Himmat Singh",
+    "shortName": "H Singh",
+    "nationality": "India",
+    "jerseyNumber": "7",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Arshin Kulkarni",
+    "shortName": "A Kulkarni",
+    "nationality": "India",
+    "jerseyNumber": "77",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Mohsin Khan",
+    "shortName": "M Khan",
+    "nationality": "India",
+    "jerseyNumber": "1",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "M Siddharth",
+    "shortName": "M Siddharth",
+    "nationality": "India",
+    "jerseyNumber": "9",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Prince Yadav",
+    "shortName": "P Yadav",
+    "nationality": "India",
+    "jerseyNumber": "36",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Akash Singh",
+    "shortName": "A Singh",
+    "nationality": "India",
+    "jerseyNumber": "47",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Rohit Sharma",
+    "shortName": "R Sharma",
+    "nationality": "India",
+    "jerseyNumber": "45",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+    {
+    "fullName": "Hardik Pandya",
+    "shortName": "H Pandya",
+    "nationality": "India",
+    "jerseyNumber": "33",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Suryakumar Yadav",
+    "shortName": "S Yadav",
+    "nationality": "India",
+    "jerseyNumber": "63",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Jasprit Bumrah",
+    "shortName": "J Bumrah",
+    "nationality": "India",
+    "jerseyNumber": "93",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Deepak Chahar",
+    "shortName": "D Chahar",
+    "nationality": "India",
+    "jerseyNumber": "90",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Tilak Varma",
+    "shortName": "T Varma",
+    "nationality": "India",
+    "jerseyNumber": "9",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Robin Minz",
+    "shortName": "R Minz",
+    "nationality": "India",
+    "jerseyNumber": "5",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Naman Dhir",
+    "shortName": "N Dhir",
+    "nationality": "India",
+    "jerseyNumber": "46",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Raghu Sharma",
+    "shortName": "R Sharma",
+    "nationality": "India",
+    "jerseyNumber": "34",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Ashwani Kumar",
+    "shortName": "A Kumar",
+    "nationality": "India",
+    "jerseyNumber": "48",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Left-arm medium-fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Shreyas Iyer",
+    "shortName": "S Iyer",
+    "nationality": "India",
+    "jerseyNumber": "41",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm legbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Arshdeep Singh",
+    "shortName": "A Singh",
+    "nationality": "India",
+    "jerseyNumber": "2",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Yuzvendra Chahal",
+    "shortName": "Y Chahal",
+    "nationality": "India",
+    "jerseyNumber": "3",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Nehal Wadhera",
+    "shortName": "N Wadhera",
+    "nationality": "India",
+    "jerseyNumber": "33",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Priyansh Arya",
+    "shortName": "P Arya",
+    "nationality": "India",
+    "jerseyNumber": "18",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Pyla Avinash",
+    "shortName": "P Avinash",
+    "nationality": "India",
+    "jerseyNumber": "26",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Shashank Singh",
+    "shortName": "S Singh",
+    "nationality": "India",
+    "jerseyNumber": "29",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Harnoor Pannu",
+    "shortName": "H Pannu",
+    "nationality": "India",
+    "jerseyNumber": "7",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Musheer Khan",
+    "shortName": "M Khan",
+    "nationality": "India",
+    "jerseyNumber": "10",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Suryansh Shedge",
+    "shortName": "S Shedge",
+    "nationality": "India",
+    "jerseyNumber": "44",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "finisher"]
+  },
+  {
+    "fullName": "Vishnu Vinod",
+    "shortName": "V Vinod",
+    "nationality": "India",
+    "jerseyNumber": "13",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Vyshak Vijaykumar",
+    "shortName": "V Vijaykumar",
+    "nationality": "India",
+    "jerseyNumber": "51",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Yash Thakur",
+    "shortName": "Y Thakur",
+    "nationality": "India",
+    "jerseyNumber": "99",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Yashasvi Jaiswal",
+    "shortName": "Y Jaiswal",
+    "nationality": "India",
+    "jerseyNumber": "64",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm legbreak",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Dhruv Jurel",
+    "shortName": "D Jurel",
+    "nationality": "India",
+    "jerseyNumber": "21",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Sandeep Sharma",
+    "shortName": "S Sharma",
+    "nationality": "India",
+    "jerseyNumber": "66",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Vaibhav Suryavanshi",
+    "shortName": "V Suryavanshi",
+    "nationality": "India",
+    "jerseyNumber": "17",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Shubham Dubey",
+    "shortName": "S Dubey",
+    "nationality": "India",
+    "jerseyNumber": "19",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Yudhvir Singh Charak",
+    "shortName": "Y Charak",
+    "nationality": "India",
+    "jerseyNumber": "39",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Ravindra Jadeja",
+    "shortName": "R Jadeja",
+    "nationality": "India",
+    "jerseyNumber": "8",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Virat Kohli",
+    "shortName": "V Kohli",
+    "nationality": "India",
+    "jerseyNumber": "18",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Rajat Patidar",
+    "shortName": "R Patidar",
+    "nationality": "India",
+    "jerseyNumber": "97",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Devdutt Padikkal",
+    "shortName": "D Padikkal",
+    "nationality": "India",
+    "jerseyNumber": "11",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Jitesh Sharma",
+    "shortName": "J Sharma",
+    "nationality": "India",
+    "jerseyNumber": "6",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Yash Dayal",
+    "shortName": "Y Dayal",
+    "nationality": "India",
+    "jerseyNumber": "15",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Swapnil Singh",
+    "shortName": "S Singh",
+    "nationality": "India",
+    "jerseyNumber": "24",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Abhinandan Singh",
+    "shortName": "A Singh",
+    "nationality": "India",
+    "jerseyNumber": "52",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Suyash Sharma",
+    "shortName": "S Sharma",
+    "nationality": "India",
+    "jerseyNumber": "4",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Rasikh Salam Dar",
+    "shortName": "R Salam",
+    "nationality": "India",
+    "jerseyNumber": "62",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Ishan Kishan",
+    "shortName": "I Kishan",
+    "nationality": "India",
+    "jerseyNumber": "23",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "power_hitter"]
+  },
+  {
+    "fullName": "Nitish Kumar Reddy",
+    "shortName": "N Reddy",
+    "nationality": "India",
+    "jerseyNumber": "66",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Harshal Patel",
+    "shortName": "H Patel",
+    "nationality": "India",
+    "jerseyNumber": "9",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Aniket Verma",
+    "shortName": "A Verma",
+    "nationality": "India",
+    "jerseyNumber": "14",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Smaran Ravichandran",
+    "shortName": "S Ravichandran",
+    "nationality": "India",
+    "jerseyNumber": "32",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Zeeshan Ansari",
+    "shortName": "Z Ansari",
+    "nationality": "India",
+    "jerseyNumber": "40",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Akash Deep",
+    "shortName": "A Deep",
+    "nationality": "India",
+    "jerseyNumber": "16",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Rajvardhan Hangargekar",
+    "shortName": "R Hangargekar",
+    "nationality": "India",
+    "jerseyNumber": "99",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Arjun Tendulkar",
+    "shortName": "A Tendulkar",
+    "nationality": "India",
+    "jerseyNumber": "24",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Mohammed Shami",
+    "shortName": "M Shami",
+    "nationality": "India",
+    "jerseyNumber": "11",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Nitish Rana",
+    "shortName": "N Rana",
+    "nationality": "India",
+    "jerseyNumber": "27",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Shardul Thakur",
+    "shortName": "S Thakur",
+    "nationality": "India",
+    "jerseyNumber": "54",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Alex Carey",
+    "shortName": "A Carey",
+    "nationality": "Australia",
+    "jerseyNumber": "4",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+   {
+    "fullName": "Matthew Short",
+    "shortName": "M Short",
+    "nationality": "Australia",
+    "jerseyNumber": "5",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Xavier Bartlett",
+    "shortName": "X Bartlett",
+    "nationality": "Australia",
+    "jerseyNumber": "56",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+   {
+    "fullName": "Pat Cummins",
+    "shortName": "P Cummins",
+    "nationality": "Australia",
+    "jerseyNumber": "30",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+   {
+    "fullName": "Tim David",
+    "shortName": "T David",
+    "nationality": "Australia",
+    "jerseyNumber": "23",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Cameron Green",
+    "shortName": "C Green",
+    "nationality": "Australia",
+    "jerseyNumber": "42",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Travis Head",
+    "shortName": "T Head",
+    "nationality": "Australia",
+    "jerseyNumber": "62",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Mitchell Starc",
+    "shortName": "M Starc",
+    "nationality": "Australia",
+    "jerseyNumber": "56",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Josh Hazlewood",
+    "shortName": "J Hazlewood",
+    "nationality": "Australia",
+    "jerseyNumber": "38",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Chris Lynn",
+    "shortName": "C Lynn",
+    "nationality": "Australia",
+    "jerseyNumber": "88",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Liam Scott",
+    "shortName": "L Scott",
+    "nationality": "Australia",
+    "jerseyNumber": "28",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm orthodox",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Thomas Kelly",
+    "shortName": "T Kelly",
+    "nationality": "Australia",
+    "jerseyNumber": "19",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Lloyd Pope",
+    "shortName": "L Pope",
+    "nationality": "Australia",
+    "jerseyNumber": "28",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Alex Ross",
+    "shortName": "A Ross",
+    "nationality": "Australia",
+    "jerseyNumber": "17",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Harry Nielsen",
+    "shortName": "H Nielsen",
+    "nationality": "Australia",
+    "jerseyNumber": "14",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Usman Khawaja",
+    "shortName": "U Khawaja",
+    "nationality": "Australia",
+    "jerseyNumber": "1",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Marnus Labuschagne",
+    "shortName": "M Labuschagne",
+    "nationality": "Australia",
+    "jerseyNumber": "33",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm legbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Matt Renshaw",
+    "shortName": "M Renshaw",
+    "nationality": "Australia",
+    "jerseyNumber": "63",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Max Bryant",
+    "shortName": "M Bryant",
+    "nationality": "Australia",
+    "jerseyNumber": "31",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Lachlan Hearne",
+    "shortName": "L Hearne",
+    "nationality": "Australia",
+    "jerseyNumber": "24",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Spencer Johnson",
+    "shortName": "S Johnson",
+    "nationality": "Australia",
+    "jerseyNumber": "64",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Nathan McSweeney",
+    "shortName": "N McSweeney",
+    "nationality": "Australia",
+    "jerseyNumber": "7",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Jimmy Peirson",
+    "shortName": "J Peirson",
+    "nationality": "Australia",
+    "jerseyNumber": "16",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Callum Vidler",
+    "shortName": "C Vidler",
+    "nationality": "Australia",
+    "jerseyNumber": "45",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Hugh Weibgen",
+    "shortName": "H Weibgen",
+    "nationality": "Australia",
+    "jerseyNumber": "27",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Jack Wildermuth",
+    "shortName": "J Wildermuth",
+    "nationality": "Australia",
+    "jerseyNumber": "21",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Matthew Wade",
+    "shortName": "M Wade",
+    "nationality": "Australia",
+    "jerseyNumber": "13",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Ben McDermott",
+    "shortName": "B McDermott",
+    "nationality": "Australia",
+    "jerseyNumber": "12",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "top_order"]
+  },
+  {
+    "fullName": "Riley Meredith",
+    "shortName": "R Meredith",
+    "nationality": "Australia",
+    "jerseyNumber": "17",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Nathan Ellis",
+    "shortName": "N Ellis",
+    "nationality": "Australia",
+    "jerseyNumber": "12",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Mitch Owen",
+    "shortName": "M Owen",
+    "nationality": "Australia",
+    "jerseyNumber": "41",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "finisher"]
+  },
+  {
+    "fullName": "Billy Stanlake",
+    "shortName": "B Stanlake",
+    "nationality": "Australia",
+    "jerseyNumber": "26",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Jake Weatherald",
+    "shortName": "J Weatherald",
+    "nationality": "Australia",
+    "jerseyNumber": "19",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Beau Webster",
+    "shortName": "B Webster",
+    "nationality": "Australia",
+    "jerseyNumber": "14",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Mac Wright",
+    "shortName": "M Wright",
+    "nationality": "Australia",
+    "jerseyNumber": "33",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Marcus Bean",
+    "shortName": "M Bean",
+    "nationality": "Australia",
+    "jerseyNumber": "52",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+    {
+    "fullName": "Will Sutherland",
+    "shortName": "W Sutherland",
+    "nationality": "Australia",
+    "jerseyNumber": "22",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Adam Zampa",
+    "shortName": "A Zampa",
+    "nationality": "Australia",
+    "jerseyNumber": "88",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Jason Behrendorff",
+    "shortName": "J Behrendorff",
+    "nationality": "Australia",
+    "jerseyNumber": "71",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Josh Brown",
+    "shortName": "J Brown",
+    "nationality": "Australia",
+    "jerseyNumber": "23",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Brendan Doggett",
+    "shortName": "B Doggett",
+    "nationality": "Australia",
+    "jerseyNumber": "35",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Jake Fraser-McGurk",
+    "shortName": "J Fraser-McGurk",
+    "nationality": "Australia",
+    "jerseyNumber": "21",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Caleb Jewell",
+    "shortName": "C Jewell",
+    "nationality": "Australia",
+    "jerseyNumber": "7",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Nathan Lyon",
+    "shortName": "N Lyon",
+    "nationality": "Australia",
+    "jerseyNumber": "67",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Fergus O’Neill",
+    "shortName": "F O’Neill",
+    "nationality": "Australia",
+    "jerseyNumber": "39",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Left-arm medium-fast",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Ollie Peake",
+    "shortName": "O Peake",
+    "nationality": "Australia",
+    "jerseyNumber": "30",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Glenn Maxwell",
+    "shortName": "G Maxwell",
+    "nationality": "Australia",
+    "jerseyNumber": "32",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Marcus Stoinis",
+    "shortName": "M Stoinis",
+    "nationality": "Australia",
+    "jerseyNumber": "17",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Peter Siddle",
+    "shortName": "P Siddle",
+    "nationality": "Australia",
+    "jerseyNumber": "26",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Sam Harper",
+    "shortName": "S Harper",
+    "nationality": "Australia",
+    "jerseyNumber": "14",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Hilton Cartwright",
+    "shortName": "H Cartwright",
+    "nationality": "Australia",
+    "jerseyNumber": "18",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Campbell Kellaway",
+    "shortName": "C Kellaway",
+    "nationality": "Australia",
+    "jerseyNumber": "27",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Austin Anlezark",
+    "shortName": "A Anlezark",
+    "nationality": "Australia",
+    "jerseyNumber": "45",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Brody Couch",
+    "shortName": "B Couch",
+    "nationality": "Australia",
+    "jerseyNumber": "55",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Matthew Kelly",
+    "shortName": "M Kelly",
+    "nationality": "Australia",
+    "jerseyNumber": "27",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Hamish McKenzie",
+    "shortName": "H McKenzie",
+    "nationality": "Australia",
+    "jerseyNumber": "38",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Mitchell Marsh",
+    "shortName": "M Marsh",
+    "nationality": "Australia",
+    "jerseyNumber": "8",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Josh Inglis",
+    "shortName": "J Inglis",
+    "nationality": "Australia",
+    "jerseyNumber": "48",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Ashton Turner",
+    "shortName": "A Turner",
+    "nationality": "Australia",
+    "jerseyNumber": "12",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Aaron Hardie",
+    "shortName": "A Hardie",
+    "nationality": "Australia",
+    "jerseyNumber": "20",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Jhye Richardson",
+    "shortName": "J Richardson",
+    "nationality": "Australia",
+    "jerseyNumber": "28",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Lance Morris",
+    "shortName": "L Morris",
+    "nationality": "Australia",
+    "jerseyNumber": "33",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Cooper Connolly",
+    "shortName": "C Connolly",
+    "nationality": "Australia",
+    "jerseyNumber": "23",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Bryce Jackson",
+    "shortName": "B Jackson",
+    "nationality": "Australia",
+    "jerseyNumber": "41",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Steve Smith",
+    "shortName": "S Smith",
+    "nationality": "Australia",
+    "jerseyNumber": "49",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm legbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Moises Henriques",
+    "shortName": "M Henriques",
+    "nationality": "Australia",
+    "jerseyNumber": "17",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Sean Abbott",
+    "shortName": "S Abbott",
+    "nationality": "Australia",
+    "jerseyNumber": "77",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Todd Murphy",
+    "shortName": "T Murphy",
+    "nationality": "Australia",
+    "jerseyNumber": "68",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Jack Edwards",
+    "shortName": "J Edwards",
+    "nationality": "Australia",
+    "jerseyNumber": "22",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "finisher"]
+  },
+  {
+    "fullName": "Ben Dwarshuis",
+    "shortName": "B Dwarshuis",
+    "nationality": "Australia",
+    "jerseyNumber": "8",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Hayden Kerr",
+    "shortName": "H Kerr",
+    "nationality": "Australia",
+    "jerseyNumber": "36",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "powerplay_bowler"]
+  },
+  {
+    "fullName": "David Warner",
+    "shortName": "D Warner",
+    "nationality": "Australia",
+    "jerseyNumber": "31",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm legbreak",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Daniel Sams",
+    "shortName": "D Sams",
+    "nationality": "Australia",
+    "jerseyNumber": "18",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Chris Green",
+    "shortName": "C Green",
+    "nationality": "Australia",
+    "jerseyNumber": "42",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Nic Maddinson",
+    "shortName": "N Maddinson",
+    "nationality": "Australia",
+    "jerseyNumber": "44",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Cameron Bancroft",
+    "shortName": "C Bancroft",
+    "nationality": "Australia",
+    "jerseyNumber": "26",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "top_order"]
+  },
+  {
+    "fullName": "Sam Konstas",
+    "shortName": "S Konstas",
+    "nationality": "Australia",
+    "jerseyNumber": "34",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Ryan Hadley",
+    "shortName": "R Hadley",
+    "nationality": "Australia",
+    "jerseyNumber": "52",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Tanveer Sangha",
+    "shortName": "T Sangha",
+    "nationality": "Australia",
+    "jerseyNumber": "16",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Matthew Gilkes",
+    "shortName": "M Gilkes",
+    "nationality": "Australia",
+    "jerseyNumber": "23",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Nathan McAndrew",
+    "shortName": "N McAndrew",
+    "nationality": "Australia",
+    "jerseyNumber": "55",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Liam Livingstone",
+    "shortName": "L Livingstone",
+    "nationality": "England",
+    "jerseyNumber": "23",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+   {
+    "fullName": "Sam Curran",
+    "shortName": "S Curran",
+    "nationality": "England",
+    "jerseyNumber": "58",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Ben Duckett",
+    "shortName": "B Duckett",
+    "nationality": "England",
+    "jerseyNumber": "17",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Jacob Bethell",
+    "shortName": "J Bethell",
+    "nationality": "England",
+    "jerseyNumber": "21",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Dan Mousley",
+    "shortName": "D Mousley",
+    "nationality": "England",
+    "jerseyNumber": "16",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Will Smeed",
+    "shortName": "W Smeed",
+    "nationality": "England",
+    "jerseyNumber": "10",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Joe Clarke",
+    "shortName": "J Clarke",
+    "nationality": "England",
+    "jerseyNumber": "66",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "top_order"]
+  },
+  {
+    "fullName": "Freddie McCann",
+    "shortName": "F McCann",
+    "nationality": "England",
+    "jerseyNumber": "32",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Tom Helm",
+    "shortName": "T Helm",
+    "nationality": "England",
+    "jerseyNumber": "29",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Liam Patterson-White",
+    "shortName": "L Patterson-White",
+    "nationality": "England",
+    "jerseyNumber": "25",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Louis Kimber",
+    "shortName": "L Kimber",
+    "nationality": "England",
+    "jerseyNumber": "14",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Benny Howell",
+    "shortName": "B Howell",
+    "nationality": "England",
+    "jerseyNumber": "7",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Jamie Smith",
+    "shortName": "J Smith",
+    "nationality": "England",
+    "jerseyNumber": "33",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Ollie Pope",
+    "shortName": "O Pope",
+    "nationality": "England",
+    "jerseyNumber": "30",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Keaton Jennings",
+    "shortName": "K Jennings",
+    "nationality": "England",
+    "jerseyNumber": "20",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Richard Gleeson",
+    "shortName": "R Gleeson",
+    "nationality": "England",
+    "jerseyNumber": "56",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Liam Dawson",
+    "shortName": "L Dawson",
+    "nationality": "England",
+    "jerseyNumber": "8",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Jamie Overton",
+    "shortName": "J Overton",
+    "nationality": "England",
+    "jerseyNumber": "32",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Luke Wood",
+    "shortName": "L Wood",
+    "nationality": "England",
+    "jerseyNumber": "11",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Olly Stone",
+    "shortName": "O Stone",
+    "nationality": "England",
+    "jerseyNumber": "40",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Dan Worrall",
+    "shortName": "D Worrall",
+    "nationality": "England",
+    "jerseyNumber": "19",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Jafer Chohan",
+    "shortName": "J Chohan",
+    "nationality": "England",
+    "jerseyNumber": "27",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Wayne Madsen",
+    "shortName": "W Madsen",
+    "nationality": "England",
+    "jerseyNumber": "9",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Sean Dickson",
+    "shortName": "S Dickson",
+    "nationality": "England",
+    "jerseyNumber": "24",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Ryan Higgins",
+    "shortName": "R Higgins",
+    "nationality": "England",
+    "jerseyNumber": "18",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "John Simpson",
+    "shortName": "J Simpson",
+    "nationality": "England",
+    "jerseyNumber": "21",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Dan Douthwaite",
+    "shortName": "D Douthwaite",
+    "nationality": "England",
+    "jerseyNumber": "35",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "finisher"]
+  },
+  {
+    "fullName": "Jos Buttler",
+    "shortName": "J Buttler",
+    "nationality": "England",
+    "jerseyNumber": "63",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "power_hitter"]
+  },
+  {
+    "fullName": "Phil Salt",
+    "shortName": "P Salt",
+    "nationality": "England",
+    "jerseyNumber": "61",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "power_hitter"]
+  },
+  {
+    "fullName": "James Anderson",
+    "shortName": "J Anderson",
+    "nationality": "England",
+    "jerseyNumber": "9",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "George Garton",
+    "shortName": "G Garton",
+    "nationality": "England",
+    "jerseyNumber": "26",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Scott Currie",
+    "shortName": "S Currie",
+    "nationality": "England",
+    "jerseyNumber": "37",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Josh Tongue",
+    "shortName": "J Tongue",
+    "nationality": "England",
+    "jerseyNumber": "49",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Tom Hartley",
+    "shortName": "T Hartley",
+    "nationality": "England",
+    "jerseyNumber": "68",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Sonny Baker",
+    "shortName": "S Baker",
+    "nationality": "England",
+    "jerseyNumber": "45",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Matthew Hurst",
+    "shortName": "M Hurst",
+    "nationality": "England",
+    "jerseyNumber": "15",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Ben McKinney",
+    "shortName": "B McKinney",
+    "nationality": "England",
+    "jerseyNumber": "34",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Tom Aspinwall",
+    "shortName": "T Aspinwall",
+    "nationality": "England",
+    "jerseyNumber": "52",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Harry Brook",
+    "shortName": "H Brook",
+    "nationality": "England",
+    "jerseyNumber": "88",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Adil Rashid",
+    "shortName": "A Rashid",
+    "nationality": "England",
+    "jerseyNumber": "95",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Zak Crawley",
+    "shortName": "Z Crawley",
+    "nationality": "England",
+    "jerseyNumber": "11",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Brydon Carse",
+    "shortName": "B Carse",
+    "nationality": "England",
+    "jerseyNumber": "46",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Dan Lawrence",
+    "shortName": "D Lawrence",
+    "nationality": "England",
+    "jerseyNumber": "32",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Matthew Potts",
+    "shortName": "M Potts",
+    "nationality": "England",
+    "jerseyNumber": "59",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Ben Dwarshuis",
+    "shortName": "B Dwarshuis",
+    "nationality": "England",
+    "jerseyNumber": "8",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Pat Brown",
+    "shortName": "P Brown",
+    "nationality": "England",
+    "jerseyNumber": "95",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Graham Clark",
+    "shortName": "G Clark",
+    "nationality": "England",
+    "jerseyNumber": "21",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Tom Lawes",
+    "shortName": "T Lawes",
+    "nationality": "England",
+    "jerseyNumber": "34",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "James Fuller",
+    "shortName": "J Fuller",
+    "nationality": "England",
+    "jerseyNumber": "12",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+   {
+    "fullName": "Trent Boult",
+    "shortName": "T Boult",
+    "nationality": "New Zealand",
+    "jerseyNumber": "18",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Left-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Jacob Duffy",
+    "shortName": "J Duffy",
+    "nationality": "New Zealand",
+    "jerseyNumber": "27",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Sam Billings",
+    "shortName": "S Billings",
+    "nationality": "England",
+    "jerseyNumber": "3",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+  {
+    "fullName": "Will Jacks",
+    "shortName": "W Jacks",
+    "nationality": "England",
+    "jerseyNumber": "25",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Sa​​qib Mahmood",
+    "shortName": "S Mahmood",
+    "nationality": "England",
+    "jerseyNumber": "74",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Gus Atkinson",
+    "shortName": "G Atkinson",
+    "nationality": "England",
+    "jerseyNumber": "54",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Tom Curran",
+    "shortName": "T Curran",
+    "nationality": "England",
+    "jerseyNumber": "20",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Jordan Cox",
+    "shortName": "J Cox",
+    "nationality": "England",
+    "jerseyNumber": "28",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Miles Hammond",
+    "shortName": "M Hammond",
+    "nationality": "England",
+    "jerseyNumber": "19",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "George Scrimshaw",
+    "shortName": "G Scrimshaw",
+    "nationality": "England",
+    "jerseyNumber": "61",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Tawanda Muyeye",
+    "shortName": "T Muyeye",
+    "nationality": "England",
+    "jerseyNumber": "22",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Zafar Gohar",
+    "shortName": "Z Gohar",
+    "nationality": "England",
+    "jerseyNumber": "90",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Jofra Archer",
+    "shortName": "J Archer",
+    "nationality": "England",
+    "jerseyNumber": "22",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "James Vince",
+    "shortName": "J Vince",
+    "nationality": "England",
+    "jerseyNumber": "14",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Chris Jordan",
+    "shortName": "C Jordan",
+    "nationality": "England",
+    "jerseyNumber": "25",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Laurie Evans",
+    "shortName": "L Evans",
+    "nationality": "England",
+    "jerseyNumber": "7",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Craig Overton",
+    "shortName": "C Overton",
+    "nationality": "England",
+    "jerseyNumber": "12",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Reece Topley",
+    "shortName": "R Topley",
+    "nationality": "England",
+    "jerseyNumber": "59",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Danny Briggs",
+    "shortName": "D Briggs",
+    "nationality": "England",
+    "jerseyNumber": "21",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Hilton Cartwright",
+    "shortName": "H Cartwright",
+    "nationality": "England",
+    "jerseyNumber": "18",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Jordan Thompson",
+    "shortName": "J Thompson",
+    "nationality": "England",
+    "jerseyNumber": "34",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Jason Roy",
+    "shortName": "J Roy",
+    "nationality": "England",
+    "jerseyNumber": "20",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Joe Root",
+    "shortName": "J Root",
+    "nationality": "England",
+    "jerseyNumber": "66",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "David Willey",
+    "shortName": "D Willey",
+    "nationality": "England",
+    "jerseyNumber": "15",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Rehan Ahmed",
+    "shortName": "R Ahmed",
+    "nationality": "England",
+    "jerseyNumber": "19",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Tom Banton",
+    "shortName": "T Banton",
+    "nationality": "England",
+    "jerseyNumber": "11",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "power_hitter"]
+  },
+  {
+    "fullName": "Sam Hain",
+    "shortName": "S Hain",
+    "nationality": "England",
+    "jerseyNumber": "27",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "John Turner",
+    "shortName": "J Turner",
+    "nationality": "England",
+    "jerseyNumber": "52",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Callum Parkinson",
+    "shortName": "C Parkinson",
+    "nationality": "England",
+    "jerseyNumber": "88",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Ben Sanderson",
+    "shortName": "B Sanderson",
+    "nationality": "England",
+    "jerseyNumber": "9",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Max Holden",
+    "shortName": "M Holden",
+    "nationality": "England",
+    "jerseyNumber": "31",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Jonny Bairstow",
+    "shortName": "J Bairstow",
+    "nationality": "England",
+    "jerseyNumber": "51",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "power_hitter"]
+  },
+  {
+    "fullName": "Tom Abell",
+    "shortName": "T Abell",
+    "nationality": "England",
+    "jerseyNumber": "18",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Paul Walter",
+    "shortName": "P Walter",
+    "nationality": "England",
+    "jerseyNumber": "24",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Stephen Eskinazi",
+    "shortName": "S Eskinazi",
+    "nationality": "England",
+    "jerseyNumber": "15",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Luke Wells",
+    "shortName": "L Wells",
+    "nationality": "England",
+    "jerseyNumber": "9",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Josh Hull",
+    "shortName": "J Hull",
+    "nationality": "England",
+    "jerseyNumber": "44",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Mason Crane",
+    "shortName": "M Crane",
+    "nationality": "England",
+    "jerseyNumber": "32",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Ajeet Singh Dale",
+    "shortName": "A Dale",
+    "nationality": "England",
+    "jerseyNumber": "27",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Ben Kellaway",
+    "shortName": "B Kellaway",
+    "nationality": "England",
+    "jerseyNumber": "21",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Quinton de Kock",
+    "shortName": "Q de Kock",
+    "nationality": "South Africa",
+    "jerseyNumber": "12",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "top_order"]
+  },
+  {
+    "fullName": "Tristan Stubbs",
+    "shortName": "T Stubbs",
+    "nationality": "South Africa",
+    "jerseyNumber": "30",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Matthew Breetzke",
+    "shortName": "M Breetzke",
+    "nationality": "South Africa",
+    "jerseyNumber": "28",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["top_order", "anchor"]
+  },
+    {
+    "fullName": "David Miller",
+    "shortName": "D Miller",
+    "nationality": "South Africa",
+    "jerseyNumber": "10",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Ryan Rickelton",
+    "shortName": "R Rickelton",
+    "nationality": "South Africa",
+    "jerseyNumber": "44",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "top_order"]
+  },
+  {
+    "fullName": "Mitchell van Buuren",
+    "shortName": "M van Buuren",
+    "nationality": "South Africa",
+    "jerseyNumber": "17",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Jordan Hermann",
+    "shortName": "J Hermann",
+    "nationality": "South Africa",
+    "jerseyNumber": "63",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Senuran Muthusamy",
+    "shortName": "S Muthusamy",
+    "nationality": "South Africa",
+    "jerseyNumber": "28",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Marco Jansen",
+    "shortName": "M Jansen",
+    "nationality": "South Africa",
+    "jerseyNumber": "70",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "JP King",
+    "shortName": "JP King",
+    "nationality": "South Africa",
+    "jerseyNumber": "41",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Patrick Kruger",
+    "shortName": "P Kruger",
+    "nationality": "South Africa",
+    "jerseyNumber": "33",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Lewis Gregory",
+    "shortName": "L Gregory",
+    "nationality": "England",
+    "jerseyNumber": "8",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Anrich Nortje",
+    "shortName": "A Nortje",
+    "nationality": "South Africa",
+    "jerseyNumber": "20",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Lutho Sipamla",
+    "shortName": "L Sipamla",
+    "nationality": "South Africa",
+    "jerseyNumber": "74",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Beyers Swanepoel",
+    "shortName": "B Swanepoel",
+    "nationality": "South Africa",
+    "jerseyNumber": "25",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Dewald Brevis",
+    "shortName": "D Brevis",
+    "nationality": "South Africa",
+    "jerseyNumber": "17",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Bayanda Majola",
+    "shortName": "B Majola",
+    "nationality": "South Africa",
+    "jerseyNumber": "9",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Sibonelo Makhanya",
+    "shortName": "S Makhanya",
+    "nationality": "South Africa",
+    "jerseyNumber": "18",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Will Smeed",
+    "shortName": "W Smeed",
+    "nationality": "South Africa",
+    "jerseyNumber": "10",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Wihan Lubbe",
+    "shortName": "W Lubbe",
+    "nationality": "South Africa",
+    "jerseyNumber": "15",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Bryce Parsons",
+    "shortName": "B Parsons",
+    "nationality": "South Africa",
+    "jerseyNumber": "27",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Codi Yusuf",
+    "shortName": "C Yusuf",
+    "nationality": "South Africa",
+    "jerseyNumber": "52",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Junaid Dawood",
+    "shortName": "J Dawood",
+    "nationality": "South Africa",
+    "jerseyNumber": "14",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Keshav Maharaj",
+    "shortName": "K Maharaj",
+    "nationality": "South Africa",
+    "jerseyNumber": "16",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Lungi Ngidi",
+    "shortName": "L Ngidi",
+    "nationality": "South Africa",
+    "jerseyNumber": "22",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Gideon Peters",
+    "shortName": "G Peters",
+    "nationality": "South Africa",
+    "jerseyNumber": "33",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Lizaad Williams",
+    "shortName": "L Williams",
+    "nationality": "South Africa",
+    "jerseyNumber": "40",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Connor Esterhuizen",
+    "shortName": "C Esterhuizen",
+    "nationality": "South Africa",
+    "jerseyNumber": "7",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Meeka-eel Prince",
+    "shortName": "M Prince",
+    "nationality": "South Africa",
+    "jerseyNumber": "29",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "finisher"]
+  },
+    {
+    "fullName": "Kyle Verreynne",
+    "shortName": "K Verreynne",
+    "nationality": "South Africa",
+    "jerseyNumber": "97",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Rubin Hermann",
+    "shortName": "R Hermann",
+    "nationality": "South Africa",
+    "jerseyNumber": "24",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Lhuan-Dre Pretorius",
+    "shortName": "L Pretorius",
+    "nationality": "South Africa",
+    "jerseyNumber": "34",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Asa Tribe",
+    "shortName": "A Tribe",
+    "nationality": "South Africa",
+    "jerseyNumber": "41",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Delano Potgieter",
+    "shortName": "D Potgieter",
+    "nationality": "South Africa",
+    "jerseyNumber": "21",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Ottneil Baartman",
+    "shortName": "O Baartman",
+    "nationality": "South Africa",
+    "jerseyNumber": "11",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Bjorn Fortuin",
+    "shortName": "B Fortuin",
+    "nationality": "South Africa",
+    "jerseyNumber": "5",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Vishen Halambage",
+    "shortName": "V Halambage",
+    "nationality": "South Africa",
+    "jerseyNumber": "55",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Nqabayomzi Peter",
+    "shortName": "N Peter",
+    "nationality": "South Africa",
+    "jerseyNumber": "30",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Eshan Malinga",
+    "shortName": "E Malinga",
+    "nationality": "South Africa",
+    "jerseyNumber": "46",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Hardus Viljoen",
+    "shortName": "H Viljoen",
+    "nationality": "South Africa",
+    "jerseyNumber": "75",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Aiden Markram",
+    "shortName": "A Markram",
+    "nationality": "South Africa",
+    "jerseyNumber": "4",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "David Bedingham",
+    "shortName": "D Bedingham",
+    "nationality": "South Africa",
+    "jerseyNumber": "9",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Heinrich Klaasen",
+    "shortName": "H Klaasen",
+    "nationality": "South Africa",
+    "jerseyNumber": "45",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "power_hitter"]
+  },
+  {
+    "fullName": "David Wiese",
+    "shortName": "D Wiese",
+    "nationality": "South Africa",
+    "jerseyNumber": "23",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Dayyaan Galiem",
+    "shortName": "D Galiem",
+    "nationality": "South Africa",
+    "jerseyNumber": "28",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Kwena Maphaka",
+    "shortName": "K Maphaka",
+    "nationality": "South Africa",
+    "jerseyNumber": "41",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Gerald Coetzee",
+    "shortName": "G Coetzee",
+    "nationality": "South Africa",
+    "jerseyNumber": "62",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Daryn Dupavillon",
+    "shortName": "D Dupavillon",
+    "nationality": "South Africa",
+    "jerseyNumber": "40",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Eathan Bosch",
+    "shortName": "E Bosch",
+    "nationality": "South Africa",
+    "jerseyNumber": "19",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Andile Simelane",
+    "shortName": "A Simelane",
+    "nationality": "South Africa",
+    "jerseyNumber": "33",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Reeza Hendricks",
+    "shortName": "R Hendricks",
+    "nationality": "South Africa",
+    "jerseyNumber": "14",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Rassie van der Dussen",
+    "shortName": "R van der Dussen",
+    "nationality": "South Africa",
+    "jerseyNumber": "72",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm legbreak",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "George Linde",
+    "shortName": "G Linde",
+    "nationality": "South Africa",
+    "jerseyNumber": "16",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Corbin Bosch",
+    "shortName": "C Bosch",
+    "nationality": "South Africa",
+    "jerseyNumber": "32",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Dwaine Pretorius",
+    "shortName": "D Pretorius",
+    "nationality": "South Africa",
+    "jerseyNumber": "75",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Tiaan van Vuuren",
+    "shortName": "T van Vuuren",
+    "nationality": "South Africa",
+    "jerseyNumber": "21",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Kagiso Rabada",
+    "shortName": "K Rabada",
+    "nationality": "South Africa",
+    "jerseyNumber": "25",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Dane Piedt",
+    "shortName": "D Piedt",
+    "nationality": "South Africa",
+    "jerseyNumber": "4",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+    {
+    "fullName": "Rilee Rossouw",
+    "shortName": "R Rossouw",
+    "nationality": "South Africa",
+    "jerseyNumber": "22",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Rivals Moonsamy",
+    "shortName": "R Moonsamy",
+    "nationality": "South Africa",
+    "jerseyNumber": "18",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Shubham Ranjane",
+    "shortName": "S Ranjane",
+    "nationality": "South Africa",
+    "jerseyNumber": "7",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Prenelan Subrayen",
+    "shortName": "P Subrayen",
+    "nationality": "South Africa",
+    "jerseyNumber": "12",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Wiaan Mulder",
+    "shortName": "W Mulder",
+    "nationality": "South Africa",
+    "jerseyNumber": "72",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Daniel Worrall",
+    "shortName": "D Worrall",
+    "nationality": "South Africa",
+    "jerseyNumber": "19",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Nandre Burger",
+    "shortName": "N Burger",
+    "nationality": "South Africa",
+    "jerseyNumber": "41",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Janco Smit",
+    "shortName": "J Smit",
+    "nationality": "South Africa",
+    "jerseyNumber": "6",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Donovan Ferreira",
+    "shortName": "D Ferreira",
+    "nationality": "South Africa",
+    "jerseyNumber": "60",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "power_hitter"]
+  },
+  {
+    "fullName": "Mitchell Santner",
+    "shortName": "M Santner",
+    "nationality": "New Zealand",
+    "jerseyNumber": "74",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Finn Allen",
+    "shortName": "F Allen",
+    "nationality": "New Zealand",
+    "jerseyNumber": "16",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "power_hitter"]
+  },
+  {
+    "fullName": "Devon Conway",
+    "shortName": "D Conway",
+    "nationality": "New Zealand",
+    "jerseyNumber": "88",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Mark Chapman",
+    "shortName": "M Chapman",
+    "nationality": "New Zealand",
+    "jerseyNumber": "81",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["middle_order", "anchor"]
+  },
+  {
+    "fullName": "Jacob Duffy",
+    "shortName": "J Duffy",
+    "nationality": "New Zealand",
+    "jerseyNumber": "27",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Lockie Ferguson",
+    "shortName": "L Ferguson",
+    "nationality": "New Zealand",
+    "jerseyNumber": "69",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Matt Henry",
+    "shortName": "M Henry",
+    "nationality": "New Zealand",
+    "jerseyNumber": "21",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Daryl Mitchell",
+    "shortName": "D Mitchell",
+    "nationality": "New Zealand",
+    "jerseyNumber": "75",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Adam Milne",
+    "shortName": "A Milne",
+    "nationality": "New Zealand",
+    "jerseyNumber": "18",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "James Neesham",
+    "shortName": "J Neesham",
+    "nationality": "New Zealand",
+    "jerseyNumber": "7",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Glenn Phillips",
+    "shortName": "G Phillips",
+    "nationality": "New Zealand",
+    "jerseyNumber": "23",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Rachin Ravindra",
+    "shortName": "R Ravindra",
+    "nationality": "New Zealand",
+    "jerseyNumber": "8",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Tim Seifert",
+    "shortName": "T Seifert",
+    "nationality": "New Zealand",
+    "jerseyNumber": "43",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "power_hitter"]
+  },
+  {
+    "fullName": "Ish Sodhi",
+    "shortName": "I Sodhi",
+    "nationality": "New Zealand",
+    "jerseyNumber": "61",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Michael Bracewell",
+    "shortName": "M Bracewell",
+    "nationality": "New Zealand",
+    "jerseyNumber": "21",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Kyle Jamieson",
+    "shortName": "K Jamieson",
+    "nationality": "New Zealand",
+    "jerseyNumber": "12",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Kane Williamson",
+    "shortName": "K Williamson",
+    "nationality": "New Zealand",
+    "jerseyNumber": "22",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Will Young",
+    "shortName": "W Young",
+    "nationality": "New Zealand",
+    "jerseyNumber": "9",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Tom Latham",
+    "shortName": "T Latham",
+    "nationality": "New Zealand",
+    "jerseyNumber": "48",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "anchor"]
+  },
+  {
+    "fullName": "Blair Tickner",
+    "shortName": "B Tickner",
+    "nationality": "New Zealand",
+    "jerseyNumber": "56",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Nathan Smith",
+    "shortName": "N Smith",
+    "nationality": "New Zealand",
+    "jerseyNumber": "33",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["bowling_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Zak Foulkes",
+    "shortName": "Z Foulkes",
+    "nationality": "New Zealand",
+    "jerseyNumber": "27",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "finisher"]
+  },
+  {
+    "fullName": "Bevon Jacobs",
+    "shortName": "B Jacobs",
+    "nationality": "New Zealand",
+    "jerseyNumber": "44",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Danny Morrison",
+    "shortName": "D Morrison",
+    "nationality": "New Zealand",
+    "jerseyNumber": "3",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium-fast",
+    "skillTags": ["fast_bowler", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Ben Sears",
+    "shortName": "B Sears",
+    "nationality": "New Zealand",
+    "jerseyNumber": "38",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Shai Hope",
+    "shortName": "S Hope",
+    "nationality": "West Indies",
+    "jerseyNumber": "4",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "anchor"]
+  },
+  {
+    "fullName": "Shimron Hetmyer",
+    "shortName": "S Hetmyer",
+    "nationality": "West Indies",
+    "jerseyNumber": "2",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Brandon King",
+    "shortName": "B King",
+    "nationality": "West Indies",
+    "jerseyNumber": "53",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Johnson Charles",
+    "shortName": "J Charles",
+    "nationality": "West Indies",
+    "jerseyNumber": "7",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "power_hitter"]
+  },
+  {
+    "fullName": "Roston Chase",
+    "shortName": "R Chase",
+    "nationality": "West Indies",
+    "jerseyNumber": "31",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Jason Holder",
+    "shortName": "J Holder",
+    "nationality": "West Indies",
+    "jerseyNumber": "98",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  },
+  {
+    "fullName": "Romario Shepherd",
+    "shortName": "R Shepherd",
+    "nationality": "West Indies",
+    "jerseyNumber": "16",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Sherfane Rutherford",
+    "shortName": "S Rutherford",
+    "nationality": "West Indies",
+    "jerseyNumber": "10",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Matthew Forde",
+    "shortName": "M Forde",
+    "nationality": "West Indies",
+    "jerseyNumber": "24",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Quentin Sampson",
+    "shortName": "Q Sampson",
+    "nationality": "West Indies",
+    "jerseyNumber": "39",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "middle_order"]
+  },
+  {
+    "fullName": "Akeal Hosein",
+    "shortName": "A Hosein",
+    "nationality": "West Indies",
+    "jerseyNumber": "99",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Gudakesh Motie",
+    "shortName": "G Motie",
+    "nationality": "West Indies",
+    "jerseyNumber": "63",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Slow left-arm orthodox",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Jayden Seales",
+    "shortName": "J Seales",
+    "nationality": "West Indies",
+    "jerseyNumber": "71",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Kieron Pollard",
+    "shortName": "K Pollard",
+    "nationality": "West Indies",
+    "jerseyNumber": "55",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Andre Russell",
+    "shortName": "A Russell",
+    "nationality": "West Indies",
+    "jerseyNumber": "12",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Nicholas Pooran",
+    "shortName": "N Pooran",
+    "nationality": "West Indies",
+    "jerseyNumber": "29",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "power_hitter"]
+  },
+  {
+    "fullName": "Sunil Narine",
+    "shortName": "S Narine",
+    "nationality": "West Indies",
+    "jerseyNumber": "74",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Rovman Powell",
+    "shortName": "R Powell",
+    "nationality": "West Indies",
+    "jerseyNumber": "52",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+  {
+    "fullName": "Charith Asalanka",
+    "shortName": "C Asalanka",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "72",
+    "role": "Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["middle_order", "power_hitter"]
+  },
+    {
+    "fullName": "Pathum Nissanka",
+    "shortName": "P Nissanka",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "18",
+    "role": "Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["top_order", "anchor"]
+  },
+  {
+    "fullName": "Wanindu Hasaranga",
+    "shortName": "W Hasaranga",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "49",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["bowling_allrounder", "spinner"]
+  },
+  {
+    "fullName": "Dasun Shanaka",
+    "shortName": "D Shanaka",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "91",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm medium",
+    "skillTags": ["batting_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Dushmantha Chameera",
+    "shortName": "D Chameera",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "64",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Kusal Perera",
+    "shortName": "K Perera",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "23",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "None",
+    "skillTags": ["wicket_keeper", "top_order"]
+  },
+  {
+    "fullName": "Kusal Mendis",
+    "shortName": "K Mendis",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "13",
+    "role": "Wicketkeeper-Batsman",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["wicket_keeper", "middle_order"]
+  },
+  {
+    "fullName": "Kamindu Mendis",
+    "shortName": "K Mendis",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "29",
+    "role": "All-Rounder",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Right-arm offbreak",
+    "skillTags": ["batting_allrounder", "anchor"]
+  },
+  {
+    "fullName": "Maheesh Theekshana",
+    "shortName": "M Theekshana",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "61",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["spinner", "powerplay_bowler"]
+  },
+  {
+    "fullName": "Eshan Malinga",
+    "shortName": "E Malinga",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "46",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Nuwan Thushara",
+    "shortName": "N Thushara",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "81",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+  {
+    "fullName": "Matheesha Pathirana",
+    "shortName": "M Pathirana",
+    "nationality": "Sri Lanka",
+    "jerseyNumber": "99",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+   {
+    "fullName": "Mustafizur Rahman",
+    "shortName": "M Rahman",
+    "nationality": "Bangladesh",
+    "jerseyNumber": "90",
+    "role": "Bowler",
+    "battingStyle": "Left-hand bat",
+    "bowlingStyle": "Left-arm fast-medium",
+    "skillTags": ["fast_bowler", "death_bowler"]
+  },
+   {
+    "fullName": "Allah Ghazanfar",
+    "shortName": "A Ghazanfar",
+    "nationality": "Afghanistan",
+    "jerseyNumber": "77",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Offbreak",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+   {
+    "fullName": "Azmatullah Omarzai",
+    "shortName": "A Omarzai",
+    "nationality": "Afghanistan",
+    "jerseyNumber": "9",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Right-arm fast-medium",
+    "skillTags": ["bowling_allrounder", "power_hitter"]
+  },
+  {
+    "fullName": "Noor Ahmad",
+    "shortName": "N Ahmad",
+    "nationality": "Afghanistan",
+    "jerseyNumber": "88",
+    "role": "Bowler",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Chinaman",
+    "skillTags": ["spinner", "middle_overs_bowler"]
+  },
+  {
+    "fullName": "Rashid Khan",
+    "shortName": "R Khan",
+    "nationality": "Afghanistan",
+    "jerseyNumber": "19",
+    "role": "All-Rounder",
+    "battingStyle": "Right-hand bat",
+    "bowlingStyle": "Legbreak",
+    "skillTags": ["bowling_allrounder", "death_bowler"]
+  }
+
+
+]
