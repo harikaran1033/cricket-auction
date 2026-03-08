@@ -303,6 +303,8 @@ export default function Auction() {
   const clearClientTimer = () => {
     if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
     timerEndRef.current = null;
+    setTimerRemaining(0);        // prevent stale timer sounds
+    prevTimerSecRef.current = -1; // reset so next start won't false-trigger
   };
 
   // Actions
@@ -351,11 +353,17 @@ export default function Auction() {
     setChatInput("");
   };
 
-  // Bid amounts
+  // Bid amounts — calculate increment based on IPL-style brackets
   const bidAmounts = [];
   if (minNextBid > 0) {
     bidAmounts.push(minNextBid);
-    [25, 50, 75, 100].forEach((inc) => { if (minNextBid + inc <= remainingPurse) bidAmounts.push(minNextBid + inc); });
+    // Generate additional bid options at 2x and 3x above the min increment
+    const getIncrement = (val) => val < 100 ? 10 : val < 500 ? 25 : 100;
+    let nextVal = minNextBid;
+    for (let i = 0; i < 3; i++) {
+      nextVal = nextVal + getIncrement(nextVal);
+      if (nextVal <= remainingPurse && !bidAmounts.includes(nextVal)) bidAmounts.push(nextVal);
+    }
   }
   const canBid = !isSpectatorMode && auctionStatus === "BIDDING" && currentBidTeam !== user.teamName && myTeam && remainingPurse >= minNextBid;
   const isRtmEligible = !isSpectatorMode && auctionStatus === "RTM_PENDING" && rtmPending?.rtmTeam === user.teamName;
@@ -365,16 +373,16 @@ export default function Auction() {
   // ─── COMPLETED VIEW ───
   if (auctionStatus === "COMPLETED") {
     return (
-      <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex items-center justify-center h-screen">
-        <div className="text-center px-6">
-          <div style={{ fontSize: 72 }} className="mb-6">🏆</div>
-          <h1 style={{ color: COLORS.textPrimary }} className="text-5xl font-black mb-4">Auction Complete!</h1>
-          <p style={{ color: COLORS.textSecondary }} className="text-xl mb-10">
-            {stats.totalPlayersSold} players sold · {stats.totalPlayersUnsold} unsold
+      <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex items-center justify-center h-screen px-4">
+        <div className="text-center px-4 sm:px-6 w-full max-w-lg">
+          <div className="text-5xl sm:text-7xl mb-4 sm:mb-6">🏆</div>
+          <h1 style={{ color: COLORS.textPrimary }} className="text-3xl sm:text-5xl font-black mb-3 sm:mb-4">Auction Complete!</h1>
+          <p style={{ color: COLORS.textSecondary }} className="text-base sm:text-xl mb-6 sm:mb-10">
+            {stats.totalPlayersSold} sold · {stats.totalPlayersUnsold} unsold
           </p>
           <button onClick={() => navigate(`/room/${code}/results`)}
             style={{ background: `linear-gradient(135deg, ${COLORS.primary}, #0090FF)`, color: "#0F172A", boxShadow: `0 0 24px ${COLORS.primary}44` }}
-            className="px-8 py-4 rounded-xl font-black text-lg hover:scale-105 transition-all flex items-center gap-2 mx-auto">
+            className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-black text-base sm:text-lg hover:scale-105 transition-all flex items-center gap-2 mx-auto">
             <Trophy size={20} /> View Results
           </button>
         </div>
@@ -395,35 +403,35 @@ export default function Auction() {
       <ParticleEffect active={showParticles} color={particleColor} count={60} />
 
       {/* Top Bar */}
-      <div style={{ background: COLORS.bgCard, borderBottom: `1px solid ${COLORS.border}` }} className="px-5 py-4 flex items-center justify-between gap-4 flex-wrap shrink-0">
-        <div className="flex items-center gap-4">
-          <button onClick={() => navigate(`/room/${code}/lobby`)} style={{ color: COLORS.textSecondary }} className="p-1 hover:text-white"><ArrowLeft size={20} /></button>
-          <div>
-            <div className="flex items-center gap-3">
-              <h1 style={{ color: COLORS.textPrimary }} className="font-black text-lg">{roomData?.roomName || "Live Auction"}</h1>
+      <div style={{ background: COLORS.bgCard, borderBottom: `1px solid ${COLORS.border}` }} className="px-3 sm:px-5 py-2.5 sm:py-4 flex items-center justify-between gap-2 sm:gap-4 flex-wrap shrink-0">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+          <button onClick={() => navigate(`/room/${code}/lobby`)} style={{ color: COLORS.textSecondary }} className="p-1 hover:text-white flex-shrink-0"><ArrowLeft size={18} /></button>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              <h1 style={{ color: COLORS.textPrimary }} className="font-black text-sm sm:text-lg truncate">{roomData?.roomName || "Live Auction"}</h1>
               <span style={{ background: `${COLORS.accent}22`, color: COLORS.accent, border: `1px solid ${COLORS.accent}44`, fontFamily: "'JetBrains Mono', monospace" }}
-                className="text-xs px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-bold flex items-center gap-1 flex-shrink-0">
                 <span style={{ background: COLORS.accent }} className="w-1.5 h-1.5 rounded-full animate-pulse" />
                 {auctionStatus === "PAUSED" ? "PAUSED" : "LIVE"}
               </span>
-              {isSpectatorMode && <span style={{ background: `${COLORS.primary}22`, color: COLORS.primary }} className="text-xs px-2 py-0.5 rounded-full font-bold">SPECTATING</span>}
+              {isSpectatorMode && <span style={{ background: `${COLORS.primary}22`, color: COLORS.primary }} className="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold">SPECTATING</span>}
             </div>
-            <p style={{ color: COLORS.textSecondary }} className="text-xs">
-              Player {playerIndexInSet}/{totalPlayersInSet || "?"} in set · Sold: {stats.totalPlayersSold} · Unsold: {stats.totalPlayersUnsold}
+            <p style={{ color: COLORS.textSecondary }} className="text-[10px] sm:text-xs">
+              Player {playerIndexInSet}/{totalPlayersInSet || "?"} · Sold: {stats.totalPlayersSold} · Unsold: {stats.totalPlayersUnsold}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
           {myTeam && (
-            <div style={{ background: `${COLORS.success}15`, border: `1px solid ${COLORS.success}33` }} className="px-3 py-1.5 rounded-lg">
-              <p style={{ color: COLORS.textSecondary }} className="text-xs">Your Purse</p>
-              <p style={{ color: COLORS.success, fontFamily: "'JetBrains Mono', monospace" }} className="text-sm font-bold">{formatPrice(remainingPurse)}</p>
+            <div style={{ background: `${COLORS.success}15`, border: `1px solid ${COLORS.success}33` }} className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg">
+              <p style={{ color: COLORS.textSecondary }} className="text-[9px] sm:text-xs">Purse</p>
+              <p style={{ color: COLORS.success, fontFamily: "'JetBrains Mono', monospace" }} className="text-xs sm:text-sm font-bold">{formatPrice(remainingPurse)}</p>
             </div>
           )}
           {myTeam && (
-            <div style={{ background: `${COLORS.primary}15`, border: `1px solid ${COLORS.primary}33` }} className="px-3 py-1.5 rounded-lg hidden sm:block">
-              <p style={{ color: COLORS.textSecondary }} className="text-xs">Playing As</p>
-              <p style={{ color: COLORS.primary, fontFamily: "'JetBrains Mono', monospace" }} className="text-sm font-bold">{myTeam.teamShortName || myTeam.teamName}</p>
+            <div style={{ background: `${COLORS.primary}15`, border: `1px solid ${COLORS.primary}33` }} className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg hidden md:block">
+              <p style={{ color: COLORS.textSecondary }} className="text-[9px] sm:text-xs">Playing As</p>
+              <p style={{ color: COLORS.primary, fontFamily: "'JetBrains Mono', monospace" }} className="text-xs sm:text-sm font-bold">{myTeam.teamShortName || myTeam.teamName}</p>
             </div>
           )}
           {isHost && auctionStatus === "BIDDING" && (
@@ -533,10 +541,10 @@ export default function Auction() {
       )}
 
       {/* Main Layout */}
-      <div className="flex-1 grid grid-cols-1 xl:grid-cols-[300px_1fr_300px] overflow-hidden min-h-0">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-[260px_1fr] xl:grid-cols-[280px_1fr_280px] overflow-hidden min-h-0">
 
         {/* LEFT: Teams Sidebar */}
-        <div style={{ borderRight: `1px solid ${COLORS.border}`, overflowY: "auto" }} className="hidden xl:block p-5">
+        <div style={{ borderRight: `1px solid ${COLORS.border}`, overflowY: "auto" }} className="hidden lg:block p-3 xl:p-5">
           <p style={{ color: COLORS.textSecondary }} className="text-xs font-medium mb-4 uppercase tracking-wider">Teams & Purse</p>
           <div className="space-y-3">
             {teams.map((team) => {
@@ -678,7 +686,7 @@ export default function Auction() {
         </div>
 
         {/* CENTER: Main Auction */}
-        <div style={{ overflowY: "auto" }} className="flex flex-col p-5 sm:p-6 gap-5">
+        <div style={{ overflowY: "auto" }} className="flex flex-col p-3 sm:p-5 lg:p-6 gap-3 sm:gap-5">
 
           {/* SOLD Overlay */}
           {soldOverlay && (
@@ -686,18 +694,18 @@ export default function Auction() {
               background: soldOverlay.type === "sold" ? `${COLORS.success}22` : `${COLORS.accent}22`,
               border: `2px solid ${soldOverlay.type === "sold" ? COLORS.success : COLORS.accent}`,
               boxShadow: `0 0 40px ${soldOverlay.type === "sold" ? COLORS.success : COLORS.accent}44`,
-            }} className="rounded-2xl p-6 text-center">
-              <p style={{ color: soldOverlay.type === "sold" ? COLORS.success : COLORS.accent }} className="text-4xl font-black mb-1">
+            }} className="rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
+              <p style={{ color: soldOverlay.type === "sold" ? COLORS.success : COLORS.accent }} className="text-2xl sm:text-4xl font-black mb-1">
                 {soldOverlay.type === "sold" ? "SOLD!" : "UNSOLD"}
               </p>
-              <p style={{ color: COLORS.textPrimary }} className="text-lg font-bold">{soldOverlay.player?.name}</p>
+              <p style={{ color: COLORS.textPrimary }} className="text-base sm:text-lg font-bold">{soldOverlay.player?.name}</p>
               {soldOverlay.type === "sold" && (
                 <>
-                  <p style={{ color: COLORS.textSecondary }} className="text-sm mb-2">to</p>
-                  <p style={{ color: COLORS.primary, fontFamily: "'JetBrains Mono', monospace" }} className="text-2xl font-black">{soldOverlay.soldTo}</p>
-                  <p style={{ color: COLORS.warning, fontFamily: "'JetBrains Mono', monospace" }} className="text-3xl font-black mt-2">{formatPrice(soldOverlay.soldPrice)}</p>
+                  <p style={{ color: COLORS.textSecondary }} className="text-xs sm:text-sm mb-1 sm:mb-2">to</p>
+                  <p style={{ color: COLORS.primary, fontFamily: "'JetBrains Mono', monospace" }} className="text-lg sm:text-2xl font-black">{soldOverlay.soldTo}</p>
+                  <p style={{ color: COLORS.warning, fontFamily: "'JetBrains Mono', monospace" }} className="text-xl sm:text-3xl font-black mt-1 sm:mt-2">{formatPrice(soldOverlay.soldPrice)}</p>
                   {soldOverlay.acquiredVia === "rtm" && (
-                    <span style={{ background: `${COLORS.primary}22`, color: COLORS.primary }} className="text-sm px-3 py-1 rounded-full font-bold mt-2 inline-block">via RTM</span>
+                    <span style={{ background: `${COLORS.primary}22`, color: COLORS.primary }} className="text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-full font-bold mt-2 inline-block">via RTM</span>
                   )}
                 </>
               )}
@@ -706,25 +714,25 @@ export default function Auction() {
 
           {/* Player Focus Card */}
           {currentPlayer && auctionStatus !== "PAUSED" && (
-            <div style={{ background: COLORS.bgCard, border: `1px solid ${COLORS.border}` }} className="rounded-2xl overflow-hidden">
-              <div className="p-6">
-                <div className="flex items-start justify-between gap-4 mb-5">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
+            <div style={{ background: COLORS.bgCard, border: `1px solid ${COLORS.border}` }} className="rounded-xl sm:rounded-2xl overflow-hidden">
+              <div className="p-3 sm:p-6">
+                <div className="flex items-start justify-between gap-3 sm:gap-4 mb-3 sm:mb-5">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5 sm:gap-2 mb-1 flex-wrap">
                       <span style={{ background: `${ROLE_COLORS[currentPlayer.role] || COLORS.primary}22`, color: ROLE_COLORS[currentPlayer.role] || COLORS.primary, border: `1px solid ${ROLE_COLORS[currentPlayer.role] || COLORS.primary}66`, fontFamily: "'JetBrains Mono', monospace" }}
-                        className="text-xs px-2 py-0.5 rounded-md font-bold">{currentPlayer.role}</span>
-                      {currentPlayer.isOverseas && <span style={{ background: `${COLORS.warning}22`, color: COLORS.warning }} className="text-xs px-2 py-0.5 rounded-md">Overseas</span>}
-                      {currentPlayer.isCapped === false && <span style={{ background: "#A78BFA22", color: "#A78BFA", border: "1px solid #A78BFA44" }} className="text-xs px-2 py-0.5 rounded-md font-bold">Uncapped</span>}
+                        className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-md font-bold">{currentPlayer.role}</span>
+                      {currentPlayer.isOverseas && <span style={{ background: `${COLORS.warning}22`, color: COLORS.warning }} className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-md">OS</span>}
+                      {currentPlayer.isCapped === false && <span style={{ background: "#A78BFA22", color: "#A78BFA", border: "1px solid #A78BFA44" }} className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-md font-bold">UC</span>}
                       {currentPlayer.fairPoint > 0 && (
                         <span title="Fair Point — Rating based on batting/bowling position & stats across seasons. Reflects the player's ideal value."
                           style={{ background: "linear-gradient(135deg, #FFD70033, #FF8C0033)", color: "#FFD700", border: "1px solid #FFD70066", fontFamily: "'JetBrains Mono', monospace", cursor: "help" }}
-                          className="text-xs px-2 py-0.5 rounded-md font-bold flex items-center gap-1">
+                          className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-md font-bold flex items-center gap-1">
                           <TrendingUp size={10} /> FP: {currentPlayer.fairPoint.toFixed(1)}
                         </span>
                       )}
                     </div>
-                    <h2 style={{ color: COLORS.textPrimary }} className="text-2xl font-black">{currentPlayer.name}</h2>
-                    <p style={{ color: COLORS.textSecondary }} className="text-sm">
+                    <h2 style={{ color: COLORS.textPrimary }} className="text-lg sm:text-2xl font-black truncate">{currentPlayer.name}</h2>
+                    <p style={{ color: COLORS.textSecondary }} className="text-xs sm:text-sm">
                       {currentPlayer.nationality} · Base: <span style={{ color: COLORS.warning, fontFamily: "'JetBrains Mono', monospace" }} className="font-bold">{formatPrice(currentPlayer.basePrice)}</span>
                       {currentPlayer.previousTeam && (
                         <> · <span style={{ color: COLORS.primary }}>Prev: {currentPlayer.previousTeam}</span></>
@@ -741,21 +749,21 @@ export default function Auction() {
                     )}
                   </div>
                   {/* Timer */}
-                  <div className="text-right">
+                  <div className="text-right flex-shrink-0">
                     <div style={{ color: timerColor, fontFamily: "'JetBrains Mono', monospace", textShadow: timerRemaining <= 5 ? `0 0 20px ${timerColor}` : "none" }}
-                      className="text-5xl font-black leading-none">{String(timerRemaining).padStart(2, "0")}</div>
-                    <p style={{ color: COLORS.textSecondary }} className="text-xs mt-1">seconds</p>
+                      className="text-3xl sm:text-5xl font-black leading-none">{String(timerRemaining).padStart(2, "0")}</div>
+                    <p style={{ color: COLORS.textSecondary }} className="text-[10px] sm:text-xs mt-1">seconds</p>
                   </div>
                 </div>
 
                 {/* Timer bar */}
-                <div style={{ background: COLORS.bgMain, height: "6px", borderRadius: "99px", overflow: "hidden", marginBottom: "20px" }}>
+                <div style={{ background: COLORS.bgMain, borderRadius: "99px", overflow: "hidden" }} className="h-1 sm:h-1.5 mb-3 sm:mb-5">
                   <div style={{ width: `${timerPct}%`, background: `linear-gradient(90deg, ${timerColor}, ${timerColor}88)`, height: "100%", borderRadius: "99px", boxShadow: `0 0 8px ${timerColor}88`, transition: "width 1s linear, background 0.5s ease" }} />
                 </div>
 
                 {/* Player Stats Panel */}
                 {(currentPlayer.stats2025 || currentPlayer.stats2024) && (
-                  <div style={{ background: COLORS.bgMain, border: `1px solid ${COLORS.border}` }} className="rounded-xl p-4 mb-5">
+                  <div style={{ background: COLORS.bgMain, border: `1px solid ${COLORS.border}` }} className="rounded-lg sm:rounded-xl p-3 sm:p-4 mb-3 sm:mb-5">
                     <div className="flex items-center justify-between mb-3">
                       <p style={{ color: COLORS.textSecondary }} className="text-xs font-medium uppercase tracking-wider">Season Stats</p>
                       {currentPlayer.fairPoint > 0 && (
@@ -771,11 +779,11 @@ export default function Auction() {
                         <span style={{ color: "#FFD700" }} className="font-bold">Fair Point</span> is based on the player's ideal position &amp; performance — <span style={{ color: COLORS.primary }}>70% current season</span> + <span style={{ color: COLORS.warning }}>30% previous season</span>. The <span style={{ color: COLORS.warning }}>Pos</span> column shows their batting/bowling rank from 2024.
                       </p>
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                       {/* 2025 Stats */}
                       {currentPlayer.stats2025 && (currentPlayer.stats2025.batting?.matches > 0 || currentPlayer.stats2025.bowling?.matches > 0) && (
-                        <div style={{ background: `${COLORS.primary}08`, border: `1px solid ${COLORS.primary}22` }} className="rounded-lg p-3">
-                          <p style={{ color: COLORS.primary }} className="text-[10px] font-bold mb-2 uppercase">2025 (Current · 70%)</p>
+                        <div style={{ background: `${COLORS.primary}08`, border: `1px solid ${COLORS.primary}22` }} className="rounded-lg p-2.5 sm:p-3">
+                          <p style={{ color: COLORS.primary }} className="text-[9px] sm:text-[10px] font-bold mb-1.5 sm:mb-2 uppercase">2025 (Current · 70%)</p>
                           {currentPlayer.stats2025.batting?.matches > 0 && (
                             <div className="grid grid-cols-4 gap-1.5 mb-2">
                               {[{ label: "Mat", val: currentPlayer.stats2025.batting.matches },
@@ -808,8 +816,8 @@ export default function Auction() {
                       )}
                       {/* 2024 Stats */}
                       {currentPlayer.stats2024 && (currentPlayer.stats2024.batting?.matches > 0 || currentPlayer.stats2024.bowling?.matches > 0) && (
-                        <div style={{ background: `${COLORS.warning}08`, border: `1px solid ${COLORS.warning}22` }} className="rounded-lg p-3">
-                          <p style={{ color: COLORS.warning }} className="text-[10px] font-bold mb-2 uppercase">2024 (History · 30%)</p>
+                        <div style={{ background: `${COLORS.warning}08`, border: `1px solid ${COLORS.warning}22` }} className="rounded-lg p-2.5 sm:p-3">
+                          <p style={{ color: COLORS.warning }} className="text-[9px] sm:text-[10px] font-bold mb-1.5 sm:mb-2 uppercase">2024 (History · 30%)</p>
                           {currentPlayer.stats2024.batting?.matches > 0 && (
                             <div className="grid grid-cols-4 gap-1.5 mb-2">
                               {[{ label: "Pos", val: currentPlayer.stats2024.batting.position || "-" },
@@ -845,11 +853,11 @@ export default function Auction() {
                 )}
 
                 {/* Current Bid */}
-                <div className="flex items-end gap-5 mb-5">
+                <div className="flex items-end gap-3 sm:gap-5 mb-3 sm:mb-5 flex-wrap">
                   <div>
-                    <p style={{ color: COLORS.textSecondary }} className="text-xs mb-1">Current Highest Bid</p>
+                    <p style={{ color: COLORS.textSecondary }} className="text-[10px] sm:text-xs mb-1">Current Highest Bid</p>
                     <div style={{ color: COLORS.primary, fontFamily: "'JetBrains Mono', monospace", textShadow: `0 0 30px ${COLORS.primary}`, transition: "all 0.3s ease", transform: isPricePulsing ? "scale(1.12)" : "scale(1)", filter: isPricePulsing ? `drop-shadow(0 0 16px ${COLORS.primary})` : "none" }}
-                      className="text-4xl font-black">{formatPrice(currentBid)}</div>
+                      className="text-2xl sm:text-4xl font-black">{formatPrice(currentBid)}</div>
                   </div>
                   {currentBidTeam && (
                     <div style={{ background: `${COLORS.success}22`, border: `1px solid ${COLORS.success}44` }} className="px-3 py-1.5 rounded-lg mb-1">
@@ -894,20 +902,20 @@ export default function Auction() {
 
           {/* Bid Controls */}
           {canBid && !soldOverlay && (
-            <div style={{ background: COLORS.bgCard, border: `1px solid ${COLORS.border}` }} className="rounded-2xl p-6">
-              <p style={{ color: COLORS.textSecondary }} className="text-sm mb-4 font-medium">Place your bid:</p>
-              <div className="flex gap-3 items-stretch flex-wrap">
+            <div style={{ background: COLORS.bgCard, border: `1px solid ${COLORS.border}` }} className="rounded-xl sm:rounded-2xl p-3 sm:p-6">
+              <p style={{ color: COLORS.textSecondary }} className="text-xs sm:text-sm mb-2 sm:mb-4 font-medium">Place your bid:</p>
+              <div className="grid grid-cols-2 sm:flex gap-2 sm:gap-3 items-stretch sm:flex-wrap">
                 {bidAmounts.map((amount) => (
                   <button key={amount} onClick={() => placeBid(amount)}
                     style={{ background: COLORS.bgMain, color: COLORS.textPrimary, border: `1px solid ${COLORS.border}`, fontFamily: "'JetBrains Mono', monospace" }}
-                    className="px-6 py-3.5 rounded-xl text-sm font-bold hover:scale-105 transition-all min-w-[110px]">
+                    className="px-3 sm:px-6 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold hover:scale-105 transition-all sm:min-w-[110px]">
                     {formatPrice(amount)}
                   </button>
                 ))}
                 <button onClick={() => placeBid(minNextBid)}
                   style={{ background: `linear-gradient(135deg, ${COLORS.accent}, #CC2000)`, color: "#fff", boxShadow: `0 0 24px ${COLORS.accent}44` }}
-                  className="px-10 py-3.5 rounded-xl font-black text-base flex items-center gap-2 hover:scale-105 transition-all">
-                  <Gavel size={20} /> BID!
+                  className="col-span-2 sm:col-span-1 px-6 sm:px-10 py-2.5 sm:py-3.5 rounded-lg sm:rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2 hover:scale-105 transition-all">
+                  <Gavel size={18} /> BID!
                 </button>
               </div>
             </div>
@@ -921,17 +929,17 @@ export default function Auction() {
           )}
 
           {/* Mobile Teams Grid */}
-          <div className="xl:hidden">
-            <p style={{ color: COLORS.textSecondary }} className="text-xs font-medium mb-2 uppercase">Teams</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <div className="lg:hidden">
+            <p style={{ color: COLORS.textSecondary }} className="text-[10px] sm:text-xs font-medium mb-2 uppercase">Teams</p>
+            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 sm:gap-2">
               {teams.map((t) => (
                 <div key={t.teamName} style={{
                   background: currentBidTeam === t.teamName ? `${COLORS.success}15` : COLORS.bgCard,
                   border: `1px solid ${currentBidTeam === t.teamName ? COLORS.success + "44" : COLORS.border}`,
-                }} className="p-3 rounded-xl">
-                  <p style={{ color: COLORS.textPrimary }} className="text-xs font-bold truncate">{t.teamShortName || t.teamName}</p>
-                  <p style={{ color: COLORS.success, fontFamily: "'JetBrains Mono', monospace" }} className="text-sm font-bold">{formatPrice(t.remainingPurse)}</p>
-                  <p style={{ color: COLORS.textSecondary }} className="text-xs">{t.squadSize ?? 0} players</p>
+                }} className="p-2 sm:p-3 rounded-lg sm:rounded-xl">
+                  <p style={{ color: COLORS.textPrimary }} className="text-[10px] sm:text-xs font-bold truncate">{t.teamShortName || t.teamName}</p>
+                  <p style={{ color: COLORS.success, fontFamily: "'JetBrains Mono', monospace" }} className="text-xs sm:text-sm font-bold">{formatPrice(t.remainingPurse)}</p>
+                  <p style={{ color: COLORS.textSecondary }} className="text-[9px] sm:text-xs">{t.squadSize ?? 0} pl</p>
                 </div>
               ))}
             </div>

@@ -9,6 +9,7 @@ const AudioCtx = createContext(null);
 
 export function AudioProvider({ children }) {
   const audioCtxRef = useRef(null);
+  const activeNodesRef = useRef([]); // Track active oscillator/gain nodes for cancellation
   const [muted, setMuted] = useState({
     overall: false,
     timerTick: false,
@@ -29,6 +30,15 @@ export function AudioProvider({ children }) {
     return audioCtxRef.current;
   }, []);
 
+  /** Stop all currently playing / scheduled oscillators */
+  const stopAllSounds = useCallback(() => {
+    const nodes = activeNodesRef.current;
+    for (const { osc, gain } of nodes) {
+      try { gain.gain.cancelScheduledValues(0); gain.gain.value = 0; osc.stop(); } catch (_) {}
+    }
+    activeNodesRef.current = [];
+  }, []);
+
   const playTone = useCallback(
     (freq, duration, type = "sine", volume = 0.3, delay = 0) => {
       try {
@@ -44,6 +54,12 @@ export function AudioProvider({ children }) {
         gain.connect(ctx.destination);
         osc.start(startAt);
         osc.stop(startAt + duration + 0.05);
+        // Track node so we can cancel it
+        const entry = { osc, gain };
+        activeNodesRef.current.push(entry);
+        osc.onended = () => {
+          activeNodesRef.current = activeNodesRef.current.filter((n) => n !== entry);
+        };
       } catch (e) {
         // Audio not supported or blocked
       }
@@ -78,6 +94,7 @@ export function AudioProvider({ children }) {
   /** Celebratory fanfare when a player is sold (for the winning team) */
   const playSoldMusic = useCallback(() => {
     if (muted.overall || muted.sold) return;
+    stopAllSounds(); // kill lingering timer alerts
     // Rising fanfare
     playTone(523, 0.2, "sine", 0.16);
     playTone(659, 0.2, "sine", 0.16, 0.12);
@@ -91,24 +108,26 @@ export function AudioProvider({ children }) {
     // Final sparkle
     playTone(1568, 0.3, "sine", 0.06, 1.0);
     playTone(2093, 0.4, "sine", 0.04, 1.1);
-  }, [muted.overall, muted.sold, playTone]);
+  }, [muted.overall, muted.sold, playTone, stopAllSounds]);
 
   /** Descending tone when player goes unsold */
   const playUnsoldSound = useCallback(() => {
     if (muted.overall || muted.unsold) return;
+    stopAllSounds(); // kill lingering timer alerts
     playTone(440, 0.2, "sine", 0.14);
     playTone(330, 0.25, "sine", 0.12, 0.2);
     playTone(262, 0.35, "triangle", 0.1, 0.45);
-  }, [muted.overall, muted.unsold, playTone]);
+  }, [muted.overall, muted.unsold, playTone, stopAllSounds]);
 
   /** Warning warble for RTM notification */
   const playRtmSound = useCallback(() => {
     if (muted.overall || muted.rtm) return;
+    stopAllSounds(); // kill lingering timer alerts
     playTone(440, 0.1, "triangle", 0.18);
     playTone(440, 0.1, "triangle", 0.18, 0.15);
     playTone(660, 0.15, "triangle", 0.2, 0.3);
     playTone(660, 0.15, "triangle", 0.2, 0.5);
-  }, [muted.overall, muted.rtm, playTone]);
+  }, [muted.overall, muted.rtm, playTone, stopAllSounds]);
 
   const toggleMute = useCallback((key) => {
     setMuted((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -126,6 +145,7 @@ export function AudioProvider({ children }) {
         playSoldMusic,
         playUnsoldSound,
         playRtmSound,
+        stopAllSounds,
       }}
     >
       {children}
