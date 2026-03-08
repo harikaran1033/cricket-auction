@@ -1132,6 +1132,19 @@ class AuctionEngine extends EventEmitter {
     });
 
     // Auto-nominate next after 3-second delay (stored so it can be cancelled)
+    // But first check if all teams have full squads — if so, complete immediately
+    if (this._allTeamsFull(room)) {
+      console.log(`[AuctionEngine] All teams have full squads — completing auction.`);
+      setTimeout(async () => {
+        try {
+          await this._completeAuction(room, auctionState);
+        } catch (err) {
+          console.error("[AuctionEngine] Auto-complete error:", err);
+        }
+      }, 3000);
+      return;
+    }
+
     const roomId = room._id.toString();
     const autoNomTimer = setTimeout(async () => {
       try {
@@ -1190,6 +1203,17 @@ class AuctionEngine extends EventEmitter {
       }
     }, 3000);
     this.activeTimers.set(`${roomId}_autonom`, autoNomTimer);
+  }
+
+  /**
+   * Check if all teams have reached maxSquadSize.
+   */
+  _allTeamsFull(room) {
+    const maxSquad = room.league?.maxSquadSize || 25;
+    return room.joinedTeams.every((t) => {
+      const totalPlayers = (t.squad?.length || 0) + (t.retentions?.length || 0);
+      return totalPlayers >= maxSquad;
+    });
   }
 
   /**
@@ -1325,10 +1349,15 @@ class AuctionEngine extends EventEmitter {
     }
 
     // Populate squad player refs for team display
-    const populatedRoom = await Room.findOne({ roomCode }).populate({
-      path: "joinedTeams.squad.player",
-      select: "name nationality isOverseas role image",
-    });
+    const populatedRoom = await Room.findOne({ roomCode })
+      .populate({
+        path: "joinedTeams.squad.player",
+        select: "name nationality isOverseas role image",
+      })
+      .populate({
+        path: "joinedTeams.squad.leaguePlayer",
+        select: "fairPoint basePrice",
+      });
 
     // Build set info
     const setInfo = this._buildSetInfo(
@@ -1348,6 +1377,7 @@ class AuctionEngine extends EventEmitter {
       timerRemaining,
       setInfo,
       setPoolPlayers,
+      host: room.host,
       playerIndexInSet: auctionState.nominationIndex || 0,
       totalPlayersInSet: auctionState.setPool?.length || 0,
       teams: (populatedRoom || room).joinedTeams.map((t) => ({
@@ -1391,26 +1421,24 @@ class AuctionEngine extends EventEmitter {
   }
 
   /**
-   * Calculate minimum next bid based on league bracket rules.
+   * Calculate minimum next bid based on IPL-style bracket rules.
+   * < 1 Cr (100L): increment by 10L
+   * 1-5 Cr (100-500L): increment by 25L
+   * > 5 Cr (500L+): increment by 1 Cr (100L)
    */
   _calculateMinBid(currentBid, league) {
     if (!currentBid) return 20; // absolute minimum
 
-    const brackets = league?.bidIncrements || [
-      { upTo: 100, increment: 5 },
-      { upTo: 200, increment: 10 },
-      { upTo: 500, increment: 15 },
-      { upTo: 1000, increment: 20 },
-      { upTo: Infinity, increment: 25 },
-    ];
-
-    for (const bracket of brackets) {
-      if (currentBid <= bracket.upTo) {
-        return currentBid + bracket.increment;
-      }
+    let increment;
+    if (currentBid < 100) {
+      increment = 10; // +10L when below 1 Cr
+    } else if (currentBid < 500) {
+      increment = 25; // +25L when 1-5 Cr
+    } else {
+      increment = 100; // +1 Cr when above 5 Cr
     }
 
-    return currentBid + 25; // fallback
+    return currentBid + increment;
   }
 
   /**

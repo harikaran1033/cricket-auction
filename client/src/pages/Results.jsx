@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Download, Trophy, Wallet, Users, ArrowLeft, Star, TrendingUp, BarChart3 } from "lucide-react";
+import { Download, Trophy, Wallet, Users, ArrowLeft, Star, TrendingUp, BarChart3, Copy, Check } from "lucide-react";
 import { useSocket } from "../context/SocketContext";
 import { useUser } from "../context/UserContext";
 import { COLORS, ROLE_COLORS, formatPrice } from "../data/constants";
@@ -13,6 +13,7 @@ export default function Results() {
   const { user } = useUser();
   const [state, setState] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [copiedTeam, setCopiedTeam] = useState(null);
 
   useEffect(() => {
     if (!socket) return;
@@ -62,6 +63,30 @@ export default function Results() {
     color: COLORS.primary,
   }));
 
+  const handleCopyTeam = (team) => {
+    const squad = team.squad || [];
+    const spent = team.totalPurse - team.remainingPurse;
+    const lines = [
+      `🏏 ${team.teamName} (${team.teamShortName})`,
+      `💰 Spent: ${formatPrice(spent)} | Remaining: ${formatPrice(team.remainingPurse)}`,
+      `👥 Squad: ${squad.length} players`,
+      "",
+      "#  | Player                 | Role           | Price     | FP",
+      "---|------------------------|----------------|-----------|----",
+    ];
+    squad.forEach((s, i) => {
+      const name = (s.player?.name || "Unknown").padEnd(22);
+      const role = (s.player?.role || "—").padEnd(14);
+      const price = formatPrice(s.price).padEnd(9);
+      const fp = s.leaguePlayer?.fairPoint ?? "—";
+      lines.push(`${String(i + 1).padStart(2)} | ${name} | ${role} | ${price} | ${fp}`);
+    });
+    navigator.clipboard.writeText(lines.join("\n")).then(() => {
+      setCopiedTeam(team.teamName);
+      setTimeout(() => setCopiedTeam(null), 2000);
+    });
+  };
+
   const handleDownload = () => {
     const data = teams.map((t) => ({
       team: t.teamName,
@@ -85,26 +110,28 @@ export default function Results() {
   };
 
   return (
-    <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex-1 w-full px-6 sm:px-8 py-10">
+    <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
+        <div className="flex items-center justify-between mb-6 sm:mb-10 flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <button onClick={() => navigate("/rooms")} style={{ color: COLORS.textSecondary }}><ArrowLeft size={20} /></button>
             <div>
-              <div className="flex items-center gap-3">
-                <h1 style={{ color: COLORS.textPrimary }} className="text-3xl font-black">Auction Results</h1>
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 style={{ color: COLORS.textPrimary }} className="text-2xl sm:text-3xl font-black">Auction Results</h1>
                 <span style={{ background: `${COLORS.success}22`, color: COLORS.success, border: `1px solid ${COLORS.success}44`, fontFamily: "'JetBrains Mono', monospace" }}
                   className="text-xs px-2 py-0.5 rounded-full font-bold">COMPLETED</span>
               </div>
               <p style={{ color: COLORS.textSecondary }} className="text-sm">Room #{code}</p>
             </div>
           </div>
-          <button onClick={handleDownload}
-            style={{ background: `${COLORS.success}22`, color: COLORS.success, border: `1px solid ${COLORS.success}44` }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold hover:scale-105 transition-all">
-            <Download size={16} /> Download Results
-          </button>
+          <div className="flex gap-3 flex-wrap">
+            <button onClick={handleDownload}
+              style={{ background: `${COLORS.success}22`, color: COLORS.success, border: `1px solid ${COLORS.success}44` }}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold hover:scale-105 transition-all">
+              <Download size={16} /> Download
+            </button>
+          </div>
         </div>
 
         {/* Summary Stats */}
@@ -187,9 +214,17 @@ export default function Results() {
                       {squad.length} players · {formatPrice(spent)} spent
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p style={{ color: COLORS.textSecondary }} className="text-xs">Remaining</p>
-                    <p style={{ color: remaining > 3000 ? COLORS.success : remaining > 1000 ? COLORS.warning : COLORS.accent, fontFamily: "'JetBrains Mono', monospace" }} className="font-black text-sm">{formatPrice(remaining)}</p>
+                  <div className="flex items-center gap-2">
+                    <div className="text-right">
+                      <p style={{ color: COLORS.textSecondary }} className="text-xs">Remaining</p>
+                      <p style={{ color: remaining > 3000 ? COLORS.success : remaining > 1000 ? COLORS.warning : COLORS.accent, fontFamily: "'JetBrains Mono', monospace" }} className="font-black text-sm">{formatPrice(remaining)}</p>
+                    </div>
+                    <button onClick={(e) => { e.stopPropagation(); handleCopyTeam(team); }}
+                      title="Copy squad"
+                      style={{ background: copiedTeam === team.teamName ? `${COLORS.success}22` : `${COLORS.primary}11`, color: copiedTeam === team.teamName ? COLORS.success : COLORS.textSecondary, border: `1px solid ${copiedTeam === team.teamName ? COLORS.success + '44' : COLORS.border}` }}
+                      className="w-8 h-8 rounded-lg flex items-center justify-center hover:scale-110 transition-all flex-shrink-0">
+                      {copiedTeam === team.teamName ? <Check size={14} /> : <Copy size={14} />}
+                    </button>
                   </div>
                 </div>
 
@@ -270,7 +305,7 @@ export default function Results() {
         )}
 
         {/* Play Again */}
-        <div className="flex gap-4 justify-center mt-10 mb-8">
+        <div className="flex gap-4 justify-center mt-10 mb-8 flex-wrap">
           <button onClick={() => navigate("/")}
             style={{ background: COLORS.bgCard, color: COLORS.textPrimary, border: `1px solid ${COLORS.border}` }}
             className="px-6 py-3 rounded-xl font-bold text-sm hover:scale-105 transition-all">Back to Home</button>

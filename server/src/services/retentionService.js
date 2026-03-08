@@ -101,8 +101,11 @@ class RetentionService {
     );
     if (alreadyRetained) throw new Error("Player already retained");
 
-    // Use franchise price if available, otherwise fall back to slot cost
-    const cost = leaguePlayer.franchisePrice || slot.cost;
+    // Retention cost = player's previous franchise price
+    const cost = leaguePlayer.franchisePrice;
+    if (!cost || cost <= 0) {
+      throw new Error(`${leaguePlayer.player.name} has no franchise price set for retention`);
+    }
     if (team.remainingPurse < cost) {
       throw new Error("Insufficient purse for this retention");
     }
