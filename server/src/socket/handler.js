@@ -80,15 +80,25 @@ module.exports = function setupSocketHandlers(io) {
         currentUser = { userId, userName, teamName };
 
         // Notify others
+        let joinedTeamsForBroadcast = room.joinedTeams;
+        if (["auction", "paused"].includes(room.status)) {
+          try {
+            const state = await auctionEngine.getAuctionState(roomCode);
+            if (state?.teams) joinedTeamsForBroadcast = state.teams;
+          } catch (_) {
+            // Fall back to raw joinedTeams if state fetch fails
+          }
+        }
+
         socket.to(roomCode).emit(E.ROOM_USER_JOINED, {
           userName,
           teamName,
-          joinedTeams: room.joinedTeams,
+          joinedTeams: joinedTeamsForBroadcast,
         });
 
         // If auction is live, also emit room:updated so Auction.jsx picks up the new team
         if (["auction", "paused"].includes(room.status)) {
-          io.to(roomCode).emit(E.ROOM_UPDATED, { joinedTeams: room.joinedTeams });
+          io.to(roomCode).emit(E.ROOM_UPDATED, { joinedTeams: joinedTeamsForBroadcast });
         }
 
         // Send room state to joiner

@@ -1,5 +1,6 @@
 const { AuctionState, Room, LeaguePlayer, ActivityLog } = require("../models");
 const EventEmitter = require("events");
+const { resolvePlayerImage } = require("../utils/playerImages");
 
 /**
  * AuctionEngine — the heart of the auction system.
@@ -26,6 +27,58 @@ class AuctionEngine extends EventEmitter {
     super();
     // Map<roomId, { timer, state }> — active auction timers
     this.activeTimers = new Map();
+  }
+
+  _withPlayerImage(player) {
+    if (!player) return player;
+    return {
+      ...player,
+      image: player.image || resolvePlayerImage(player.name),
+    };
+  }
+
+  _normalizeSquadEntry(entry) {
+    const playerObj =
+      entry?.player && typeof entry.player === "object" ? entry.player : null;
+    const leaguePlayerObj =
+      entry?.leaguePlayer && typeof entry.leaguePlayer === "object"
+        ? entry.leaguePlayer
+        : null;
+    const leaguePlayerRef =
+      leaguePlayerObj?.player && typeof leaguePlayerObj.player === "object"
+        ? leaguePlayerObj.player
+        : null;
+
+    const name =
+      playerObj?.name || leaguePlayerRef?.name || entry?.playerName || "Unknown Player";
+    const role = playerObj?.role || leaguePlayerRef?.role || "";
+    const nationality = playerObj?.nationality || leaguePlayerRef?.nationality || "";
+    const isOverseas =
+      playerObj?.isOverseas ?? leaguePlayerRef?.isOverseas ?? entry?.isOverseas ?? false;
+    const image =
+      playerObj?.image || leaguePlayerRef?.image || resolvePlayerImage(name);
+    const price = Number.isFinite(entry?.price) ? entry.price : 0;
+    const fairPoint = Number.isFinite(leaguePlayerObj?.fairPoint) ? leaguePlayerObj.fairPoint : 0;
+    const basePrice = Number.isFinite(leaguePlayerObj?.basePrice) ? leaguePlayerObj.basePrice : 0;
+
+    return {
+      player: this._withPlayerImage({
+        ...(playerObj || leaguePlayerRef || {}),
+        name,
+        role,
+        nationality,
+        isOverseas,
+        image,
+      }),
+      leaguePlayer: leaguePlayerObj?._id || entry?.leaguePlayer || null,
+      price,
+      isOverseas,
+      acquiredFrom: entry?.acquiredFrom,
+      name,
+      role,
+      fairPoint,
+      basePrice,
+    };
   }
 
   // ─────────────────────────── INITIALIZATION ───────────────────────────
@@ -337,6 +390,7 @@ class AuctionEngine extends EventEmitter {
         isOverseas: lp.player.isOverseas,
         isCapped: lp.player.isCapped,
         role: lp.player.role,
+        image: lp.player.image || resolvePlayerImage(lp.player.name),
         basePrice: lp.basePrice,
         fairPoint: lp.fairPoint || 0,
         status,
@@ -589,7 +643,7 @@ class AuctionEngine extends EventEmitter {
       role: leaguePlayer.player.role,
       battingStyle: leaguePlayer.player.battingStyle,
       bowlingStyle: leaguePlayer.player.bowlingStyle,
-      image: leaguePlayer.player.image,
+      image: leaguePlayer.player.image || resolvePlayerImage(leaguePlayer.player.name),
       skills: leaguePlayer.player.skills,
       basePrice: leaguePlayer.basePrice,
       stats: leaguePlayer.stats,
@@ -651,16 +705,28 @@ class AuctionEngine extends EventEmitter {
     );
     if (!team) throw new Error("Team not found");
 
-    // Validate bid amount
-    const minBid = this._calculateMinBid(auctionState.currentBid, room.league);
-    if (amount < minBid) {
-      throw new Error(`Minimum bid is ${minBid} lakhs`);
+    // Validate bid amount.
+    // If no bids yet, first bid must be exactly the base price.
+    const bidAmount = Number(amount);
+    if (!Number.isFinite(bidAmount) || bidAmount <= 0) {
+      throw new Error("Invalid bid amount");
+    }
+
+    // If no bids yet, first bid can be at base price (currentBid holds base at nomination)
+    const minBid = auctionState.currentBidTeam
+      ? this._calculateMinBid(auctionState.currentBid, room.league)
+      : auctionState.currentBid;
+    if (!auctionState.currentBidTeam && bidAmount !== minBid) {
+      throw new Error(`First bid must be base price (${minBid} lakhs)`);
+    }
+    if (auctionState.currentBidTeam && bidAmount !== minBid) {
+      throw new Error(`Next bid must be exactly ${minBid} lakhs`);
     }
 
     // Validate purse
     const slotsRemaining = (room.league.maxSquadSize || 25) - team.squad.length;
     const minReserve = slotsRemaining > 1 ? (slotsRemaining - 1) * 20 : 0; // ₹20L per remaining slot minimum
-    if (team.remainingPurse - amount < minReserve) {
+    if (team.remainingPurse - bidAmount < minReserve) {
       throw new Error("Insufficient purse (must reserve for remaining slots)");
     }
 
@@ -687,12 +753,12 @@ class AuctionEngine extends EventEmitter {
     const bidEntry = {
       teamName,
       userId,
-      amount,
+      amount: bidAmount,
       timestamp: new Date(),
       isRtm: false,
     };
 
-    auctionState.currentBid = amount;
+    auctionState.currentBid = bidAmount;
     auctionState.currentBidTeam = teamName;
     auctionState.currentBidUserId = userId;
     auctionState.currentBidHistory.push(bidEntry);
@@ -712,7 +778,7 @@ class AuctionEngine extends EventEmitter {
       payload: {
         playerName: currentPlayer?.player?.name,
         teamName,
-        amount,
+        amount: bidAmount,
       },
       userId,
       userName: team.userName,
@@ -722,10 +788,10 @@ class AuctionEngine extends EventEmitter {
       roomCode,
       roomId: room._id.toString(),
       bid: bidEntry,
-      currentBid: amount,
+      currentBid: bidAmount,
       currentBidTeam: teamName,
       timerEndsAt: auctionState.timerEndsAt,
-      minNextBid: this._calculateMinBid(amount, room.league),
+      minNextBid: this._calculateMinBid(bidAmount, room.league),
     });
 
     return auctionState;
@@ -1121,7 +1187,7 @@ class AuctionEngine extends EventEmitter {
         name: currentLP?.player?.name,
         role: currentLP?.player?.role,
         isOverseas: currentLP?.player?.isOverseas,
-        image: currentLP?.player?.image,
+        image: currentLP?.player?.image || resolvePlayerImage(currentLP?.player?.name),
       },
       soldTo: teamName,
       soldPrice: price,
@@ -1187,6 +1253,7 @@ class AuctionEngine extends EventEmitter {
         playerId: currentLP?.player?._id,
         name: currentLP?.player?.name,
         role: currentLP?.player?.role,
+        image: currentLP?.player?.image || resolvePlayerImage(currentLP?.player?.name),
       },
     });
 
@@ -1339,6 +1406,21 @@ class AuctionEngine extends EventEmitter {
 
     if (!auctionState) return null;
 
+    const state = {
+      ...auctionState,
+      currentPlayer: this._withPlayerImage(auctionState.currentPlayer),
+      currentLeaguePlayer: auctionState.currentLeaguePlayer
+        ? {
+            ...auctionState.currentLeaguePlayer,
+            player: this._withPlayerImage(auctionState.currentLeaguePlayer.player),
+          }
+        : auctionState.currentLeaguePlayer,
+      soldPlayers: (auctionState.soldPlayers || []).map((sp) => ({
+        ...sp,
+        player: this._withPlayerImage(sp.player),
+      })),
+    };
+
     // Calculate remaining timer
     let timerRemaining = 0;
     if (auctionState.timerEndsAt) {
@@ -1356,7 +1438,11 @@ class AuctionEngine extends EventEmitter {
       })
       .populate({
         path: "joinedTeams.squad.leaguePlayer",
-        select: "fairPoint basePrice",
+        select: "fairPoint basePrice player",
+        populate: {
+          path: "player",
+          select: "name nationality isOverseas role image",
+        },
       });
 
     // Build set info
@@ -1373,7 +1459,7 @@ class AuctionEngine extends EventEmitter {
     );
 
     return {
-      ...auctionState,
+      ...state,
       timerRemaining,
       setInfo,
       setPoolPlayers,
@@ -1388,7 +1474,7 @@ class AuctionEngine extends EventEmitter {
         remainingPurse: t.remainingPurse,
         totalPurse: t.totalPurse,
         squadSize: t.squad.length,
-        squad: t.squad,
+        squad: t.squad.map((s) => this._normalizeSquadEntry(s)),
         isConnected: t.isConnected,
       })),
     };
@@ -1401,22 +1487,25 @@ class AuctionEngine extends EventEmitter {
    * Used for sending populated squad data in real-time events.
    */
   async _getTeamsWithSquad(room) {
-    const populated = await Room.findById(room._id).populate({
-      path: "joinedTeams.squad.player",
-      select: "name nationality isOverseas role image",
-    });
+    const populated = await Room.findById(room._id)
+      .populate({
+        path: "joinedTeams.squad.player",
+        select: "name nationality isOverseas role image",
+      })
+      .populate({
+        path: "joinedTeams.squad.leaguePlayer",
+        select: "fairPoint basePrice player",
+        populate: {
+          path: "player",
+          select: "name nationality isOverseas role image",
+        },
+      });
     return (populated || room).joinedTeams.map((t) => ({
       teamName: t.teamName,
       teamShortName: t.teamShortName,
       remainingPurse: t.remainingPurse,
       squadSize: t.squad.length,
-      squad: t.squad.map((s) => ({
-        player: s.player, // populated { _id, name, role, isOverseas, ... }
-        leaguePlayer: s.leaguePlayer,
-        price: s.price,
-        isOverseas: s.isOverseas,
-        acquiredFrom: s.acquiredFrom,
-      })),
+      squad: t.squad.map((s) => this._normalizeSquadEntry(s)),
     }));
   }
 

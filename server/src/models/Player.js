@@ -24,6 +24,10 @@ const playerSchema = new mongoose.Schema(
       default: "",
       // e.g. "Right-Arm Fast", "Left-Arm Spin", etc.
     },
+    image: {
+      type: String,
+      default: "",
+    },
     jerseyNumber:{type:Number},
     skills: {
       type: [String],

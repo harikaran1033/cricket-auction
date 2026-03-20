@@ -18,6 +18,7 @@ export const ROLE_COLORS = {
   Bowler: COLORS.accent,
   "All-Rounder": COLORS.success,
   "Wicket-Keeper": COLORS.warning,
+  "Wicketkeeper-Batsman": COLORS.warning,
   BAT: COLORS.primary,
   BOWL: COLORS.accent,
   AR: COLORS.success,
