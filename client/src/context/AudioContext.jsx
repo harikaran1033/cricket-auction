@@ -67,11 +67,12 @@ export function AudioProvider({ children }) {
     [getAudioCtx]
   );
 
-  /** Short muted knock for each timer second (only plays when <= 10s) */
+  /** Clear short tick for each timer second above alert range */
   const playTimerTick = useCallback(() => {
     if (muted.overall || muted.timerTick) return;
-    playTone(800, 0.05, "sine", 0.08);
-    playTone(400, 0.03, "triangle", 0.04, 0.02);
+    // Slightly louder and longer than before so it's audible in real use.
+    playTone(980, 0.075, "triangle", 0.14);
+    playTone(640, 0.06, "sine", 0.08, 0.035);
   }, [muted.overall, muted.timerTick, playTone]);
 
   /** Urgent pulsing alarm when timer <= 3 seconds */

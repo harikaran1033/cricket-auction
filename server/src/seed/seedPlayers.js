@@ -2,7 +2,19 @@ const mongoose = require("mongoose");
 const Player = require("../models/Player.js");
 const fs = require("fs");
 const path = require("path");
+const { resolvePlayerImage } = require("../utils/playerImages");
 require("dotenv").config({ path: path.resolve(__dirname, "../../.env") }); // Adjust path to find your .env file
+
+const normalizeRole = (role) => {
+  const value = String(role || "").trim();
+  const map = {
+    "Wicketkeeper-Batsman": "Wicket-Keeper",
+    "Wicketkeeper Batter": "Wicket-Keeper",
+    "Wicketkeeper": "Wicket-Keeper",
+    "Wicket Keeper": "Wicket-Keeper",
+  };
+  return map[value] || value;
+};
 
 const loadPlayersFromJson = async (filePath) => {
   try {
@@ -24,11 +36,12 @@ const loadPlayersFromJson = async (filePath) => {
       name: p.fullName,
       nationality: p.nationality,
       isOverseas: p.nationality.toLowerCase() !== "india",
-      role: p.role,
+      role: normalizeRole(p.role),
       battingStyle: p.battingStyle.toLowerCase().includes("right") 
         ? "Right-Hand" 
         : "Left-Hand",
       bowlingStyle: p.bowlingStyle || "",
+      image: p.image || resolvePlayerImage(p.fullName),
       jerseyNumber: Number(p.jerseyNumber),
       skills: p.skillTags || [],
       isCapped: true
