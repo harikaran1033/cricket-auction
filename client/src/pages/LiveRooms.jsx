@@ -4,12 +4,12 @@ import { Search, Users, Filter, ChevronDown, Plus, Eye } from "lucide-react";
 import { api } from "../services/api";
 import { COLORS, LEAGUE_COLORS } from "../data/constants";
 import StatusBadge from "../components/StatusBadge";
-
-const ALL_LEAGUES = ["All", "IPL", "BBL", "CPL", "PSL", "T20", "WC", "PL", "CT"];
+import { Panel, HUDHeader, NeonButton, StatusChip } from "../components/ui/primitives";
 
 export default function LiveRooms() {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
+  const [leagues, setLeagues] = useState([]);
   const [search, setSearch] = useState("");
   const [leagueFilter, setLeagueFilter] = useState("All");
   const [liveOnly, setLiveOnly] = useState(false);
@@ -20,14 +20,29 @@ export default function LiveRooms() {
       .then((data) => setRooms(data || []))
       .catch(() => {})
       .finally(() => setLoading(false));
+    api.getLeagues()
+      .then((data) => setLeagues(data || []))
+      .catch(() => setLeagues([]));
   }, []);
+
+  const dynamicLeagues = [
+    "All",
+    ...new Set(
+      (leagues || [])
+        .map((l) => String(l?.code || l?.name || "").trim())
+        .filter(Boolean)
+    ),
+  ];
 
   const filtered = rooms.filter((r) => {
     const matchSearch =
       (r.roomName || "").toLowerCase().includes(search.toLowerCase()) ||
       (r.host?.userName || "").toLowerCase().includes(search.toLowerCase());
+    const leagueCode = String(r.league?.code || "").toUpperCase();
+    const leagueName = String(r.league?.name || "").toUpperCase();
+    const filterUpper = String(leagueFilter || "").toUpperCase();
     const matchLeague =
-      leagueFilter === "All" || (r.league?.name || "").toUpperCase().includes(leagueFilter);
+      leagueFilter === "All" || leagueCode === filterUpper || leagueName.includes(filterUpper);
     const matchLive = !liveOnly || r.status === "auction";
     return matchSearch && matchLeague && matchLive;
   });
@@ -46,23 +61,17 @@ export default function LiveRooms() {
     <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex-1 w-full px-6 sm:px-8 py-10">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
-          <div>
-            <h1 style={{ color: COLORS.textPrimary }} className="text-3xl font-black">Live Auction Rooms</h1>
-            <p style={{ color: COLORS.textSecondary }} className="text-sm mt-1">
-              {filtered.length} rooms found · {rooms.filter((r) => r.status === "auction").length} live now
-            </p>
-          </div>
-          <button onClick={() => navigate("/create")}
-            style={{ background: `linear-gradient(135deg, ${COLORS.primary}, #0090FF)`, color: "#0F172A", boxShadow: `0 0 20px ${COLORS.primary}44` }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black hover:scale-105 transition-all">
-            <Plus size={17} /> Create Room
-          </button>
+        <div className="mb-10">
+          <HUDHeader
+            eyebrow="Competition Desk"
+            title="Live Auction Rooms"
+            subtitle={`${filtered.length} rooms found · ${rooms.filter((r) => r.status === "auction").length} live now`}
+            right={<NeonButton onClick={() => navigate("/create")} className="flex items-center gap-2"><Plus size={16} /> Create Room</NeonButton>}
+          />
         </div>
 
         {/* Filters */}
-        <div style={{ background: COLORS.bgCard, border: `1px solid ${COLORS.border}` }}
-          className="rounded-2xl p-5 mb-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+        <Panel className="p-5 mb-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
           <div className="relative flex-1">
             <Search size={16} style={{ color: COLORS.textSecondary }} className="absolute left-3 top-1/2 -translate-y-1/2" />
             <input type="text" placeholder="Search rooms or hosts..." value={search} onChange={(e) => setSearch(e.target.value)}
@@ -73,7 +82,7 @@ export default function LiveRooms() {
             <select value={leagueFilter} onChange={(e) => setLeagueFilter(e.target.value)}
               style={{ background: COLORS.bgMain, border: `1px solid ${COLORS.border}`, color: COLORS.textPrimary, outline: "none", appearance: "none", paddingRight: "2.5rem" }}
               className="pl-4 pr-10 py-2.5 rounded-xl text-sm cursor-pointer">
-              {ALL_LEAGUES.map((l) => (<option key={l} value={l}>{l}</option>))}
+              {dynamicLeagues.map((l) => (<option key={l} value={l}>{l}</option>))}
             </select>
             <ChevronDown size={14} style={{ color: COLORS.textSecondary }} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
@@ -83,7 +92,7 @@ export default function LiveRooms() {
             <span style={{ background: liveOnly ? COLORS.accent : COLORS.textSecondary }} className="w-2 h-2 rounded-full animate-pulse" />
             Live Only
           </button>
-        </div>
+        </Panel>
 
         {/* Room Grid */}
         {loading ? (
@@ -107,11 +116,15 @@ export default function LiveRooms() {
               const fillPct = Math.round((teamsJoined / maxTeams) * 100);
 
               return (
-                <div key={room._id || room.roomCode}
-                  style={{ background: COLORS.bgCard, border: `1px solid ${COLORS.border}` }}
+                <Panel
+                  key={room._id || room.roomCode}
+                  style={{
+                    background: `linear-gradient(135deg, ${COLORS.bgCard} 0%, #111B2E 100%)`,
+                  }}
                   className="rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] cursor-pointer group"
-                  onClick={() => navigate(action.path)}>
-                  <div style={{ height: "3px", background: `linear-gradient(90deg, ${leagueColor}, transparent)` }} />
+                  onClick={() => navigate(action.path)}
+                >
+                  <div style={{ height: "4px", background: `linear-gradient(90deg, ${leagueColor}, transparent)` }} />
                   <div className="p-5">
                     <div className="flex items-start justify-between gap-2 mb-4">
                       <div className="flex-1 min-w-0">
@@ -121,14 +134,18 @@ export default function LiveRooms() {
                       <StatusBadge status={room.status} />
                     </div>
                     <div className="flex items-center gap-2 mb-4">
-                      <span style={{ background: `${leagueColor}22`, color: leagueColor, border: `1px solid ${leagueColor}44`, fontFamily: "'JetBrains Mono', monospace" }}
-                        className="text-xs px-2 py-0.5 rounded-md font-bold">
+                      <span
+                        style={{
+                          background: `${leagueColor}22`,
+                          color: leagueColor,
+                          border: `1px solid ${leagueColor}44`,
+                          fontFamily: "'JetBrains Mono', monospace",
+                        }}
+                        className="text-xs px-2 py-0.5 rounded-md font-bold"
+                      >
                         {leagueName || "Custom"}
                       </span>
-                      {room.retentionEnabled && (
-                        <span style={{ background: `${COLORS.warning}22`, color: COLORS.warning, border: `1px solid ${COLORS.warning}44` }}
-                          className="text-xs px-2 py-0.5 rounded-md font-medium">RTM</span>
-                      )}
+                      {room.retentionEnabled && <StatusChip tone="rtm" label="RTM" />}
                       {room.visibility === "private" && (
                         <span style={{ background: `${COLORS.textSecondary}22`, color: COLORS.textSecondary }}
                           className="text-xs px-2 py-0.5 rounded-md">🔒 Private</span>
@@ -139,17 +156,25 @@ export default function LiveRooms() {
                         <span style={{ color: COLORS.textSecondary }} className="text-xs flex items-center gap-1"><Users size={12} /> Teams</span>
                         <span style={{ color: COLORS.textPrimary, fontFamily: "'JetBrains Mono', monospace" }} className="text-xs font-bold">{teamsJoined}/{maxTeams}</span>
                       </div>
-                      <div style={{ background: COLORS.bgMain, height: "5px", borderRadius: "99px", overflow: "hidden" }}>
+                      <div style={{ background: COLORS.bgMain, height: "6px", borderRadius: "99px", overflow: "hidden" }}>
                         <div style={{ width: `${fillPct}%`, background: fillPct === 100 ? `linear-gradient(90deg, ${COLORS.success}, #00A040)` : `linear-gradient(90deg, ${leagueColor}, ${leagueColor}88)`, height: "100%", borderRadius: "99px", transition: "width 0.5s ease" }} />
                       </div>
                     </div>
-                    <button onClick={(e) => { e.stopPropagation(); navigate(action.path); }}
-                      style={{ background: `${action.color}22`, color: action.color, border: `1px solid ${action.color}44`, boxShadow: room.status === "auction" ? `0 0 12px ${action.color}33` : "none" }}
-                      className="w-full py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:opacity-80 transition-opacity">
-                      <Eye size={15} /> {action.label}
-                    </button>
+                    <div className="flex items-center justify-between gap-3">
+                      <div style={{ background: `${action.color}14`, border: `1px solid ${action.color}33`, color: action.color }}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider">
+                        {action.label}
+                      </div>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); navigate(action.path); }}
+                        style={{ background: `linear-gradient(135deg, ${action.color}, ${action.color}99)`, color: "#0F172A", boxShadow: `0 0 14px ${action.color}44` }}
+                        className="px-4 py-2 rounded-xl text-xs font-black hover:scale-105 transition-all flex items-center gap-2"
+                      >
+                        <Eye size={14} /> Open
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </Panel>
               );
             })}
           </div>

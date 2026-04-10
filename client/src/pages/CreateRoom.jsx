@@ -17,6 +17,7 @@ export default function CreateRoom() {
     userName: user.userName || "",
     retention: true,
     visibility: "public",
+    playersPerTeam: 25,
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -55,6 +56,7 @@ export default function CreateRoom() {
         teamShortName: selectedLeague?.teams?.find((t) => t.name === form.teamName)?.shortName || "",
         visibility: form.visibility,
         retentionEnabled: form.retention,
+        playersPerTeam: form.playersPerTeam,
       });
       updateUser({
         userName: form.userName,
@@ -155,6 +157,33 @@ export default function CreateRoom() {
                 </div>
               </div>
             )}
+
+            {/* Squad Size */}
+            <div>
+              <label style={{ color: COLORS.textSecondary }} className="block text-sm mb-2">
+                Squad Size per Team <span style={{ color: COLORS.accent }}>*</span>
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { value: 11, label: "11", sub: "4 Overseas", desc: "Quick & High-Risk" },
+                  { value: 15, label: "15", sub: "6 Overseas", desc: "Moderate Strategy" },
+                  { value: 25, label: "25", sub: "8 Overseas", desc: "Deep Strategy" },
+                ].map(({ value, label, sub, desc }) => (
+                  <button key={value} type="button" onClick={() => setForm({ ...form, playersPerTeam: value })}
+                    style={{
+                      background: form.playersPerTeam === value ? `${COLORS.primary}22` : COLORS.bgMain,
+                      border: `1px solid ${form.playersPerTeam === value ? COLORS.primary : COLORS.border}`,
+                      color: form.playersPerTeam === value ? COLORS.primary : COLORS.textSecondary,
+                      boxShadow: form.playersPerTeam === value ? `0 0 12px ${COLORS.primary}33` : "none",
+                    }}
+                    className="px-2 py-3 rounded-xl flex flex-col items-center gap-0.5 transition-all">
+                    <span className="font-black text-xl">{label}</span>
+                    <span className="text-xs font-semibold">{sub}</span>
+                    <span className="text-xs opacity-60 text-center leading-tight">{desc}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Toggles */}
             <div className="grid grid-cols-2 gap-4">

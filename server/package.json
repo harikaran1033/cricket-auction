@@ -8,7 +8,8 @@
     "dev": "nodemon src/index.js",
     "build:client": "npm --prefix ../client run build",
     "seed": "node src/seed/index.js",
-    "seed:stats": "node src/seed/seedPlayerStats.js"
+    "seed:stats": "node src/seed/seedPlayerStats.js",
+    "seed:profiles": "node src/seed/seedProfileData.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

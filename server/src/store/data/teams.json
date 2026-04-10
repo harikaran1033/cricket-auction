@@ -1,0 +1,78 @@
+{
+  "teamA": {
+    "name": "IPL Fantasy XI E",
+    "venue": "Dubai International Cricket Stadium",
+    "playing11": [
+      "Shubman Gill",
+      "Ruturaj Gaikwad",
+      "Sanju Samson",
+      "Hardik Pandya",
+      "Shreyas Iyer",
+      "Rinku Singh",
+      "Axar Patel",
+      "Sunil Narine",
+      "Jasprit Bumrah",
+      "Mohammed Shami",
+      "Matheesha Pathirana"
+    ],
+    "batting_order": [
+      "Shubman Gill",
+      "Ruturaj Gaikwad",
+      "Sanju Samson",
+      "Hardik Pandya",
+      "Shreyas Iyer",
+      "Rinku Singh",
+      "Axar Patel",
+      "Sunil Narine",
+      "Jasprit Bumrah",
+      "Mohammed Shami",
+      "Matheesha Pathirana"
+    ],
+    "bowlers": [
+      "Jasprit Bumrah",
+      "Mohammed Shami",
+      "Matheesha Pathirana",
+      "Hardik Pandya",
+      "Axar Patel",
+      "Sunil Narine"
+    ]
+  },
+  "teamB": {
+    "name": "IPL Fantasy XI F",
+    "venue":"Dubai International Cricket Stadium",
+    "playing11": [
+      "Rohit Sharma",
+      "Yashasvi Jaiswal",
+      "Tilak Varma",
+      "KL Rahul",
+      "Shivam Dube",
+      "MS Dhoni",
+      "Ravindra Jadeja",
+      "Andre Russell",
+      "Rashid Khan",
+      "Arshdeep Singh",
+      "Mohammed Siraj"
+    ],
+    "batting_order": [
+      "Rohit Sharma",
+      "Yashasvi Jaiswal",
+      "Tilak Varma",
+      "KL Rahul",
+      "Shivam Dube",
+      "Andre Russell",
+      "MS Dhoni",
+      "Ravindra Jadeja",
+      "Rashid Khan",
+      "Arshdeep Singh",
+      "Mohammed Siraj"
+    ],
+    "bowlers": [
+      "Mohammed Siraj",
+      "Arshdeep Singh",
+      "Andre Russell",
+      "Ravindra Jadeja",
+      "Rashid Khan",
+      "Shivam Dube"
+    ]
+  }
+}

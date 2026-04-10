@@ -1,6 +1,7 @@
 const { AuctionState, Room, LeaguePlayer, ActivityLog } = require("../models");
 const EventEmitter = require("events");
 const { resolvePlayerImage } = require("../utils/playerImages");
+const { buildPlayerContext } = require("../utils/playerContext");
 
 /**
  * AuctionEngine — the heart of the auction system.
@@ -51,6 +52,12 @@ class AuctionEngine extends EventEmitter {
 
     const name =
       playerObj?.name || leaguePlayerRef?.name || entry?.playerName || "Unknown Player";
+    const playerId =
+      playerObj?._id?.toString?.() ||
+      leaguePlayerRef?._id?.toString?.() ||
+      entry?.player?._id?.toString?.() ||
+      (typeof entry?.player === "string" ? entry.player : null) ||
+      null;
     const role = playerObj?.role || leaguePlayerRef?.role || "";
     const nationality = playerObj?.nationality || leaguePlayerRef?.nationality || "";
     const isOverseas =
@@ -62,6 +69,14 @@ class AuctionEngine extends EventEmitter {
     const basePrice = Number.isFinite(leaguePlayerObj?.basePrice) ? leaguePlayerObj.basePrice : 0;
 
     return {
+      context: buildPlayerContext(
+        playerObj || leaguePlayerRef || { name, role },
+        {
+          ...(leaguePlayerObj || {}),
+          fairPoint,
+          basePrice,
+        }
+      ),
       player: this._withPlayerImage({
         ...(playerObj || leaguePlayerRef || {}),
         name,
@@ -70,6 +85,7 @@ class AuctionEngine extends EventEmitter {
         isOverseas,
         image,
       }),
+      playerId,
       leaguePlayer: leaguePlayerObj?._id || entry?.leaguePlayer || null,
       price,
       isOverseas,
@@ -78,6 +94,78 @@ class AuctionEngine extends EventEmitter {
       role,
       fairPoint,
       basePrice,
+      stats: leaguePlayerObj?.stats || null,
+      stats2026: leaguePlayerObj?.stats2026 || null,
+      stats2024: leaguePlayerObj?.stats2024 || null,
+      stats2025: leaguePlayerObj?.stats2025 || null,
+    };
+  }
+
+  _buildAuctionContextView(fullContext = {}, phase = "scout") {
+    const normalizedPhase = ["scout", "bid", "revealed"].includes(phase) ? phase : "scout";
+    const isScout = normalizedPhase === "scout";
+    const isBid = normalizedPhase === "bid";
+    const isRevealed = normalizedPhase === "revealed";
+
+    return {
+      playerName: fullContext.playerName,
+      role: fullContext.role,
+      baseStats: fullContext.baseStats,
+      visibleTags: fullContext.visibleTags || [],
+      clueTags: isScout ? [] : (fullContext.clueTags || []),
+      hiddenTagCount: isRevealed ? 0 : Number(fullContext.hiddenTagCount || 0),
+      phaseRatings: isRevealed ? fullContext.phaseRatings : null,
+      exactTags: isRevealed ? (fullContext.exactTags || []) : [],
+      matchupStrengths: isScout ? [] : (fullContext.matchupStrengths || []),
+      matchupWeaknesses: isScout ? [] : (fullContext.matchupWeaknesses || []),
+      venueBonus: isRevealed ? fullContext.venueBonus : null,
+      dismissalInsight: isRevealed ? fullContext.dismissalInsight : null,
+      spinProfile: isRevealed ? fullContext.spinProfile : null,
+      handednessProfile: isRevealed ? fullContext.handednessProfile : null,
+      battingStyle: fullContext.battingStyle || null,
+      bowlingStyle: fullContext.bowlingStyle || null,
+      contextModifier: isRevealed ? fullContext.contextModifier : null,
+      contextModifierHint: isBid
+        ? (Number(fullContext.contextModifier || 0) >= 0 ? "bonus" : "risk")
+        : null,
+      revealedFairPoint: isRevealed ? fullContext.revealedFairPoint : null,
+    };
+  }
+
+  _buildAuctionPlayerPayload(leaguePlayer, phase = "scout") {
+    if (!leaguePlayer?.player) return null;
+
+    const lp = typeof leaguePlayer.toObject === "function" ? leaguePlayer.toObject() : leaguePlayer;
+    const fullContext = buildPlayerContext(leaguePlayer.player, {
+      ...lp,
+      fairPoint: leaguePlayer.fairPoint || 0,
+      basePrice: leaguePlayer.basePrice || 0,
+    });
+
+    return {
+      playerId: leaguePlayer.player._id,
+      leaguePlayerId: leaguePlayer._id,
+      name: leaguePlayer.player.name,
+      nationality: leaguePlayer.player.nationality,
+      isOverseas: leaguePlayer.player.isOverseas,
+      isCapped: leaguePlayer.player.isCapped,
+      role: leaguePlayer.player.role,
+      battingStyle: leaguePlayer.player.battingStyle,
+      bowlingStyle: leaguePlayer.player.bowlingStyle,
+      jerseyNumber: leaguePlayer.player.jerseyNumber,
+      image: leaguePlayer.player.image || resolvePlayerImage(leaguePlayer.player.name),
+      skills: leaguePlayer.player.skills,
+      basePrice: leaguePlayer.basePrice,
+      stats: leaguePlayer.stats,
+      stats2026: leaguePlayer.stats2026,
+      stats2024: leaguePlayer.stats2024,
+      stats2025: leaguePlayer.stats2025,
+      fairPoint: leaguePlayer.fairPoint || 0,
+      previousTeam: leaguePlayer.previousTeam,
+      previousPrice: leaguePlayer.player.previousPrice || null,
+      set: leaguePlayer.set,
+      auctionPhase: phase,
+      context: this._buildAuctionContextView(fullContext, phase),
     };
   }
 
@@ -108,6 +196,14 @@ class AuctionEngine extends EventEmitter {
     })
       .populate("player")
       .sort({ basePrice: -1 });
+
+    // Guard: if no players exist in this league, fail loudly instead of silently completing.
+    if (leaguePlayers.length === 0) {
+      throw new Error(
+        "No players found for this league. Run 'npm run seed' and 'npm run seed:stats' first, " +
+        "then restart the auction."
+      );
+    }
 
     const playerPool = leaguePlayers.map((lp) => lp._id);
 
@@ -156,6 +252,7 @@ class AuctionEngine extends EventEmitter {
       auctionState.currentBidTeam = null;
       auctionState.currentBidUserId = null;
       auctionState.currentBidHistory = [];
+      auctionState.currentPlayerPhase = null;
       auctionState.rtmEligibleTeam = null;
       auctionState.rtmActive = false;
       auctionState.timerEndsAt = null;
@@ -331,8 +428,15 @@ class AuctionEngine extends EventEmitter {
       .map((s) => s.code);
 
     console.log(`[AuctionEngine] Dynamic sets built: ${setOrder.length} sets for ${totalPlayers} players`);
-    console.log(`  Marquee: ${marqueePlayers.length} players → ${Math.ceil(marqueePlayers.length / MAX_MARQUEE_SET_SIZE)} set(s)`);
-    console.log(`  Sets: ${setOrder.join(" → ")}`);
+    console.log(`  Marquee: ${marqueePlayers.length} players → ${Math.ceil(marqueePlayers.length / MAX_MARQUEE_SET_SIZE) || 0} set(s)`);
+    console.log(`  Sets: ${setOrder.join(" → ") || "(none — player pool may be empty)"}`);
+
+    if (setOrder.length === 0) {
+      console.warn(
+        "[AuctionEngine] WARNING: setOrder is empty! This means no players were assigned to sets. " +
+        "Check that LeaguePlayers are seeded and 'npm run seed:stats' has been run."
+      );
+    }
 
     return { setOrder, setsConfig, playerSetMap };
   }
@@ -409,6 +513,20 @@ class AuctionEngine extends EventEmitter {
       if (auctionState.unsoldPlayers.length > 0 && !auctionState.isAccelerated) {
         return this._startAcceleratedRound(room, auctionState);
       }
+
+      // Safety guard: don't complete if no players were ever auctioned.
+      // This happens when setOrder is empty (pool empty / seed missing).
+      if (
+        auctionState.totalPlayersSold === 0 &&
+        auctionState.totalPlayersUnsold === 0 &&
+        auctionState.setOrder.length === 0
+      ) {
+        throw new Error(
+          "Auction aborted: player pool is empty. " +
+          "Ensure league players are seeded before starting the auction."
+        );
+      }
+
       return false; // auction complete
     }
 
@@ -609,12 +727,13 @@ class AuctionEngine extends EventEmitter {
     auctionState.currentLeaguePlayer = leaguePlayer._id;
     auctionState.currentBasePrice = leaguePlayer.basePrice;
     auctionState.currentBid = leaguePlayer.basePrice;
-    auctionState.currentBidTeam = null;
-    auctionState.currentBidUserId = null;
-    auctionState.currentBidHistory = [];
-    auctionState.rtmEligibleTeam = null;
-    auctionState.rtmActive = false;
-    auctionState.status = "BIDDING";
+      auctionState.currentBidTeam = null;
+      auctionState.currentBidUserId = null;
+      auctionState.currentBidHistory = [];
+      auctionState.currentPlayerPhase = "scout";
+      auctionState.rtmEligibleTeam = null;
+      auctionState.rtmActive = false;
+      auctionState.status = "BIDDING";
 
     // Start timer
     const timerMs = auctionState.timerDurationMs || 15000;
@@ -633,26 +752,7 @@ class AuctionEngine extends EventEmitter {
       auctionState.completedSets
     );
 
-    const playerData = {
-      playerId: leaguePlayer.player._id,
-      leaguePlayerId: leaguePlayer._id,
-      name: leaguePlayer.player.name,
-      nationality: leaguePlayer.player.nationality,
-      isOverseas: leaguePlayer.player.isOverseas,
-      isCapped: leaguePlayer.player.isCapped,
-      role: leaguePlayer.player.role,
-      battingStyle: leaguePlayer.player.battingStyle,
-      bowlingStyle: leaguePlayer.player.bowlingStyle,
-      image: leaguePlayer.player.image || resolvePlayerImage(leaguePlayer.player.name),
-      skills: leaguePlayer.player.skills,
-      basePrice: leaguePlayer.basePrice,
-      stats: leaguePlayer.stats,
-      stats2024: leaguePlayer.stats2024,
-      stats2025: leaguePlayer.stats2025,
-      fairPoint: leaguePlayer.fairPoint || 0,
-      previousTeam: leaguePlayer.previousTeam,
-      set: leaguePlayer.set,
-    };
+    const playerData = this._buildAuctionPlayerPayload(leaguePlayer, auctionState.currentPlayerPhase);
 
     await ActivityLog.create({
       room: room._id,
@@ -666,6 +766,7 @@ class AuctionEngine extends EventEmitter {
       roomCode,
       roomId: room._id.toString(),
       player: playerData,
+      playerPhase: auctionState.currentPlayerPhase,
       currentBid: auctionState.currentBid,
       timerEndsAt: auctionState.timerEndsAt,
       round: auctionState.round,
@@ -724,23 +825,25 @@ class AuctionEngine extends EventEmitter {
     }
 
     // Validate purse
-    const slotsRemaining = (room.league.maxSquadSize || 25) - team.squad.length;
+    const squadTarget = room.playersPerTeam || room.league.maxSquadSize || 25;
+    const slotsRemaining = squadTarget - team.squad.length;
     const minReserve = slotsRemaining > 1 ? (slotsRemaining - 1) * 20 : 0; // ₹20L per remaining slot minimum
     if (team.remainingPurse - bidAmount < minReserve) {
       throw new Error("Insufficient purse (must reserve for remaining slots)");
     }
 
-    // Validate overseas limit
+    // Validate overseas limit — uses room.overseasLimit (derived from playersPerTeam) first
     const currentPlayer = await LeaguePlayer.findById(auctionState.currentLeaguePlayer).populate("player");
     if (currentPlayer?.player?.isOverseas) {
       const overseasCount = team.squad.filter((s) => s.isOverseas).length;
-      if (overseasCount >= (room.league.maxOverseas || 8)) {
-        throw new Error("Overseas player limit reached");
+      const effectiveLimit = room.overseasLimit || room.league.maxOverseas || 8;
+      if (overseasCount >= effectiveLimit) {
+        throw new Error(`Overseas player limit reached (${effectiveLimit} max for ${room.playersPerTeam || 25}-player squad)`);
       }
     }
 
     // Validate squad size
-    if (team.squad.length >= (room.league.maxSquadSize || 25)) {
+    if (team.squad.length >= (room.playersPerTeam || room.league.maxSquadSize || 25)) {
       throw new Error("Squad is full");
     }
 
@@ -762,6 +865,7 @@ class AuctionEngine extends EventEmitter {
     auctionState.currentBidTeam = teamName;
     auctionState.currentBidUserId = userId;
     auctionState.currentBidHistory.push(bidEntry);
+    auctionState.currentPlayerPhase = "bid";
 
     // Reset timer on each bid
     const timerMs = auctionState.timerDurationMs || 15000;
@@ -790,6 +894,8 @@ class AuctionEngine extends EventEmitter {
       bid: bidEntry,
       currentBid: bidAmount,
       currentBidTeam: teamName,
+      playerPhase: auctionState.currentPlayerPhase,
+      currentPlayer: this._buildAuctionPlayerPayload(currentPlayer, auctionState.currentPlayerPhase),
       timerEndsAt: auctionState.timerEndsAt,
       minNextBid: this._calculateMinBid(bidAmount, room.league),
     });
@@ -841,6 +947,19 @@ class AuctionEngine extends EventEmitter {
     if (previousTeam.remainingPurse < auctionState.currentBid) {
       console.log(`[RTM] Skipped — ${previousTeam.teamName} can't afford (purse: ${previousTeam.remainingPurse}, bid: ${auctionState.currentBid})`);
       return false;
+    }
+
+    // Block RTM if this player was already retained by the previous team
+    // (retained players must not re-enter the RTM pathway — they were kept or released intentionally)
+    const currentLpId = auctionState.currentLeaguePlayer?.toString();
+    if (currentLpId) {
+      const alreadyRetained = previousTeam.retentions?.some(
+        (r) => r.leaguePlayer?.toString() === currentLpId
+      );
+      if (alreadyRetained) {
+        console.log(`[RTM] Skipped — player was already retained by ${previousTeam.teamName}`);
+        return false;
+      }
     }
 
     console.log(`[RTM] ✓ RTM eligible: ${previousTeam.teamName} for "${currentLP.player.name}"`);
@@ -960,6 +1079,53 @@ class AuctionEngine extends EventEmitter {
     return auctionState;
   }
 
+  // ─────────────────────────── RE-AUCTION UNSOLD ─────────────────────────────
+
+  /**
+   * Re-queue all unsold players for re-auction (host only).
+   * Moves unsoldPlayers back into setPool and restarts nominations from there.
+   * Called by the host from the UI "Re-auction X Unsold" button.
+   */
+  async nominateUnsold(roomCode, userId) {
+    const room = await Room.findOne({ roomCode }).populate("league");
+    if (!room) throw new Error("Room not found");
+    if (room.host.userId !== userId) throw new Error("Only host can re-auction unsold players");
+
+    const auctionState = await AuctionState.findOne({ room: room._id });
+    if (!auctionState) throw new Error("Auction not initialized");
+
+    if (!auctionState.unsoldPlayers || auctionState.unsoldPlayers.length === 0) {
+      throw new Error("No unsold players to re-auction");
+    }
+
+    const valid = ["SOLD","UNSOLD","NOMINATING","WAITING","PAUSED"];
+    if (!valid.includes(auctionState.status)) {
+      throw new Error(`Cannot re-auction during ${auctionState.status}`);
+    }
+
+    // Push unsold back to the END of the current set pool
+    auctionState.setPool = [
+      ...auctionState.setPool.slice(auctionState.nominationIndex),
+      ...auctionState.unsoldPlayers,
+    ];
+    auctionState.unsoldPlayers = [];
+    auctionState.nominationIndex = 0;
+    auctionState.status = "NOMINATING";
+
+    await auctionState.save();
+
+    await ActivityLog.create({
+      room: room._id,
+      type: "RE_AUCTION_STARTED",
+      payload: { totalPlayers: auctionState.setPool.length },
+      userId,
+    });
+
+    // Kick off next nomination
+    await this.nominatePlayer(roomCode);
+    return auctionState;
+  }
+
   // ─────────────────────────── TIMER ───────────────────────────
 
   /**
@@ -1061,6 +1227,8 @@ class AuctionEngine extends EventEmitter {
           rtmTeam,
           currentBid: auctionState.currentBid,
           currentBidTeam: auctionState.currentBidTeam,
+          playerPhase: auctionState.currentPlayerPhase || "bid",
+          currentPlayer: this._buildAuctionPlayerPayload(currentLP, auctionState.currentPlayerPhase || "bid"),
           timerEndsAt: auctionState.timerEndsAt,
         });
         return;
@@ -1132,6 +1300,7 @@ class AuctionEngine extends EventEmitter {
     this._clearTimer(room._id.toString());
 
     const currentLP = await LeaguePlayer.findById(auctionState.currentLeaguePlayer).populate("player");
+    const revealedPlayer = this._buildAuctionPlayerPayload(currentLP, "revealed");
 
     // Update team in room
     const team = room.joinedTeams.find((t) => t.teamName === teamName);
@@ -1161,6 +1330,7 @@ class AuctionEngine extends EventEmitter {
     auctionState.totalPlayersSold += 1;
     auctionState.totalPurseSpent += price;
     auctionState.status = "SOLD";
+    auctionState.currentPlayerPhase = "revealed";
     auctionState.currentBidHistory = [];
     auctionState.rtmActive = false;
     auctionState.rtmEligibleTeam = null;
@@ -1192,10 +1362,32 @@ class AuctionEngine extends EventEmitter {
       soldTo: teamName,
       soldPrice: price,
       acquiredVia,
+      revealedPlayer,
       currentSet: auctionState.currentSet,
       // Send updated team data with populated squad
       teams: await this._getTeamsWithSquad(room),
     });
+
+    // ── recalculateAfterSale hook ────────────────────────────────────────
+    // Emit a lightweight purse-summary update so all clients can stay in sync
+    // without waiting for a full auction-state refresh.
+    try {
+      const purseSummary = room.joinedTeams.map((t) => ({
+        teamName: t.teamName,
+        remainingPurse: t.remainingPurse,
+        squadSize: t.squad.length,
+        slotsRemaining: (room.playersPerTeam || 25) - t.squad.length,
+      }));
+      this.emit("auction:pursesRecalculated", {
+        roomCode: room.roomCode,
+        roomId: room._id.toString(),
+        purseSummary,
+        totalPurseSpent: auctionState.totalPurseSpent,
+        totalPlayersSold: auctionState.totalPlayersSold,
+      });
+    } catch (e) {
+      console.warn("[AuctionEngine] recalculateAfterSale warning:", e.message);
+    }
 
     // Auto-nominate next after 3-second delay (stored so it can be cancelled)
     // But first check if all teams have full squads — if so, complete immediately
@@ -1216,6 +1408,7 @@ class AuctionEngine extends EventEmitter {
       try {
         this.activeTimers.delete(`${roomId}_autonom`);
         auctionState.status = "NOMINATING";
+        auctionState.currentPlayerPhase = null;
         await auctionState.save();
         await this.nominatePlayer(room.roomCode);
       } catch (err) {
@@ -1236,6 +1429,7 @@ class AuctionEngine extends EventEmitter {
     auctionState.unsoldPlayers.push(auctionState.currentLeaguePlayer);
     auctionState.totalPlayersUnsold += 1;
     auctionState.status = "UNSOLD";
+    auctionState.currentPlayerPhase = null;
     auctionState.currentBidHistory = [];
 
     await auctionState.save();
@@ -1273,13 +1467,25 @@ class AuctionEngine extends EventEmitter {
   }
 
   /**
-   * Check if all teams have reached maxSquadSize.
+   * Check if all teams have reached their squad size limit.
+   * Uses room.playersPerTeam (set at room creation) as the canonical limit.
    */
   _allTeamsFull(room) {
-    const maxSquad = room.league?.maxSquadSize || 25;
+    const maxSquad = room.playersPerTeam || room.league?.maxSquadSize || 25;
+    if (!room.joinedTeams || room.joinedTeams.length === 0) return false;
     return room.joinedTeams.every((t) => {
-      const totalPlayers = (t.squad?.length || 0) + (t.retentions?.length || 0);
-      return totalPlayers >= maxSquad;
+      // Retentions are already pushed into squad during retention flow.
+      // Count unique player ids across both arrays to avoid double-counting.
+      const ids = new Set();
+      for (const entry of t.squad || []) {
+        const id = entry?.player?.toString?.() || entry?.player?.toString() || null;
+        if (id) ids.add(id);
+      }
+      for (const entry of t.retentions || []) {
+        const id = entry?.player?.toString?.() || entry?.player?.toString() || null;
+        if (id) ids.add(id);
+      }
+      return ids.size >= maxSquad;
     });
   }
 
@@ -1410,10 +1616,13 @@ class AuctionEngine extends EventEmitter {
       ...auctionState,
       currentPlayer: this._withPlayerImage(auctionState.currentPlayer),
       currentLeaguePlayer: auctionState.currentLeaguePlayer
-        ? {
-            ...auctionState.currentLeaguePlayer,
-            player: this._withPlayerImage(auctionState.currentLeaguePlayer.player),
-          }
+        ? this._buildAuctionPlayerPayload(
+            {
+              ...auctionState.currentLeaguePlayer,
+              player: this._withPlayerImage(auctionState.currentLeaguePlayer.player),
+            },
+            auctionState.currentPlayerPhase || (auctionState.currentBidTeam ? "bid" : "scout")
+          )
         : auctionState.currentLeaguePlayer,
       soldPlayers: (auctionState.soldPlayers || []).map((sp) => ({
         ...sp,
@@ -1438,7 +1647,7 @@ class AuctionEngine extends EventEmitter {
       })
       .populate({
         path: "joinedTeams.squad.leaguePlayer",
-        select: "fairPoint basePrice player",
+        select: "fairPoint basePrice player stats stats2026 stats2024 stats2025 previousTeam",
         populate: {
           path: "player",
           select: "name nationality isOverseas role image",
@@ -1460,6 +1669,7 @@ class AuctionEngine extends EventEmitter {
 
     return {
       ...state,
+      currentPlayerPhase: auctionState.currentPlayerPhase || (auctionState.currentBidTeam ? "bid" : "scout"),
       timerRemaining,
       setInfo,
       setPoolPlayers,
@@ -1476,6 +1686,8 @@ class AuctionEngine extends EventEmitter {
         squadSize: t.squad.length,
         squad: t.squad.map((s) => this._normalizeSquadEntry(s)),
         isConnected: t.isConnected,
+        teamColor: t.teamColor || "",
+        teamLogo:  t.teamLogo  || "",
       })),
     };
   }
@@ -1494,7 +1706,7 @@ class AuctionEngine extends EventEmitter {
       })
       .populate({
         path: "joinedTeams.squad.leaguePlayer",
-        select: "fairPoint basePrice player",
+        select: "fairPoint basePrice player stats stats2026 stats2024 stats2025 previousTeam",
         populate: {
           path: "player",
           select: "name nationality isOverseas role image",
@@ -1506,6 +1718,8 @@ class AuctionEngine extends EventEmitter {
       remainingPurse: t.remainingPurse,
       squadSize: t.squad.length,
       squad: t.squad.map((s) => this._normalizeSquadEntry(s)),
+      teamColor: t.teamColor || "",
+      teamLogo:  t.teamLogo  || "",
     }));
   }
 

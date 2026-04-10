@@ -1,4 +1,5 @@
-const { Room, League, ActivityLog } = require("../models");
+const { Room, League, ActivityLog, AuctionState, ChatMessage } = require("../models");
+const ROOM_INACTIVE_TTL_MS = 10 * 60 * 1000;
 
 /**
  * RoomService — handles room CRUD, joining, team management.
@@ -8,7 +9,7 @@ class RoomService {
   /**
    * Create a new auction room.
    */
-  async createRoom({ roomName, leagueId, userId, userName, teamName, teamShortName, visibility, retentionEnabled }) {
+  async createRoom({ roomName, leagueId, userId, userName, teamName, teamShortName, visibility, retentionEnabled, playersPerTeam }) {
     const league = await League.findById(leagueId);
     if (!league) throw new Error("League not found");
 
@@ -31,6 +32,7 @@ class RoomService {
       host: { userId, userName },
       visibility,
       retentionEnabled,
+      playersPerTeam: [11, 15, 25].includes(Number(playersPerTeam)) ? Number(playersPerTeam) : 25,
       status: retentionEnabled ? "retention" : "waiting",
       maxTeams: league.totalTeams,
       joinedTeams: [
@@ -87,8 +89,17 @@ class RoomService {
     if (alreadyJoined) {
       // Reconnecting — mark connected
       alreadyJoined.isConnected = true;
+      room.inactiveAt = null;
+      if (room.status === "inactive") {
+        room.status = room.retentionEnabled ? "retention" : "waiting";
+      }
+      room.lastActiveAt = new Date();
       await room.save();
       return room;
+    }
+
+    if (room.status === "inactive") {
+      throw new Error("Room is inactive");
     }
 
     if (room.joinedTeams.length >= room.maxTeams) {
@@ -125,6 +136,8 @@ class RoomService {
       isConnected: true,
     });
 
+    room.inactiveAt = null;
+    room.lastActiveAt = new Date();
     await room.save();
 
     await ActivityLog.create({
@@ -154,11 +167,43 @@ class RoomService {
     return Room.find({
       visibility: "public",
       status: { $in: ["waiting", "retention", "lobby", "auction", "paused"] },
+      inactiveAt: null,
     })
       .populate("league", "name code")
       .select("roomCode roomName league joinedTeams maxTeams status retentionEnabled createdAt")
       .sort({ createdAt: -1 })
       .limit(50);
+  }
+
+  /**
+   * Return a normalized replay timeline for a room.
+   */
+  async getRoomReplay(roomCode, limit = 500) {
+    const room = await Room.findOne({ roomCode }).populate("league");
+    if (!room) throw new Error("Room not found");
+
+    const logs = await ActivityLog.find({ room: room._id })
+      .sort({ createdAt: 1 })
+      .limit(Math.max(50, Math.min(Number(limit) || 500, 2000)))
+      .lean();
+
+    const events = logs.map((log, index) => ({
+      id: `${log._id}`,
+      seq: index + 1,
+      type: log.type,
+      at: log.createdAt,
+      userName: log.userName || "",
+      payload: log.payload || {},
+    }));
+
+    return {
+      room: {
+        roomCode: room.roomCode,
+        roomName: room.roomName,
+        league: room.league?.name || room.league?.code || "",
+      },
+      events,
+    };
   }
 
   /**
@@ -199,9 +244,60 @@ class RoomService {
     const team = room.joinedTeams.find((t) => t.userId === userId);
     if (team) {
       team.isConnected = false;
+      room.lastActiveAt = new Date();
+
+      const connectedTeams = room.joinedTeams.filter((t) => t.isConnected);
+      const disconnectedTeam = room.joinedTeams.find((t) => t.userId === userId);
+      const hostLeft = room.host.userId === userId;
+
+      if (hostLeft) {
+        const nextHost = connectedTeams.find((t) => t.userId !== userId) || connectedTeams[0];
+        if (nextHost) {
+          room.host = {
+            userId: nextHost.userId,
+            userName: nextHost.userName,
+          };
+          room.inactiveAt = null;
+          await ActivityLog.create({
+            room: room._id,
+            type: "HOST_REASSIGNED",
+            payload: { previousHost: disconnectedTeam?.userName, newHost: nextHost.userName },
+            userId: nextHost.userId,
+            userName: nextHost.userName,
+          });
+        } else {
+          room.status = "inactive";
+          room.inactiveAt = new Date();
+        }
+      } else if (connectedTeams.length === 0) {
+        room.status = "inactive";
+        room.inactiveAt = new Date();
+      }
+
       await room.save();
     }
     return room;
+  }
+
+  async cleanupInactiveRooms() {
+    const cutoff = new Date(Date.now() - ROOM_INACTIVE_TTL_MS);
+    const staleRooms = await Room.find({
+      $or: [
+        { status: "inactive", inactiveAt: { $lte: cutoff } },
+        {
+          inactiveAt: { $lte: cutoff },
+          status: { $in: ["waiting", "retention", "lobby", "auction", "paused"] },
+        },
+      ],
+    }).select("_id");
+
+    if (staleRooms.length === 0) return 0;
+    const roomIds = staleRooms.map((room) => room._id);
+    await AuctionState.deleteMany({ room: { $in: roomIds } });
+    await ChatMessage.deleteMany({ room: { $in: roomIds } });
+    await ActivityLog.deleteMany({ room: { $in: roomIds } });
+    await Room.deleteMany({ _id: { $in: roomIds } });
+    return roomIds.length;
   }
 
   /**

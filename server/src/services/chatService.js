@@ -21,6 +21,17 @@ class ChatService {
       .limit(limit)
       .lean();
   }
+
+  /**
+   * clearRoom — purge all chat messages and activity logs for a room.
+   * Called when the auction completes to reclaim storage.
+   */
+  async clearRoom(roomId) {
+    await Promise.all([
+      ChatMessage.deleteMany({ room: roomId }),
+      ActivityLog.deleteMany({ room: roomId }),
+    ]);
+  }
 }
 
 module.exports = new ChatService();

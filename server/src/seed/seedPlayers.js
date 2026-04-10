@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Player = require("../models/Player.js");
 const fs = require("fs");
 const path = require("path");
+const { getSeedPath } = require("../store");
 const { resolvePlayerImage } = require("../utils/playerImages");
 require("dotenv").config({ path: path.resolve(__dirname, "../../.env") }); // Adjust path to find your .env file
 
@@ -28,7 +29,7 @@ const loadPlayersFromJson = async (filePath) => {
     await mongoose.connect(DB_URI);
     console.log(`Connected to: ${mongoose.connection.name}`);
 
-    const absolutePath = path.resolve(__dirname, filePath);
+    const absolutePath = path.isAbsolute(filePath) ? filePath : path.resolve(__dirname, filePath);
     const rawData = JSON.parse(fs.readFileSync(absolutePath, "utf-8"));
     const dataArray = Array.isArray(rawData) ? rawData : [rawData];
 
@@ -63,5 +64,4 @@ const loadPlayersFromJson = async (filePath) => {
   }
 };
 
-// Make sure the path to players.json is relative to THIS script
-loadPlayersFromJson("./players.json");
+loadPlayersFromJson(getSeedPath("players.json"));

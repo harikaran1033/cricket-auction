@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const fs = require("fs");
 const path = require("path");
+const { getSeedPath } = require("../store");
 
 const Player = require("../models/Player.js"); 
 const LeaguePlayer = require("../models/LeaguePlayer.js");
@@ -9,7 +10,7 @@ const League = require("../models/League.js");
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-const filePath = path.join(__dirname, "playersBaseprice.json");
+const filePath = getSeedPath("playersBaseprice.json");
 
 // Team Name Mapping
 const teamFullNameMap = {

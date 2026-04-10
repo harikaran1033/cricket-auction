@@ -8,6 +8,7 @@ import Retention from "./pages/Retention";
 import Lobby from "./pages/Lobby";
 import Auction from "./pages/Auction";
 import Results from "./pages/Results";
+import MatchSimulation from "./pages/MatchSimulation";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
       <Route path="/room/:code/lobby" element={<Lobby />} />
       <Route path="/room/:code/auction" element={<Auction />} />
       <Route path="/room/:code/results" element={<Results />} />
+      <Route path="/room/:code/match" element={<MatchSimulation />} />
     </Routes>
   );
 }

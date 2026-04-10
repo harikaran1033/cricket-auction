@@ -1,8 +1,68 @@
+const Joi = require("joi");
 const roomService = require("../services/roomService");
 const retentionService = require("../services/retentionService");
 const chatService = require("../services/chatService");
 const auctionEngine = require("../auctionEngine");
+const matchService = require("../services/matchService");
 const E = require("./events");
+
+// ── Joi schemas for socket event validation ──────────────────────
+const schemas = {
+  ROOM_JOIN: Joi.object({
+    roomCode:  Joi.string().alphanum().min(4).max(10).required(),
+    userId:    Joi.string().min(1).max(64).required(),
+    userName:  Joi.string().min(1).max(40).required(),
+    teamName:  Joi.string().min(1).max(40).required(),
+  }),
+  ROOM_SPECTATE: Joi.object({
+    roomCode:  Joi.string().alphanum().min(4).max(10).required(),
+    userId:    Joi.string().min(1).max(64).optional(),
+    userName:  Joi.string().min(1).max(40).optional(),
+  }),
+  AUCTION_BID: Joi.object({
+    roomCode:  Joi.string().alphanum().min(4).max(10).required(),
+    userId:    Joi.string().min(1).max(64).required(),
+    teamName:  Joi.string().min(1).max(40).required(),
+    amount:    Joi.number().positive().max(50000).required(),
+  }),
+  AUCTION_NOMINATE: Joi.object({
+    roomCode:       Joi.string().alphanum().min(4).max(10).required(),
+    userId:         Joi.string().min(1).max(64).required(),
+    leaguePlayerId: Joi.string().hex().length(24).optional(),
+  }),
+  AUCTION_RTM_USE: Joi.object({
+    roomCode:  Joi.string().alphanum().min(4).max(10).required(),
+    userId:    Joi.string().min(1).max(64).required(),
+    teamName:  Joi.string().min(1).max(40).required(),
+  }),
+  AUCTION_RTM_PASS: Joi.object({
+    roomCode:  Joi.string().alphanum().min(4).max(10).required(),
+    userId:    Joi.string().min(1).max(64).required(),
+    teamName:  Joi.string().min(1).max(40).required(),
+  }),
+  CHAT_SEND: Joi.object({
+    roomCode:  Joi.string().alphanum().min(4).max(10).required(),
+    userId:    Joi.string().min(1).max(64).required(),
+    userName:  Joi.string().min(1).max(40).optional(),
+    teamName:  Joi.string().min(1).max(40).optional(),
+    message:   Joi.string().min(1).max(500).required(),
+  }),
+};
+
+/**
+ * Validate socket event payload against a Joi schema.
+ * Returns { error } if invalid, else { value } (sanitised payload).
+ */
+function validate(schemaName, data) {
+  const schema = schemas[schemaName];
+  if (!schema) return { value: data };
+  return schema.validate(data, { abortEarly: true, stripUnknown: true });
+}
+
+// ── Per-socket bid rate-limiter (400 ms throttle) ────────────────
+// Prevents clients from spamming the bid endpoint.
+const BID_THROTTLE_MS = 400;
+const lastBidTime = new Map(); // socketId → timestamp
 
 /**
  * Socket Handler — maps socket events to service/engine calls.
@@ -15,29 +75,98 @@ const E = require("./events");
 module.exports = function setupSocketHandlers(io) {
   // ──────────── AUCTION ENGINE EVENT FORWARDING ────────────
   // The engine emits events; we forward them to the correct socket room.
+  // Each significant auction event also triggers a compact FEED_EVENT for the live feed.
+
+  function emitFeed(roomCode, type, data) {
+    io.to(roomCode).emit(E.FEED_EVENT, {
+      type,
+      timestamp: new Date().toISOString(),
+      ...data,
+    });
+  }
 
   auctionEngine.on("auction:initialized", (data) => {
     io.to(data.roomCode).emit(E.AUCTION_INITIALIZED, data);
+    emitFeed(data.roomCode, "AUCTION_STARTED", { message: "Auction has started!" });
   });
 
   auctionEngine.on("auction:playerNominated", (data) => {
     io.to(data.roomCode).emit(E.AUCTION_PLAYER_NOMINATED, data);
+    emitFeed(data.roomCode, "PLAYER_NOMINATED", {
+      playerName: data.player?.name || "Unknown Player",
+      role: data.player?.role,
+      basePrice: data.basePrice,
+      message: `${data.player?.name || "Unknown Player"} is up for auction`,
+    });
   });
 
   auctionEngine.on("auction:bidPlaced", (data) => {
     io.to(data.roomCode).emit(E.AUCTION_BID_PLACED, data);
+    const playerName = data.currentPlayer?.name || "Unknown Player";
+    emitFeed(data.roomCode, "BID_PLACED", {
+      playerName,
+      teamName: data.currentBidTeam,
+      amount: data.currentBid,
+      message: `${data.currentBidTeam} bid ₹${data.currentBid}L on ${playerName}`,
+    });
   });
 
   auctionEngine.on("auction:playerSold", (data) => {
-    io.to(data.roomCode).emit(E.AUCTION_PLAYER_SOLD, data);
+    const { revealedPlayer, ...publicData } = data;
+    io.to(data.roomCode).emit(E.AUCTION_PLAYER_SOLD, publicData);
+    io.in(data.roomCode).fetchSockets()
+      .then((sockets) => {
+        sockets
+          .filter((socket) => socket.data?.currentUser?.teamName === data.soldTo)
+          .forEach((socket) => {
+            socket.emit(E.AUCTION_PLAYER_REVEALED, {
+              roomCode: data.roomCode,
+              player: data.revealedPlayer,
+              soldTo: data.soldTo,
+              soldPrice: data.soldPrice,
+              acquiredVia: data.acquiredVia,
+            });
+          });
+      })
+      .catch((err) => console.error("[Handler] player reveal emit error:", err.message));
+    const playerName = data.soldPlayer?.name || data.player?.name || "Unknown Player";
+    emitFeed(data.roomCode, "PLAYER_SOLD", {
+      playerName,
+      teamName: data.soldTo,
+      price: data.soldPrice,
+      message: `${playerName} SOLD to ${data.soldTo} for ₹${data.soldPrice}L`,
+    });
+    // Async: broadcast live team strength update to all room members
+    if (data.soldTo && data.roomCode) {
+      matchService.getTeamStrength(data.roomCode, data.soldTo)
+        .then((strengthData) => {
+          io.to(data.roomCode).emit(E.MATCH_STRENGTH_UPDATE, strengthData);
+        })
+        .catch((err) => console.error("[Handler] Strength broadcast error:", err.message));
+    }
+  });
+
+  auctionEngine.on("auction:pursesRecalculated", (data) => {
+    io.to(data.roomCode).emit("auction:pursesRecalculated", data);
   });
 
   auctionEngine.on("auction:playerUnsold", (data) => {
     io.to(data.roomCode).emit(E.AUCTION_PLAYER_UNSOLD, data);
+    const playerName = data.player?.name || "Unknown Player";
+    emitFeed(data.roomCode, "PLAYER_UNSOLD", {
+      playerName,
+      message: `${playerName} went unsold`,
+    });
   });
 
   auctionEngine.on("auction:rtmPending", (data) => {
     io.to(data.roomCode).emit(E.AUCTION_RTM_PENDING, data);
+    const playerName = data.currentPlayer?.name || "Unknown Player";
+    emitFeed(data.roomCode, "RTM_PENDING", {
+      teamName: data.rtmEligibleTeam,
+      playerName,
+      message: `${data.rtmEligibleTeam} has RTM option on ${playerName}`,
+    });
   });
 
   auctionEngine.on("auction:timerTick", (data) => {
@@ -46,18 +175,30 @@ module.exports = function setupSocketHandlers(io) {
 
   auctionEngine.on("auction:paused", (data) => {
     io.to(data.roomCode).emit(E.AUCTION_PAUSED, data);
+    emitFeed(data.roomCode, "AUCTION_PAUSED", { message: "Auction paused" });
   });
 
   auctionEngine.on("auction:resumed", (data) => {
     io.to(data.roomCode).emit(E.AUCTION_RESUMED, data);
+    emitFeed(data.roomCode, "AUCTION_RESUMED", { message: "Auction resumed" });
   });
 
-  auctionEngine.on("auction:completed", (data) => {
+  auctionEngine.on("auction:completed", async (data) => {
     io.to(data.roomCode).emit(E.AUCTION_COMPLETED, data);
+    emitFeed(data.roomCode, "AUCTION_COMPLETED", { message: "🏆 Auction complete! Select your Playing XI." });
+    // Purge chat + activity logs to reclaim storage
+    if (data.roomId) {
+      chatService.clearRoom(data.roomId)
+        .catch((err) => console.error("[Handler] clearRoom error:", err.message));
+    }
   });
 
   auctionEngine.on("auction:setChanged", (data) => {
     io.to(data.roomCode).emit(E.AUCTION_SET_CHANGED, data);
+    emitFeed(data.roomCode, "SET_CHANGED", {
+      setCode: data.currentSet,
+      message: `Moving to set: ${data.currentSet}`,
+    });
   });
 
   // ──────────── CONNECTION HANDLER ────────────
@@ -72,12 +213,19 @@ module.exports = function setupSocketHandlers(io) {
 
     socket.on(E.ROOM_JOIN, async (data, callback) => {
       try {
-        const { roomCode, userId, userName, teamName } = data;
+        const { error, value } = validate("ROOM_JOIN", data);
+        if (error) {
+          if (callback) callback({ success: false, error: error.message });
+          return;
+        }
+        const { roomCode, userId, userName, teamName } = value;
         const room = await roomService.joinRoom({ roomCode, userId, userName, teamName });
 
         socket.join(roomCode);
         currentRoom = roomCode;
         currentUser = { userId, userName, teamName };
+        socket.data.currentRoom = roomCode;
+        socket.data.currentUser = currentUser;
 
         // Notify others
         let joinedTeamsForBroadcast = room.joinedTeams;
@@ -116,7 +264,11 @@ module.exports = function setupSocketHandlers(io) {
         if (["auction", "paused"].includes(room.status)) {
           try {
             const state = await auctionEngine.getAuctionState(roomCode);
-            if (state) socket.emit(E.AUCTION_STATE, state);
+            if (state) {
+              socket.emit(E.AUCTION_STATE, state);
+              // Signal this socket that it has successfully reconnected mid-auction
+              socket.emit("room:reconnected", { teamName, roomCode });
+            }
           } catch (_) { /* auction might not be initialized yet */ }
         }
       } catch (err) {
@@ -127,7 +279,12 @@ module.exports = function setupSocketHandlers(io) {
 
     socket.on(E.ROOM_SPECTATE, async (data, callback) => {
       try {
-        const { roomCode, userId, userName } = data;
+        const { error, value } = validate("ROOM_SPECTATE", data);
+        if (error) {
+          if (callback) callback({ success: false, error: error.message });
+          return;
+        }
+        const { roomCode, userId, userName } = value;
         const room = await roomService.getRoomByCode(roomCode);
         if (room.visibility !== "public") {
           throw new Error("Spectating is only available for public rooms");
@@ -136,6 +293,8 @@ module.exports = function setupSocketHandlers(io) {
         socket.join(roomCode);
         currentRoom = roomCode;
         currentUser = null;
+        socket.data.currentRoom = roomCode;
+        socket.data.currentUser = null;
 
         if (callback) callback({ success: true, room });
 
@@ -155,10 +314,20 @@ module.exports = function setupSocketHandlers(io) {
       try {
         const { roomCode, userId } = data;
         await roomService.disconnectUser(roomCode, userId);
+        const updatedRoom = await roomService.getRoomByCode(roomCode).catch(() => null);
         socket.leave(roomCode);
         socket.to(roomCode).emit(E.ROOM_USER_LEFT, { userId });
+        if (updatedRoom) {
+          io.to(roomCode).emit(E.ROOM_UPDATED, {
+            joinedTeams: updatedRoom.joinedTeams,
+            host: updatedRoom.host,
+            status: updatedRoom.status,
+          });
+        }
         currentRoom = null;
         currentUser = null;
+        socket.data.currentRoom = null;
+        socket.data.currentUser = null;
       } catch (err) {
         console.error("[Socket] ROOM_LEAVE error:", err.message);
       }
@@ -287,7 +456,23 @@ module.exports = function setupSocketHandlers(io) {
 
     socket.on(E.AUCTION_BID, async (data, callback) => {
       try {
-        const { roomCode, userId, teamName, amount } = data;
+        // ── per-socket 400ms throttle ──
+        const now = Date.now();
+        const last = lastBidTime.get(socket.id) || 0;
+        if (now - last < BID_THROTTLE_MS) {
+          if (callback) callback({ success: false, error: "Bidding too fast — wait a moment" });
+          return;
+        }
+        lastBidTime.set(socket.id, now);
+
+        // ── Joi validation ──
+        const { error, value } = validate("AUCTION_BID", data);
+        if (error) {
+          socket.emit(E.AUCTION_ERROR, { error: error.message });
+          if (callback) callback({ success: false, error: error.message });
+          return;
+        }
+        const { roomCode, userId, teamName, amount } = value;
         await auctionEngine.placeBid({ roomCode, userId, teamName, amount });
         if (callback) callback({ success: true });
       } catch (err) {
@@ -298,7 +483,12 @@ module.exports = function setupSocketHandlers(io) {
 
     socket.on(E.AUCTION_NOMINATE, async (data, callback) => {
       try {
-        const { roomCode, userId, leaguePlayerId } = data;
+        const { error, value } = validate("AUCTION_NOMINATE", data);
+        if (error) {
+          if (callback) callback({ success: false, error: error.message });
+          return;
+        }
+        const { roomCode, userId, leaguePlayerId } = value;
         const room = await roomService.getRoomByCode(roomCode);
         if (room.host.userId !== userId) throw new Error("Only host can nominate");
         await auctionEngine.nominatePlayer(roomCode, leaguePlayerId);
@@ -330,7 +520,9 @@ module.exports = function setupSocketHandlers(io) {
 
     socket.on(E.AUCTION_RTM_USE, async (data, callback) => {
       try {
-        const { roomCode, userId, teamName } = data;
+        const { error, value } = validate("AUCTION_RTM_USE", data);
+        if (error) { if (callback) callback({ success: false, error: error.message }); return; }
+        const { roomCode, userId, teamName } = value;
         await auctionEngine.useRtm({ roomCode, userId, teamName });
         if (callback) callback({ success: true });
       } catch (err) {
@@ -340,8 +532,25 @@ module.exports = function setupSocketHandlers(io) {
 
     socket.on(E.AUCTION_RTM_PASS, async (data, callback) => {
       try {
-        const { roomCode, userId, teamName } = data;
+        const { error, value } = validate("AUCTION_RTM_PASS", data);
+        if (error) { if (callback) callback({ success: false, error: error.message }); return; }
+        const { roomCode, userId, teamName } = value;
         await auctionEngine.passRtm({ roomCode, userId, teamName });
+        if (callback) callback({ success: true });
+      } catch (err) {
+        if (callback) callback({ success: false, error: err.message });
+      }
+    });
+
+    // ── Re-auction unsold players (host only) ────────────────────────────
+    socket.on("auction:nominateUnsold", async (data, callback) => {
+      try {
+        const { roomCode, userId } = data || {};
+        if (!roomCode || !userId) {
+          if (callback) callback({ success: false, error: "roomCode and userId required" });
+          return;
+        }
+        await auctionEngine.nominateUnsold(roomCode, userId);
         if (callback) callback({ success: true });
       } catch (err) {
         if (callback) callback({ success: false, error: err.message });
@@ -374,7 +583,9 @@ module.exports = function setupSocketHandlers(io) {
 
     socket.on(E.CHAT_SEND, async (data, callback) => {
       try {
-        const { roomCode, userId, userName, teamName, message } = data;
+        const { error: vErr, value: vData } = validate("CHAT_SEND", data);
+        if (vErr) { if (callback) callback({ success: false, error: vErr.message }); return; }
+        const { roomCode, userId, userName, teamName, message } = vData;
         const room = await roomService.getRoomByCode(roomCode);
         const participant = room.joinedTeams.find((t) => t.userId === userId);
         if (!participant) {
@@ -402,10 +613,95 @@ module.exports = function setupSocketHandlers(io) {
       }
     });
 
+    // ──── MATCH / SIMULATION EVENTS ────
+
+    socket.on(E.MATCH_SUBMIT_XI, async (data, callback) => {
+      try {
+        const { roomCode, userId, playingXIPlayerIds, captainId, viceCaptainId } = data;
+        const result = await matchService.submitPlayingXI(
+          roomCode, userId, playingXIPlayerIds, captainId, viceCaptainId
+        );
+        // Notify the room so others can see who has confirmed
+        io.to(roomCode).emit(E.MATCH_XI_CONFIRMED, {
+          teamName: result.teamName,
+          teamStrength: result.teamStrength,
+          breakdown: result.breakdown,
+        });
+        io.to(roomCode).emit(E.MATCH_STRENGTH_UPDATE, {
+          teamName: result.teamName,
+          total: result.teamStrength,
+          ...result.breakdown,
+          xiConfirmed: true,
+        });
+        emitFeed(roomCode, "XI_CONFIRMED", {
+          teamName: result.teamName,
+          message: `${result.teamName} confirmed their Playing XI (Strength: ${result.teamStrength.toFixed(1)})`,
+        });
+        if (callback) callback({ success: true, data: result });
+      } catch (err) {
+        if (callback) callback({ success: false, error: err.message });
+        socket.emit(E.MATCH_ERROR, { error: err.message });
+      }
+    });
+
+    socket.on(E.MATCH_GET_STRENGTH, async (data, callback) => {
+      try {
+        const { roomCode, teamName } = data;
+        const result = await matchService.getTeamStrength(roomCode, teamName);
+        // Push updated strength to requesting client
+        socket.emit(E.MATCH_STRENGTH_UPDATE, result);
+        if (callback) callback({ success: true, data: result });
+      } catch (err) {
+        if (callback) callback({ success: false, error: err.message });
+      }
+    });
+
+    socket.on(E.MATCH_GET_ALL_STRENGTHS, async (data, callback) => {
+      try {
+        const { roomCode } = data;
+        const results = await matchService.getAllTeamStrengths(roomCode);
+        if (callback) callback({ success: true, data: results });
+      } catch (err) {
+        if (callback) callback({ success: false, error: err.message });
+      }
+    });
+
+    socket.on(E.MATCH_SIMULATE, async (data, callback) => {
+      try {
+        const { roomCode, userId } = data;
+        // Only host can trigger
+        const room = await roomService.getRoomByCode(roomCode);
+        if (room.host.userId !== userId) throw new Error("Only the host can simulate a match");
+
+        const result = await matchService.simulateMatch(roomCode);
+        io.to(roomCode).emit(E.MATCH_RESULTS, result);
+        emitFeed(roomCode, "MATCH_SIMULATED", {
+          matchNumber: result.matchNumber,
+          winner: result.season?.playoffs?.champion || result.results[0]?.teamName,
+          message: result.simulationType === "league"
+            ? `🏆 League simulation complete! ${result.season?.playoffs?.champion || result.results[0]?.teamName} are champions!`
+            : `🏆 Match ${result.matchNumber} complete! ${result.results[0]?.teamName} leads!`,
+        });
+        if (callback) callback({ success: true, data: result });
+      } catch (err) {
+        if (callback) callback({ success: false, error: err.message });
+        socket.emit(E.MATCH_ERROR, { error: err.message });
+      }
+    });
+
     // ──── DISCONNECT ────
 
     socket.on(E.DISCONNECT, async () => {
       console.log(`[Socket] Disconnected: ${socket.id}`);
+      // Clean up bid throttle entry
+      lastBidTime.delete(socket.id);
+      // Emit reconnection event to the room so clients can show a toast
+      if (currentRoom && currentUser) {
+        socket.to(currentRoom).emit("room:user_disconnected", {
+          userId: currentUser.userId,
+          teamName: currentUser.teamName,
+        });
+      }
       if (currentRoom && currentUser) {
         try {
           const room = await roomService.disconnectUser(
@@ -416,6 +712,11 @@ module.exports = function setupSocketHandlers(io) {
             socket.to(currentRoom).emit(E.ROOM_USER_LEFT, {
               userId: currentUser.userId,
               userName: currentUser.userName,
+            });
+            socket.to(currentRoom).emit(E.ROOM_UPDATED, {
+              joinedTeams: room.joinedTeams,
+              host: room.host,
+              status: room.status,
             });
           }
         } catch (err) {

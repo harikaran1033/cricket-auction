@@ -34,6 +34,10 @@ const playerSchema = new mongoose.Schema(
       default: [],
     },
     isCapped: { type: Boolean, default: true },
+    // Historical auction price from previous season (in lakhs).
+    // Populated during seeding or after each auction cycle.
+    // Used as a price anchor in the bidding UI ("Last sold: ₹XL").
+    previousPrice: { type: Number, default: null },
   },
   { timestamps: true }
 );

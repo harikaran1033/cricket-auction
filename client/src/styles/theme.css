@@ -1,4 +1,22 @@
 @layer base {
+  :root {
+    --brand-primary: #00E5FF;
+    --brand-accent: #FF3D00;
+    --bg-main: #0F172A;
+    --bg-card: #1E293B;
+    --border-muted: #334155;
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'Sora', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius-panel: 18px;
+    --radius-control: 12px;
+    --shadow-panel: 0 10px 24px rgba(0, 0, 0, 0.26);
+    --anim-fast: 180ms;
+    --anim-mid: 260ms;
+  }
+
   *,
   *::before,
   *::after {
@@ -15,9 +33,9 @@
   }
 
   body {
-    background: #0F172A;
-    color: #F8FAFC;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-body), system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
     line-height: 1.6;
@@ -88,5 +106,49 @@
   ::selection {
     background: rgba(0, 229, 255, 0.25);
     color: #F8FAFC;
+  }
+
+  .hud-panel {
+    border-radius: var(--radius-panel);
+    box-shadow: var(--shadow-panel);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.72));
+  }
+
+  .stagger-enter {
+    animation: staggerUp var(--anim-mid) ease both;
+  }
+
+  .timer-pressure {
+    animation: timerPressure 1s ease-in-out infinite;
+  }
+
+  .bid-impact {
+    animation: bidImpact var(--anim-fast) ease;
+  }
+
+  .sold-burst {
+    animation: soldBurst var(--anim-mid) ease;
+  }
+
+  @keyframes staggerUp {
+    from { transform: translateY(8px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes timerPressure {
+    0%,100% { box-shadow: 0 0 0 rgba(239,68,68,0); }
+    50% { box-shadow: 0 0 22px rgba(239,68,68,0.38); }
+  }
+
+  @keyframes bidImpact {
+    0% { transform: scale(0.98); }
+    60% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes soldBurst {
+    0% { transform: scale(0.96); opacity: 0.4; }
+    100% { transform: scale(1); opacity: 1; }
   }
 }

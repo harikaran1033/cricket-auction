@@ -1,0 +1,232 @@
+{
+  "teams": [
+    {
+      "name": "Mumbai Waves",
+      "venue": "Wankhede Stadium, Mumbai",
+      "playing11": [
+        "Rohit Sharma",
+        "Ishan Kishan",
+        "Suryakumar Yadav",
+        "Tilak Varma",
+        "Hardik Pandya",
+        "Tim David",
+        "Krunal Pandya",
+        "Mitchell Santner",
+        "Jasprit Bumrah",
+        "Trent Boult",
+        "Mayank Yadav"
+      ],
+      "batting_order": [
+        "Rohit Sharma",
+        "Ishan Kishan",
+        "Suryakumar Yadav",
+        "Tilak Varma",
+        "Hardik Pandya",
+        "Tim David",
+        "Krunal Pandya",
+        "Mitchell Santner",
+        "Jasprit Bumrah",
+        "Trent Boult",
+        "Mayank Yadav"
+      ],
+      "bowlers": [
+        "Jasprit Bumrah",
+        "Trent Boult",
+        "Mayank Yadav",
+        "Hardik Pandya",
+        "Mitchell Santner",
+        "Krunal Pandya"
+      ]
+    },
+    {
+      "name": "Chennai Tide",
+      "venue": "MA Chidambaram Stadium, Chennai",
+      "playing11": [
+        "Ruturaj Gaikwad",
+        "Ajinkya Rahane",
+        "Rachin Ravindra",
+        "Shivam Dube",
+        "Ravindra Jadeja",
+        "MS Dhoni",
+        "Sam Curran",
+        "Deepak Chahar",
+        "Khaleel Ahmed",
+        "Matheesha Pathirana",
+        "Noor Ahmad"
+      ],
+      "batting_order": [
+        "Ruturaj Gaikwad",
+        "Ajinkya Rahane",
+        "Rachin Ravindra",
+        "Shivam Dube",
+        "Ravindra Jadeja",
+        "MS Dhoni",
+        "Sam Curran",
+        "Deepak Chahar",
+        "Khaleel Ahmed",
+        "Matheesha Pathirana",
+        "Noor Ahmad"
+      ],
+      "bowlers": [
+        "Deepak Chahar",
+        "Khaleel Ahmed",
+        "Matheesha Pathirana",
+        "Sam Curran",
+        "Ravindra Jadeja",
+        "Noor Ahmad"
+      ]
+    },
+    {
+      "name": "Bengaluru Blaze",
+      "venue": "M Chinnaswamy Stadium, Bengaluru",
+      "playing11": [
+        "Virat Kohli",
+        "KL Rahul",
+        "Rajat Patidar",
+        "Jitesh Sharma",
+        "Glenn Maxwell",
+        "Cameron Green",
+        "Riyan Parag",
+        "Mohammed Siraj",
+        "Yash Dayal",
+        "Yuzvendra Chahal",
+        "Harshal Patel"
+      ],
+      "batting_order": [
+        "Virat Kohli",
+        "KL Rahul",
+        "Rajat Patidar",
+        "Jitesh Sharma",
+        "Glenn Maxwell",
+        "Cameron Green",
+        "Riyan Parag",
+        "Harshal Patel",
+        "Mohammed Siraj",
+        "Yash Dayal",
+        "Yuzvendra Chahal"
+      ],
+      "bowlers": [
+        "Mohammed Siraj",
+        "Yash Dayal",
+        "Harshal Patel",
+        "Cameron Green",
+        "Glenn Maxwell",
+        "Yuzvendra Chahal"
+      ]
+    },
+    {
+      "name": "Kolkata Royals",
+      "venue": "Eden Gardens, Kolkata",
+      "playing11": [
+        "Phil Salt",
+        "Shreyas Iyer",
+        "Venkatesh Iyer",
+        "Nitish Rana",
+        "Rinku Singh",
+        "Andre Russell",
+        "Sunil Narine",
+        "Harshit Rana",
+        "Kuldeep Yadav",
+        "Mukesh Kumar",
+        "Prasidh Krishna"
+      ],
+      "batting_order": [
+        "Phil Salt",
+        "Venkatesh Iyer",
+        "Shreyas Iyer",
+        "Nitish Rana",
+        "Rinku Singh",
+        "Andre Russell",
+        "Sunil Narine",
+        "Harshit Rana",
+        "Mukesh Kumar",
+        "Kuldeep Yadav",
+        "Prasidh Krishna"
+      ],
+      "bowlers": [
+        "Prasidh Krishna",
+        "Harshit Rana",
+        "Mukesh Kumar",
+        "Andre Russell",
+        "Sunil Narine",
+        "Kuldeep Yadav"
+      ]
+    },
+    {
+      "name": "Hyderabad Heat",
+      "venue": "Rajiv Gandhi International Stadium, Hyderabad",
+      "playing11": [
+        "Travis Head",
+        "Abhishek Sharma",
+        "Aiden Markram",
+        "Heinrich Klaasen",
+        "Nitish Kumar Reddy",
+        "Abdul Samad",
+        "Washington Sundar",
+        "Pat Cummins",
+        "Bhuvneshwar Kumar",
+        "T Natarajan",
+        "Rahul Chahar"
+      ],
+      "batting_order": [
+        "Travis Head",
+        "Abhishek Sharma",
+        "Aiden Markram",
+        "Heinrich Klaasen",
+        "Nitish Kumar Reddy",
+        "Abdul Samad",
+        "Washington Sundar",
+        "Pat Cummins",
+        "Bhuvneshwar Kumar",
+        "Rahul Chahar",
+        "T Natarajan"
+      ],
+      "bowlers": [
+        "Bhuvneshwar Kumar",
+        "Pat Cummins",
+        "T Natarajan",
+        "Washington Sundar",
+        "Rahul Chahar",
+        "Nitish Kumar Reddy"
+      ]
+    },
+    {
+      "name": "Ahmedabad Titans",
+      "venue": "Narendra Modi Stadium, Ahmedabad",
+      "playing11": [
+        "Shubman Gill",
+        "Sai Sudharsan",
+        "Sanju Samson",
+        "Jos Buttler",
+        "Marcus Stoinis",
+        "Axar Patel",
+        "Rahul Tewatia",
+        "Rashid Khan",
+        "Mohammed Shami",
+        "Avesh Khan",
+        "Kagiso Rabada"
+      ],
+      "batting_order": [
+        "Shubman Gill",
+        "Sai Sudharsan",
+        "Jos Buttler",
+        "Sanju Samson",
+        "Marcus Stoinis",
+        "Axar Patel",
+        "Rahul Tewatia",
+        "Rashid Khan",
+        "Mohammed Shami",
+        "Avesh Khan",
+        "Kagiso Rabada"
+      ],
+      "bowlers": [
+        "Mohammed Shami",
+        "Avesh Khan",
+        "Kagiso Rabada",
+        "Marcus Stoinis",
+        "Axar Patel",
+        "Rashid Khan"
+      ]
+    }
+  ]
+}

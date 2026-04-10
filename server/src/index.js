@@ -12,6 +12,7 @@ const connectDB = require("./config/db");
 const routes = require("./routes");
 const errorHandler = require("./middleware/errorHandler");
 const setupSocketHandlers = require("./socket/handler");
+const roomService = require("./services/roomService");
 
 async function startServer() {
   // Connect to MongoDB
@@ -32,7 +33,29 @@ async function startServer() {
     },
     pingTimeout: 60000,
     pingInterval: 25000,
+    // Connection state recovery: replays missed events when a client reconnects
+    // (Socket.IO 4.6+). Critical for multi-user resilience.
+    connectionStateRecovery: {
+      maxDisconnectionDuration: 2 * 60 * 1000,
+      skipMiddlewares: true,
+    },
   });
+
+  // Optional Redis adapter for horizontal scaling (multiple server instances).
+  // Set REDIS_URL env var to enable.  Without it, single-instance mode is used.
+  if (process.env.REDIS_URL) {
+    try {
+      const { createClient } = require("redis");
+      const { createAdapter } = require("@socket.io/redis-adapter");
+      const pub = createClient({ url: process.env.REDIS_URL });
+      const sub = pub.duplicate();
+      await Promise.all([pub.connect(), sub.connect()]);
+      io.adapter(createAdapter(pub, sub));
+      console.log("[Socket.IO] Redis adapter enabled — multi-instance mode");
+    } catch (e) {
+      console.warn("[Socket.IO] Redis adapter unavailable, running single-instance:", e.message);
+    }
+  }
 
   // Middleware
   app.use(helmet({ contentSecurityPolicy: false }));
@@ -60,6 +83,44 @@ async function startServer() {
 
   // Socket handlers
   setupSocketHandlers(io);
+
+  const cleanupInterval = setInterval(async () => {
+    try {
+      const deleted = await roomService.cleanupInactiveRooms();
+      if (deleted > 0) {
+        console.log(`[RoomService] Cleaned up ${deleted} inactive room(s)`);
+      }
+    } catch (err) {
+      console.error("[RoomService] Cleanup failed:", err.message);
+    }
+  }, 60 * 1000);
+
+  // ── Graceful shutdown ─────────────────────────────────────────────
+  // Handles SIGTERM (Docker/K8s stop) and SIGINT (Ctrl-C in dev).
+  // Closes the HTTP server first so no new connections are accepted,
+  // then stops background timers, then exits cleanly.
+  function gracefulShutdown(signal) {
+    console.log(`\n[Server] ${signal} received — shutting down gracefully…`);
+    clearInterval(cleanupInterval);
+
+    server.close((err) => {
+      if (err) {
+        console.error("[Server] Error while closing HTTP server:", err.message);
+        process.exit(1);
+      }
+      console.log("[Server] HTTP server closed. Goodbye!");
+      process.exit(0);
+    });
+
+    // Force exit if close takes too long (10 s)
+    setTimeout(() => {
+      console.error("[Server] Graceful shutdown timed out — forcing exit");
+      process.exit(1);
+    }, 10_000).unref();
+  }
+
+  process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+  process.on("SIGINT",  () => gracefulShutdown("SIGINT"));
 
   // Start
   server.listen(config.port, () => {

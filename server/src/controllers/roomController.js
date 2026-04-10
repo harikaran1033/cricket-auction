@@ -64,6 +64,15 @@ class RoomController {
       next(err);
     }
   }
+
+  async getRoomReplay(req, res, next) {
+    try {
+      const replay = await roomService.getRoomReplay(req.params.code, req.query.limit);
+      res.json({ success: true, data: replay });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = new RoomController();

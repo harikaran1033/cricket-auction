@@ -19,7 +19,7 @@ export default function Navbar() {
   return (
     <nav
       style={{
-        background: `linear-gradient(90deg, #0F172A 0%, #1E293B 100%)`,
+        background: COLORS.bgMain,
         borderBottom: `1px solid ${COLORS.border}`,
         fontFamily: "'Inter', sans-serif",
       }}
@@ -33,8 +33,7 @@ export default function Navbar() {
           >
             <div
               style={{
-                background: `linear-gradient(135deg, ${COLORS.primary}, #0090FF)`,
-                boxShadow: `0 0 20px ${COLORS.primary}55`,
+                background: COLORS.primary,
               }}
               className="w-8 h-8 rounded-lg flex items-center justify-center"
             >
@@ -43,12 +42,13 @@ export default function Navbar() {
             <span
               style={{
                 color: COLORS.textPrimary,
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Orbitron', sans-serif",
+                letterSpacing: 1,
               }}
               className="text-lg hidden sm:block"
             >
-              <span style={{ color: COLORS.primary }} className="font-black">BID</span>
-              <span className="font-bold">ARENA</span>
+              <span style={{ color: COLORS.primary }} className="font-black">AUCTION</span>
+              <span className="font-bold">PLAY</span>
             </span>
           </button>
 
@@ -74,12 +74,11 @@ export default function Navbar() {
             <button
               onClick={() => navigate("/create")}
               style={{
-                background: `linear-gradient(135deg, ${COLORS.primary}, #0090FF)`,
+                background: COLORS.primary,
                 color: "#0F172A",
                 fontFamily: "'Inter', sans-serif",
-                boxShadow: `0 0 16px ${COLORS.primary}44`,
               }}
-              className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 hover:scale-105"
+              className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 hover:opacity-90"
             >
               <Trophy size={15} />
               Create Room

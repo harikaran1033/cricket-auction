@@ -82,6 +82,11 @@ const auctionStateSchema = new mongoose.Schema(
     currentBidTeam: { type: String, default: null },
     currentBidUserId: { type: String, default: null },
     currentBidHistory: [bidEntrySchema],
+    currentPlayerPhase: {
+      type: String,
+      enum: ["scout", "bid", "revealed", null],
+      default: null,
+    },
 
     // RTM state
     rtmEligibleTeam: { type: String, default: null },
@@ -135,10 +140,39 @@ const auctionStateSchema = new mongoose.Schema(
     // Round tracking
     round: { type: Number, default: 1 },
     isAccelerated: { type: Boolean, default: false },
+
+    // ── Match data (populated after auction, before match simulation) ──
+    // Keyed by teamName; stores Playing XI selections, C/VC, fatigue, ratings
+    teamMatchData: {
+      type: Map,
+      of: new mongoose.Schema(
+        {
+          // Array of Player ObjectIds for the Playing XI (exactly 11)
+          playingXI:     { type: [mongoose.Schema.Types.ObjectId], ref: "Player", default: [] },
+          captainId:     { type: String, default: null },
+          viceCaptainId: { type: String, default: null },
+          // Per-player fatigue: { [playerId]: 0–0.5 }
+          fatigueMap:    { type: Map, of: Number, default: {} },
+          // Injured player ids for this match
+          injuredIds:    { type: [String], default: [] },
+          // Computed team strength (full breakdown stored as JSON)
+          teamStrength:  { type: Number, default: 0 },
+          strengthBreakdown: { type: mongoose.Schema.Types.Mixed, default: null },
+          matchesPlayed: { type: Number, default: 0 },
+          // Whether the team has submitted its XI for current match
+          xiConfirmed:   { type: Boolean, default: false },
+        },
+        { _id: false }
+      ),
+      default: {},
+    },
+
+    // Persisted season/league simulation output from the Python engine
+    seasonSimulation: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
+    },
   },
   { timestamps: true }
 );
-
-auctionStateSchema.index({ room: 1 });
-
 module.exports = mongoose.model("AuctionState", auctionStateSchema);

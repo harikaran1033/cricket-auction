@@ -1,13 +1,13 @@
 /**
  * Seed Player Stats & Fair Points
  * ────────────────────────────────
- * Reads 4 CSV files (2024 & 2025 batting + bowling), matches players
- * to existing LeaguePlayer documents, populates stats2024/stats2025,
- * and calculates the Fair Point rating.
+ * Reads legacy 2024/2025 CSVs plus the current-form CSV, matches players
+ * to LeaguePlayer documents, auto-adds missing players when needed, populates
+ * stats2024/stats2025/stats2026, and calculates Fair Point rating.
  *
- * Position is taken from 2024 data only.
- * Stats (runs, matches, avg, SR) from 2025.
- * Fair Point = 70% × 2025 score + 30% × 2024 score (0.8x damping if no 2024 data).
+ * Position is still taken from 2024 positional tables.
+ * Current form (latest season in current-form CSV) is stored in stats2026.
+ * Fair Point is weighted by latest/current form first, then prior seasons.
  *
  * Usage:  node src/seed/seedPlayerStats.js
  */
@@ -16,6 +16,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const fs = require("fs");
 const path = require("path");
+const { getDataPath, getSeedPath } = require("../store");
 
 const Player = require("../models/Player.js");
 const LeaguePlayer = require("../models/LeaguePlayer.js");
@@ -24,11 +25,24 @@ const League = require("../models/League.js");
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 // ─── CSV Paths ───
-const CSV_DIR = path.resolve(__dirname, "../../../"); // project root with CSVs
-const BATSMAN_2025 = path.join(CSV_DIR, "Batsman.csv");
-const BOWLER_2025 = path.join(CSV_DIR, "IPL_2025 Bowlers.csv");
-const BATSMAN_2024 = path.join(CSV_DIR, "seasonbatsman2024.csv");
-const BOWLER_2024 = path.join(CSV_DIR, "seasonbowler2024.csv");
+const BATSMAN_2025 = getDataPath("Batsman.csv");
+const BOWLER_2025 = getDataPath("IPL_2025 Bowlers.csv");
+const BATSMAN_2024 = getDataPath("seasonbatsman2024.csv");
+const BOWLER_2024 = getDataPath("seasonbowler2024.csv");
+const CURRENT_FORM_CSV = getDataPath("cricket_data_2026.csv");
+
+const TEAM_FULL_NAME_MAP = {
+  CSK: "Chennai Super Kings",
+  RCB: "Royal Challengers Bengaluru",
+  MI: "Mumbai Indians",
+  KKR: "Kolkata Knight Riders",
+  SRH: "Sunrisers Hyderabad",
+  LSG: "Lucknow Super Giants",
+  GT: "Gujarat Titans",
+  DC: "Delhi Capitals",
+  PBKS: "Punjab Kings",
+  RR: "Rajasthan Royals",
+};
 
 // ─── Helpers ───
 
@@ -59,9 +73,38 @@ function parseCSV(filePath) {
  */
 function num(val) {
   if (!val || val === "-" || val === "*" || val === "") return 0;
-  const cleaned = val.replace(/\*$/, "");
+  const cleaned = String(val).replace(/\*$/, "");
   const n = parseFloat(cleaned);
   return isNaN(n) ? 0 : n;
+}
+
+function convertToLakhs(value) {
+  if (!value || isNaN(value)) return 20;
+  return Math.max(20, Math.floor(Number(value) / 100000));
+}
+
+function normalizeRole(role) {
+  const value = String(role || "").trim();
+  const map = {
+    "Wicketkeeper-Batsman": "Wicket-Keeper",
+    "Wicketkeeper Batter": "Wicket-Keeper",
+    Wicketkeeper: "Wicket-Keeper",
+    "Wicket Keeper": "Wicket-Keeper",
+  };
+  return map[value] || value;
+}
+
+function inferRoleFromForm(row = {}) {
+  const runs = Number(row.runs || 0);
+  const wickets = Number(row.wickets || 0);
+  const stumpings = Number(row.stumpings || 0);
+  const ballsBowled = Number(row.ballsBowled || 0);
+
+  if (stumpings > 0) return "Wicket-Keeper";
+  if (wickets >= 8 && runs < 140) return "Bowler";
+  if (wickets >= 4 && runs >= 120) return "All-Rounder";
+  if (ballsBowled > 60 && wickets >= 5 && runs < 120) return "Bowler";
+  return "Batsman";
 }
 
 /**
@@ -164,6 +207,69 @@ function findInMap(map, csvName) {
   return null;
 }
 
+function buildCurrentFormMaps(rows) {
+  const byPlayer = new Map();
+
+  for (const row of rows) {
+    const rawName = row.player_name || row.player || "";
+    const name = normalizeName(rawName);
+    const year = Number(row.year);
+    if (!name || !Number.isFinite(year)) continue;
+
+    const batting = {
+      matches: num(row.matches_batted),
+      innings: num(row.matches_batted),
+      runs: num(row.runs_scored),
+      average: num(row.batting_average),
+      strikeRate: num(row.batting_strike_rate),
+      fifties: num(row.half_centuries),
+      centuries: num(row.centuries),
+      fours: num(row.fours),
+      sixes: num(row.sixes),
+      highScore: row.highest_score || "",
+      notOuts: num(row.not_outs),
+      ballsFaced: num(row.balls_faced),
+      position: 0,
+    };
+    const bowling = {
+      matches: num(row.matches_bowled),
+      innings: num(row.matches_bowled),
+      wickets: num(row.wickets_taken),
+      average: num(row.bowling_average),
+      economy: num(row.economy_rate),
+      strikeRate: num(row.bowling_strike_rate),
+      overs: num(row.balls_bowled) / 6,
+      runsConceded: num(row.runs_conceded),
+      bestBowling: row.best_bowling_match || "",
+      fourWickets: num(row.four_wicket_hauls),
+      fiveWickets: num(row.five_wicket_hauls),
+      position: 0,
+    };
+
+    const existing = byPlayer.get(name) || {};
+    const years = existing.years || new Map();
+    years.set(year, { batting, bowling, year, rawName });
+    byPlayer.set(name, { ...existing, years, rawName });
+  }
+
+  const latestMap = new Map();
+  const previousMap = new Map();
+  const latestYearByName = new Map();
+
+  for (const [name, info] of byPlayer.entries()) {
+    const yearEntries = [...info.years.entries()].sort((a, b) => b[0] - a[0]);
+    if (!yearEntries.length) continue;
+    const latest = yearEntries[0][1];
+    const previous = yearEntries[1]?.[1] || null;
+
+    latestMap.set(name, latest);
+    if (previous) previousMap.set(name, previous);
+    latestYearByName.set(name, latest.year);
+  }
+
+  return { latestMap, previousMap, latestYearByName, byPlayer };
+}
+
 // ─── Main ───
 
 async function seedPlayerStats() {
@@ -179,30 +285,20 @@ async function seedPlayerStats() {
       process.exit(1);
     }
 
-    // Load all league players with populated player master data
-    const leaguePlayers = await LeaguePlayer.find({ league: league._id }).populate("player").lean();
-    console.log(`📋 Found ${leaguePlayers.length} league players.`);
-
-    // Build lookup: normalized name → leaguePlayer (multiple keys per player for fuzzy match)
-    const lpMap = new Map();
-    leaguePlayers.forEach((lp) => {
-      if (lp.player?.name) {
-        for (const variant of nameVariants(lp.player.name)) {
-          if (!lpMap.has(variant)) lpMap.set(variant, lp);
-        }
-      }
-    });
-
     // ─── Parse CSVs ───
     console.log("\n📂 Parsing CSV files...");
     const bat2025Rows = parseCSV(BATSMAN_2025);
     const bowl2025Rows = parseCSV(BOWLER_2025);
     const bat2024Rows = parseCSV(BATSMAN_2024);
     const bowl2024Rows = parseCSV(BOWLER_2024);
+    const currentFormRows = parseCSV(CURRENT_FORM_CSV);
     console.log(`  Batsman 2025: ${bat2025Rows.length} rows`);
     console.log(`  Bowler 2025:  ${bowl2025Rows.length} rows`);
     console.log(`  Batsman 2024: ${bat2024Rows.length} rows`);
     console.log(`  Bowler 2024:  ${bowl2024Rows.length} rows`);
+    console.log(`  Current form CSV: ${currentFormRows.length} rows`);
+    const { latestMap: currentFormLatestMap, previousMap: currentFormPreviousMap } =
+      buildCurrentFormMaps(currentFormRows);
 
     // ─── Build stat maps by normalized name (with variants) ───
 
@@ -215,6 +311,113 @@ async function seedPlayerStats() {
       const norm = normalizeName(cleaned);
       const alias = NAME_ALIASES[norm];
       if (alias && !map.has(alias)) map.set(alias, data);
+    }
+
+    const rebuildLeagueMaps = async () => {
+      const leaguePlayers = await LeaguePlayer.find({ league: league._id }).populate("player").lean();
+      const lpMap = new Map();
+      leaguePlayers.forEach((lp) => {
+        if (!lp.player?.name) return;
+        for (const variant of nameVariants(lp.player.name)) {
+          if (!lpMap.has(variant)) lpMap.set(variant, lp);
+        }
+      });
+      return { leaguePlayers, lpMap };
+    };
+
+    let { leaguePlayers, lpMap } = await rebuildLeagueMaps();
+    console.log(`📋 Found ${leaguePlayers.length} league players.`);
+
+    // Auto-add current-form players that are missing in Player/LeaguePlayer so simulation can use them.
+    const seedPlayersPath = getSeedPath("players.json");
+    const seedBasePath = getSeedPath("playersBaseprice.json");
+    const seedPlayers = fs.existsSync(seedPlayersPath)
+      ? JSON.parse(fs.readFileSync(seedPlayersPath, "utf-8"))
+      : [];
+    const basePriceRows = fs.existsSync(seedBasePath)
+      ? JSON.parse(fs.readFileSync(seedBasePath, "utf-8"))
+      : [];
+    const seedPlayerByName = new Map(
+      seedPlayers.map((p) => [normalizeName(p.fullName || p.name || ""), p])
+    );
+    const baseByName = new Map(
+      basePriceRows.map((p) => [normalizeName(p.name || ""), p])
+    );
+
+    const allPlayers = await Player.find({}).lean();
+    const playerByName = new Map();
+    allPlayers.forEach((p) => {
+      for (const variant of nameVariants(p.name)) {
+        if (!playerByName.has(variant)) playerByName.set(variant, p);
+      }
+    });
+
+    let addedPlayers = 0;
+    let addedLeaguePlayers = 0;
+    for (const [nameKey, formRow] of currentFormLatestMap.entries()) {
+      const hasCurrentStats =
+        Number(formRow?.batting?.matches || 0) > 0 || Number(formRow?.bowling?.matches || 0) > 0;
+      if (!hasCurrentStats || Number(formRow?.year || 0) < 2024) continue;
+      if (findInMap(lpMap, nameKey)) continue;
+
+      let player = findInMap(playerByName, nameKey);
+      const seedMeta = seedPlayerByName.get(nameKey);
+      const baseMeta = baseByName.get(nameKey);
+
+      if (!player) {
+        const role = normalizeRole(seedMeta?.role) || inferRoleFromForm({
+          runs: formRow?.batting?.runs || 0,
+          wickets: formRow?.bowling?.wickets || 0,
+          stumpings: 0,
+          ballsBowled: (formRow?.bowling?.overs || 0) * 6,
+        });
+        player = await Player.create({
+          name: formRow.rawName || nameKey,
+          nationality: seedMeta?.nationality || "India",
+          isOverseas:
+            typeof seedMeta?.nationality === "string"
+              ? seedMeta.nationality.toLowerCase() !== "india"
+              : false,
+          role,
+          battingStyle:
+            String(seedMeta?.battingStyle || "").toLowerCase().includes("left")
+              ? "Left-Hand"
+              : "Right-Hand",
+          bowlingStyle: seedMeta?.bowlingStyle || "",
+          image: seedMeta?.image || "",
+          jerseyNumber: Number(seedMeta?.jerseyNumber) || undefined,
+          skills: seedMeta?.skillTags || [],
+          isCapped:
+            typeof baseMeta?.isCapped === "boolean" ? baseMeta.isCapped : true,
+        });
+        addedPlayers += 1;
+      }
+
+      await LeaguePlayer.updateOne(
+        { player: player._id, league: league._id },
+        {
+          $setOnInsert: {
+            player: player._id,
+            league: league._id,
+            basePrice: convertToLakhs(baseMeta?.basePrice),
+            franchisePrice: convertToLakhs(baseMeta?.franchisePrice || 0),
+            previousTeam: TEAM_FULL_NAME_MAP[String(baseMeta?.franchiseName || "").toUpperCase()] || "",
+            stats: {},
+            fairPoint: 0,
+            set: "",
+          },
+        },
+        { upsert: true }
+      );
+      addedLeaguePlayers += 1;
+    }
+
+    if (addedPlayers || addedLeaguePlayers) {
+      console.log(
+        `➕ Added missing players from current-form table: players=${addedPlayers}, leaguePlayers=${addedLeaguePlayers}`
+      );
+      ({ leaguePlayers, lpMap } = await rebuildLeagueMaps());
+      console.log(`📋 League players after sync: ${leaguePlayers.length}`);
     }
 
     // 2025 Batting
@@ -307,11 +510,26 @@ async function seedPlayerStats() {
       setWithVariants(bowl2024Map, rawName, data, true);
     });
 
+    // Latest-form map from cricket_data_2026.csv (latest available season per player)
+    const currentFormLatestBatMap = new Map();
+    const currentFormLatestBowlMap = new Map();
+    const currentFormPrevBatMap = new Map();
+    const currentFormPrevBowlMap = new Map();
+
+    for (const [nameKey, row] of currentFormLatestMap.entries()) {
+      setWithVariants(currentFormLatestBatMap, nameKey, row.batting);
+      setWithVariants(currentFormLatestBowlMap, nameKey, row.bowling);
+    }
+    for (const [nameKey, row] of currentFormPreviousMap.entries()) {
+      setWithVariants(currentFormPrevBatMap, nameKey, row.batting);
+      setWithVariants(currentFormPrevBowlMap, nameKey, row.bowling);
+    }
+
     // ─── PASS 1: Compute raw fair points ───
     console.log("\n⚡ Pass 1: Computing raw Fair Points...");
 
     const { calculateRawFairPoint, normalizeTo100 } = require("../utils/fairPoint.js");
-    const playerEntries = []; // { lp, stats2024, stats2025, rawFP, legacyStats }
+    const playerEntries = []; // { lp, stats2026, stats2025, stats2024, rawFP, legacyStats }
     let matched = 0;
     let unmatched = 0;
     const seenIds = new Set();
@@ -325,28 +543,55 @@ async function seedPlayerStats() {
       const role = lp.player?.role || "Batsman";
 
       // Look up stats using fuzzy matching
+      const b26 = findInMap(currentFormLatestBatMap, nameKey);
+      const w26 = findInMap(currentFormLatestBowlMap, nameKey);
       const b25 = findInMap(bat2025Map, nameKey);
       const w25 = findInMap(bowl2025Map, nameKey);
+      const b25Fallback = findInMap(currentFormPrevBatMap, nameKey);
+      const w25Fallback = findInMap(currentFormPrevBowlMap, nameKey);
       const b24 = findInMap(bat2024Map, nameKey);
       const w24 = findInMap(bowl2024Map, nameKey);
+      const b25Resolved = b25 || b25Fallback;
+      const w25Resolved = w25 || w25Fallback;
 
-      // Build stats2025
-      const stats2025 = {
-        batting: b25
+      // Build stats2026 (latest-form season)
+      const stats2026 = {
+        batting: b26
           ? {
-              matches: b25.matches, innings: b25.innings, runs: b25.runs,
-              average: b25.average, strikeRate: b25.strikeRate, fifties: b25.fifties,
-              centuries: b25.centuries, fours: b25.fours, sixes: b25.sixes,
-              highScore: b25.highScore, notOuts: b25.notOuts, ballsFaced: b25.ballsFaced,
+              matches: b26.matches, innings: b26.innings, runs: b26.runs,
+              average: b26.average, strikeRate: b26.strikeRate, fifties: b26.fifties,
+              centuries: b26.centuries, fours: b26.fours, sixes: b26.sixes,
+              highScore: b26.highScore, notOuts: b26.notOuts, ballsFaced: b26.ballsFaced,
               position: 0,
             }
           : {},
-        bowling: w25
+        bowling: w26
           ? {
-              matches: w25.matches, innings: w25.innings, wickets: w25.wickets,
-              average: w25.average, economy: w25.economy, strikeRate: w25.strikeRate,
-              overs: w25.overs, runsConceded: w25.runsConceded, bestBowling: w25.bestBowling,
-              fourWickets: w25.fourWickets, fiveWickets: w25.fiveWickets, position: 0,
+              matches: w26.matches, innings: w26.innings, wickets: w26.wickets,
+              average: w26.average, economy: w26.economy, strikeRate: w26.strikeRate,
+              overs: w26.overs, runsConceded: w26.runsConceded, bestBowling: w26.bestBowling,
+              fourWickets: w26.fourWickets, fiveWickets: w26.fiveWickets, position: 0,
+            }
+          : {},
+      };
+
+      // Build stats2025
+      const stats2025 = {
+        batting: b25Resolved
+          ? {
+              matches: b25Resolved.matches, innings: b25Resolved.innings, runs: b25Resolved.runs,
+              average: b25Resolved.average, strikeRate: b25Resolved.strikeRate, fifties: b25Resolved.fifties,
+              centuries: b25Resolved.centuries, fours: b25Resolved.fours, sixes: b25Resolved.sixes,
+              highScore: b25Resolved.highScore, notOuts: b25Resolved.notOuts, ballsFaced: b25Resolved.ballsFaced,
+              position: 0,
+            }
+          : {},
+        bowling: w25Resolved
+          ? {
+              matches: w25Resolved.matches, innings: w25Resolved.innings, wickets: w25Resolved.wickets,
+              average: w25Resolved.average, economy: w25Resolved.economy, strikeRate: w25Resolved.strikeRate,
+              overs: w25Resolved.overs, runsConceded: w25Resolved.runsConceded, bestBowling: w25Resolved.bestBowling,
+              fourWickets: w25Resolved.fourWickets, fiveWickets: w25Resolved.fiveWickets, position: 0,
             }
           : {},
       };
@@ -372,23 +617,23 @@ async function seedPlayerStats() {
           : {},
       };
 
-      const hasAnyData = !!(b25 || w25 || b24 || w24);
+      const hasAnyData = !!(b26 || w26 || b25Resolved || w25Resolved || b24 || w24);
       if (hasAnyData) matched++;
       else unmatched++;
 
       // Compute raw fair point
-      const rawFP = hasAnyData ? calculateRawFairPoint(role, stats2025, stats2024) : 0;
+      const rawFP = hasAnyData ? calculateRawFairPoint(role, stats2026, stats2025, stats2024) : 0;
 
       const legacyStats = {
-        matches: b25?.matches || w25?.matches || 0,
-        runs: b25?.runs || 0,
-        wickets: w25?.wickets || 0,
-        average: b25?.average || 0,
-        strikeRate: b25?.strikeRate || 0,
-        economy: w25?.economy || 0,
+        matches: b26?.matches || w26?.matches || b25Resolved?.matches || w25Resolved?.matches || 0,
+        runs: b26?.runs || b25Resolved?.runs || 0,
+        wickets: w26?.wickets || w25Resolved?.wickets || 0,
+        average: b26?.average || b25Resolved?.average || 0,
+        strikeRate: b26?.strikeRate || b25Resolved?.strikeRate || 0,
+        economy: w26?.economy || w25Resolved?.economy || 0,
       };
 
-      playerEntries.push({ lp, stats2024, stats2025, rawFP, legacyStats });
+      playerEntries.push({ lp, stats2026, stats2024, stats2025, rawFP, legacyStats });
     }
 
     // ─── PASS 2: Normalize to 0-100 ───
@@ -419,6 +664,7 @@ async function seedPlayerStats() {
             $set: {
               stats2024: entry.stats2024,
               stats2025: entry.stats2025,
+              stats2026: entry.stats2026,
               fairPoint: fp,
               stats: entry.legacyStats,
             },

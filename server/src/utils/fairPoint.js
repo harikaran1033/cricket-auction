@@ -1,25 +1,21 @@
 /**
  * Fair Point Rating System
  * ─────────────────────────
- * Weight: 70% from 2025 (current) + 30% from 2024 (history).
- * Fresh Player Rule: If 2024 data missing → 0.8x damping factor.
- * Role Normalization: Separate scores for Batting & Bowling, merged for All-Rounders.
+ * Season weights (latest form biased):
+ *   2026/current form: 0.55
+ *   2025:              0.30
+ *   2024:              0.15
  *
- * Batting Score (BS):
- *   BS = (Average × 0.4) + (StrikeRate × 0.6) + (Runs / Matches × 0.2)
- *
- * Bowling Score (QS):
- *   QS = (Wickets × 10) + (20 / Economy × 5) + (Matches / StrikeRate × 2)
- *
- * All-Rounder Synergy (AS):
- *   AS = (BS + QS) × 1.15
- *
- * Final Fair Point is min-max normalized to 0–100 scale.
+ * If some seasons are missing, available seasons are re-normalized.
+ * If only one season is present, a mild damping is applied.
  */
 
-const WEIGHT_CURRENT = 0.7; // 2025
-const WEIGHT_HISTORY = 0.3; // 2024
-const DAMPING_FACTOR = 0.9; // for fresh players (no 2024 data)
+const SEASON_WEIGHTS = {
+  current: 0.55,
+  previous: 0.30,
+  history: 0.15,
+};
+const SINGLE_SEASON_DAMPING = 0.92;
 
 /**
  * Compute Batting Score from season stats.
@@ -54,47 +50,64 @@ function bowlingScore(bowling) {
  * @param {object} stats2024 - { batting: {...}, bowling: {...} }
  * @returns {number} raw fairPoint
  */
-function calculateRawFairPoint(role, stats2025, stats2024) {
-  const s25 = stats2025 || {};
-  const s24 = stats2024 || {};
-
-  let score2025 = 0;
-  let score2024 = 0;
-  let has2024 = false;
-
+function calculateRoleScore(role, seasonStats = {}) {
   if (role === "Batsman" || role === "Wicket-Keeper") {
-    score2025 = battingScore(s25.batting);
-    if (s24.batting && s24.batting.matches > 0) {
-      score2024 = battingScore(s24.batting);
-      has2024 = true;
-    }
-  } else if (role === "Bowler") {
-    score2025 = bowlingScore(s25.bowling);
-    if (s24.bowling && s24.bowling.matches > 0) {
-      score2024 = bowlingScore(s24.bowling);
-      has2024 = true;
-    }
-  } else if (role === "All-Rounder") {
-    const bs25 = battingScore(s25.batting);
-    const qs25 = bowlingScore(s25.bowling);
-    // Weighted Best: 100% of better skill + 40% of secondary skill
-    score2025 = Math.max(bs25, qs25) + Math.min(bs25, qs25) * 0.4;
-
-    if (has2024) {
-      const bs24 = battingScore(s24.batting);
-      const qs24 = bowlingScore(s24.bowling);
-      score2024 = Math.max(bs24, qs24) + Math.min(bs24, qs24) * 0.4;
-    }
+    return battingScore(seasonStats.batting);
   }
-
-  let raw;
-  if (has2024) {
-    raw = score2025 * WEIGHT_CURRENT + score2024 * WEIGHT_HISTORY;
-  } else {
-    raw = score2025 * DAMPING_FACTOR;
+  if (role === "Bowler") {
+    return bowlingScore(seasonStats.bowling);
   }
+  const bs = battingScore(seasonStats.batting);
+  const qs = bowlingScore(seasonStats.bowling);
+  return Math.max(bs, qs) + Math.min(bs, qs) * 0.4;
+}
 
-  return Math.round(raw * 100) / 100;
+function hasSeasonData(role, seasonStats = {}) {
+  if (role === "Batsman" || role === "Wicket-Keeper") {
+    return Number(seasonStats?.batting?.matches || 0) > 0;
+  }
+  if (role === "Bowler") {
+    return Number(seasonStats?.bowling?.matches || 0) > 0;
+  }
+  return (
+    Number(seasonStats?.batting?.matches || 0) > 0 ||
+    Number(seasonStats?.bowling?.matches || 0) > 0
+  );
+}
+
+function weightedNormalized(components) {
+  const available = components.filter((entry) => entry.available);
+  if (available.length === 0) return 0;
+  const weightSum = available.reduce((sum, entry) => sum + entry.weight, 0) || 1;
+  const score = available.reduce((sum, entry) => sum + entry.score * (entry.weight / weightSum), 0);
+  if (available.length === 1) return score * SINGLE_SEASON_DAMPING;
+  return score;
+}
+
+function calculateRawFairPoint(role, statsCurrent, statsPrevious, statsHistory) {
+  const current = statsCurrent || {};
+  const previous = statsPrevious || {};
+  const history = statsHistory || {};
+
+  const components = [
+    {
+      score: calculateRoleScore(role, current),
+      weight: SEASON_WEIGHTS.current,
+      available: hasSeasonData(role, current),
+    },
+    {
+      score: calculateRoleScore(role, previous),
+      weight: SEASON_WEIGHTS.previous,
+      available: hasSeasonData(role, previous),
+    },
+    {
+      score: calculateRoleScore(role, history),
+      weight: SEASON_WEIGHTS.history,
+      available: hasSeasonData(role, history),
+    },
+  ];
+
+  return Math.round(weightedNormalized(components) * 100) / 100;
 }
 
 /**
@@ -120,8 +133,8 @@ function normalizeTo100(rawScores) {
 }
 
 // Backward compat alias
-function calculateFairPoint(role, stats2025, stats2024) {
-  return calculateRawFairPoint(role, stats2025, stats2024);
+function calculateFairPoint(role, statsCurrent, statsPrevious, statsHistory) {
+  return calculateRawFairPoint(role, statsCurrent, statsPrevious, statsHistory);
 }
 
 module.exports = {

@@ -48,6 +48,7 @@ module.exports = {
   AUCTION_PLAYER_NOMINATED: "auction:playerNominated",
   AUCTION_BID_PLACED: "auction:bidPlaced",
   AUCTION_PLAYER_SOLD: "auction:playerSold",
+  AUCTION_PLAYER_REVEALED: "auction:playerRevealed",
   AUCTION_PLAYER_UNSOLD: "auction:playerUnsold",
   AUCTION_RTM_PENDING: "auction:rtmPending",
   AUCTION_TIMER_TICK: "auction:timerTick",
@@ -71,4 +72,22 @@ module.exports = {
   // Activity events
   ACTIVITY_NEW: "activity:new",
   ACTIVITY_HISTORY: "activity:history",
+
+  // ── Match / Simulation events ─────────────────────────────────────────────
+
+  // client → server
+  MATCH_SUBMIT_XI:    "match:submitXI",     // submit Playing XI + C/VC
+  MATCH_SIMULATE:     "match:simulate",     // host triggers simulation
+  MATCH_GET_STRENGTH: "match:getStrength",  // request strength for a team
+  MATCH_GET_ALL_STRENGTHS: "match:getAllStrengths", // all teams' strengths
+
+  // server → client
+  MATCH_XI_CONFIRMED:    "match:xiConfirmed",     // XI accepted for a team
+  MATCH_STRENGTH_UPDATE: "match:strengthUpdate",  // updated strength pushed to room
+  MATCH_RESULTS:         "match:results",         // full simulation results
+  MATCH_ERROR:           "match:error",
+
+  // ── Live activity feed ───────────────────────────────────────────────────
+  // server → client  (broadcast on all significant auction events)
+  FEED_EVENT: "feed:event",
 };

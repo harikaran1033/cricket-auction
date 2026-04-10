@@ -1,5 +1,5 @@
 const fs = require("fs");
-const path = require("path");
+const { getDataPath } = require("../store");
 
 let cachedImageMap = null;
 
@@ -37,7 +37,7 @@ function getAliasName(name) {
 function loadImageMap() {
   if (cachedImageMap) return cachedImageMap;
 
-  const csvPath = path.resolve(__dirname, "../../..", "cricketplayers (1).csv");
+  const csvPath = getDataPath("cricketplayers (1).csv");
   const imageMap = new Map();
 
   if (!fs.existsSync(csvPath)) {

@@ -68,6 +68,7 @@ const leaguePlayerSchema = new mongoose.Schema(
     // Per-season detailed stats for Fair Point calculation
     stats2024: seasonStatsSchema,
     stats2025: seasonStatsSchema,
+    stats2026: seasonStatsSchema,
 
     // Fair Point rating (computed from formulas)
     fairPoint: { type: Number, default: 0 },
