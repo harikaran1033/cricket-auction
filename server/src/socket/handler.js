@@ -588,22 +588,26 @@ module.exports = function setupSocketHandlers(io) {
         const { roomCode, userId, userName, teamName, message } = vData;
         const room = await roomService.getRoomByCode(roomCode);
         const participant = room.joinedTeams.find((t) => t.userId === userId);
-        if (!participant) {
+        const isHost = room.host?.userId === userId;
+        if (!participant && !isHost) {
           throw new Error("Only active teams can chat");
         }
+
+        const resolvedName = participant?.userName || (isHost ? room.host.userName : userName) || userName;
+        const resolvedTeam = participant?.teamName || (isHost ? "Host" : teamName) || teamName;
 
         const msg = await chatService.sendMessage({
           roomId: room._id,
           userId,
-          userName: participant.userName || userName,
-          teamName: participant.teamName || teamName,
+          userName: resolvedName,
+          teamName: resolvedTeam,
           message,
         });
         io.to(roomCode).emit(E.CHAT_MESSAGE, {
           _id: msg._id,
           userId,
-          userName: participant.userName || userName,
-          teamName: participant.teamName || teamName,
+          userName: resolvedName,
+          teamName: resolvedTeam,
           message,
           createdAt: msg.createdAt,
         });

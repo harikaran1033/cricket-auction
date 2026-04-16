@@ -16,9 +16,13 @@ const SOUND_OPTIONS = [
  * SoundControls — mute/unmute individual sounds + overall.
  * Use `compact` prop for a small toggle button.
  */
-export default function SoundControls({ compact = false }) {
+export default function SoundControls({ compact = false, expanded: controlledExpanded, onToggle }) {
   const { muted, toggleMute } = useAudio();
-  const [expanded, setExpanded] = useState(false);
+  const [internalExpanded, setInternalExpanded] = useState(false);
+
+  // Use controlled state if provided (avoids unmount reset when parent re-renders)
+  const expanded = controlledExpanded !== undefined ? controlledExpanded : internalExpanded;
+  const setExpanded = onToggle || setInternalExpanded;
 
   if (compact) {
     return (

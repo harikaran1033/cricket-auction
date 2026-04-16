@@ -2179,6 +2179,8 @@ export default function Auction() {
   const [xiModal, setXiModal] = useState(false);  // open XI selector for own team
   const [chatInput, setChatInput] = useState("");
   const [timerDuration, setTimerDuration] = useState(15);
+  const [showSoundPanel, setShowSoundPanel] = useState(false);
+  const [unreadChatCount, setUnreadChatCount] = useState(0);
   // ── New feature states (Phase 6) ─────────────────────────────────────────
   const [commentaryBanner, setCommentaryBanner] = useState(null); // { playerName, amount, teamName }
   const [reconnectToast, setReconnectToast] = useState(null);     // { teamName, roomCode }
@@ -2188,6 +2190,7 @@ export default function Auction() {
   const timerRef = useRef(null);
   const timerEndRef = useRef(null);
   const prevTimerSecRef = useRef(-1);
+  const chatVisibleRef = useRef(true); // tracks if chat panel is currently open
 
   const calculateMinBid = useCallback((bid) => {
     const v = Number(bid) || 0;
@@ -2347,7 +2350,11 @@ export default function Auction() {
       if (data.kickedUserId === user.userId) navigate("/");
     });
     socket.on("auction:timerChanged", (data) => { if (data.seconds) setTimerConfig(data.seconds); });
-    socket.on("chat:message", (msg) => setChatMessages(prev => [...prev, msg]));
+    socket.on("chat:message", (msg) => {
+      setChatMessages(prev => [...prev, msg]);
+      // Only count as unread if chat panel is not currently visible
+      if (!chatVisibleRef.current) setUnreadChatCount(prev => prev + 1);
+    });
     socket.on("feed:event", (ev) => setFeedEvents(prev => [ev, ...prev].slice(0, 60)));
     // Live team strength updates — broadcast after each player sale + XI confirmation
     socket.on("match:strengthUpdate", (data) => {
@@ -2502,7 +2509,9 @@ export default function Auction() {
   };
   const sendChat = () => {
     if (!chatInput.trim() || !socket) return;
-    socket.emit("chat:send", { roomCode: code, userId: user.userId, userName: user.userName, teamName: user.teamName, message: chatInput });
+    socket.emit("chat:send", { roomCode: code, userId: user.userId, userName: user.userName, teamName: user.teamName, message: chatInput }, (res) => {
+      if (res && !res.success) { setError(res.error || "Chat failed"); setTimeout(() => setError(""), 3000); }
+    });
     setChatInput("");
   };
 
@@ -2757,7 +2766,7 @@ export default function Auction() {
             )}
           </div>
         )}
-        <SoundControls compact />
+        <SoundControls compact expanded={showSoundPanel} onToggle={setShowSoundPanel} />
       </div>
     </div>
   );
@@ -2938,13 +2947,15 @@ export default function Auction() {
           {/* Tab header */}
           <div style={{ display: "flex", borderBottom: `1px solid ${T.border}`, flexShrink: 0 }}>
             {[["chat","💬 Chat"],["feed","⚡ Feed"]].map(([id,label]) => (
-              <button key={id} onClick={() => setRightTab(id)} style={{
+              <button key={id} onClick={() => { setRightTab(id); const isChat = id === "chat"; if (isChat) { setUnreadChatCount(0); chatVisibleRef.current = true; } else { chatVisibleRef.current = false; } }} style={{
                 flex: 1, padding: "9px 0", background: "none", border: "none", cursor: "pointer",
                 fontFamily: T.font, fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase",
                 color: rightTab === id ? T.gold : T.textDim,
                 borderBottom: `2px solid ${rightTab === id ? T.gold : "transparent"}`,
                 transition: "color 0.2s, border-color 0.2s",
-              }}>{label}</button>
+              }}>{label}{id === "chat" && unreadChatCount > 0 && rightTab !== "chat" && (
+                <span style={{ marginLeft: 4, background: T.red, color: "#fff", borderRadius: 99, fontFamily: T.mono, fontSize: 8, padding: "1px 5px", fontWeight: 700 }}>{unreadChatCount > 9 ? "9+" : unreadChatCount}</span>
+              )}</button>
             ))}
           </div>
           {rightTab === "chat" ? <ChatPanel /> : <LiveFeedPanel events={feedEvents} />}
@@ -3552,7 +3563,7 @@ export default function Auction() {
 
         {/* Chat FAB */}
         {mobileTab === "auction" && (
-          <button onClick={() => setShowMobileChat(true)}
+          <button onClick={() => { setShowMobileChat(true); setUnreadChatCount(0); chatVisibleRef.current = true; }}
             style={{
               position: "fixed", right: 16, bottom: canBid ? 90 : 16, zIndex: 90,
               background: `linear-gradient(135deg, ${T.blue}, ${T.blueDim})`,
@@ -3562,9 +3573,9 @@ export default function Auction() {
               transition: "bottom 0.3s ease",
             }}>
             <MessageCircle size={20} color="#fff" />
-            {chatMessages.length > 0 && (
+            {unreadChatCount > 0 && (
               <div style={{ position: "absolute", top: 0, right: 0, width: 16, height: 16, borderRadius: "50%", background: T.red, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: T.mono, fontSize: 8, color: "#fff", fontWeight: 700 }}>
-                {chatMessages.length > 9 ? "9+" : chatMessages.length}
+                {unreadChatCount > 9 ? "9+" : unreadChatCount}
               </div>
             )}
           </button>
@@ -3592,7 +3603,7 @@ export default function Auction() {
       {/* ── Mobile Chat Sheet ────────────────────────────────────────────────── */}
       {showMobileChat && (
         <div style={{ position: "fixed", inset: 0, zIndex: 2500, background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)" }}
-          onClick={() => setShowMobileChat(false)}>
+          onClick={() => { setShowMobileChat(false); chatVisibleRef.current = false; }}>
           <div style={{
             position: "absolute", bottom: 0, left: 0, right: 0,
             background: T.bgCard, borderRadius: "20px 20px 0 0",
@@ -3605,7 +3616,7 @@ export default function Auction() {
             <div style={{ display: "flex", justifyContent: "center", padding: "10px 0 4px" }}>
               <div style={{ width: 36, height: 4, borderRadius: 99, background: T.border }} />
             </div>
-            <button onClick={() => setShowMobileChat(false)}
+            <button onClick={() => { setShowMobileChat(false); chatVisibleRef.current = false; }}
               style={{ position: "absolute", top: 14, right: 14, background: T.bgGlass2, border: `1px solid ${T.border}`, color: T.textDim, cursor: "pointer", padding: 6, borderRadius: 8, display: "flex" }}>
               <X size={15} />
             </button>

@@ -173,6 +173,6 @@ const auctionStateSchema = new mongoose.Schema(
       default: null,
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 module.exports = mongoose.model("AuctionState", auctionStateSchema);

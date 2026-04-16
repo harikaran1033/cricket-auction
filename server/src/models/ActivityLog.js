@@ -32,6 +32,7 @@ const activityLogSchema = new mongoose.Schema(
         "AUCTION_COMPLETED",
         "SET_CHANGED",
         "CHAT_MESSAGE",
+        "HOST_REASSIGNED",
       ],
       required: true,
     },
