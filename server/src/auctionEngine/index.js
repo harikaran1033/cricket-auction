@@ -52,7 +52,12 @@ class AuctionEngine extends EventEmitter {
   _resolveCanonicalTeamName(name, teamLookup) {
     if (!name) return "";
     const normalized = this._normalizeTeamName(name);
-    return teamLookup.get(normalized) || String(name).trim();
+    const LEGACY_TEAM_ALIASES = {
+      "royal challengers bangalore": "Royal Challengers Bengaluru",
+      "kings xi punjab": "Punjab Kings",
+      "delhi daredevils": "Delhi Capitals",
+    };
+    return teamLookup.get(normalized) || LEGACY_TEAM_ALIASES[normalized] || String(name).trim();
   }
 
   _withPlayerImage(player) {
@@ -950,9 +955,10 @@ class AuctionEngine extends EventEmitter {
     console.log(`[RTM] Checking RTM for "${currentLP.player.name}" (previousTeam: "${currentLP.previousTeam}" -> "${canonicalPreviousTeam}")`);
 
     // Find the team that previously had this player
-    const previousTeam = room.joinedTeams.find(
-      (t) => t.teamName === canonicalPreviousTeam
-    );
+    const previousTeam = room.joinedTeams.find((t) => (
+      this._normalizeTeamName(t?.teamName) === this._normalizeTeamName(canonicalPreviousTeam) ||
+      this._normalizeTeamName(t?.teamShortName) === this._normalizeTeamName(canonicalPreviousTeam)
+    ));
     if (!previousTeam) {
       console.log(`[RTM] Skipped — previousTeam "${canonicalPreviousTeam}" not found in room. Joined teams: [${room.joinedTeams.map(t => t.teamName).join(', ')}]`);
       return false;

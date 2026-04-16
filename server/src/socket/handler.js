@@ -673,13 +673,15 @@ module.exports = function setupSocketHandlers(io) {
     socket.on(E.MATCH_SIMULATE, async (data, callback) => {
       try {
         const { roomCode, userId } = data;
+        const normalizedRoomCode = String(roomCode || "").trim().toUpperCase();
+        if (!normalizedRoomCode) throw new Error("Room code missing");
         // Only host can trigger
-        const room = await roomService.getRoomByCode(roomCode);
+        const room = await roomService.getRoomByCode(normalizedRoomCode);
         if (room.host.userId !== userId) throw new Error("Only the host can simulate a match");
 
-        const result = await matchService.simulateMatch(roomCode);
-        io.to(roomCode).emit(E.MATCH_RESULTS, result);
-        emitFeed(roomCode, "MATCH_SIMULATED", {
+        const result = await matchService.simulateMatch(normalizedRoomCode, userId);
+        io.to(normalizedRoomCode).emit(E.MATCH_RESULTS, result);
+        emitFeed(normalizedRoomCode, "MATCH_SIMULATED", {
           matchNumber: result.matchNumber,
           winner: result.season?.playoffs?.champion || result.results[0]?.teamName,
           message: result.simulationType === "league"

@@ -298,23 +298,24 @@ export default function Results() {
   const saveTimerRef = useRef(null);
 
   const isHost = room?.host?.userId === user.userId;
+  const roomCode = String(code || user.roomCode || "").trim().toUpperCase();
 
   const refreshStrengths = useCallback(async () => {
     setStrengthLoading(true);
     try {
-      const data = await api.getMatchStrengths(code);
+      const data = await api.getMatchStrengths(roomCode);
       setTeamStrengths(buildStrengthMap(data));
     } catch (_) {
       // Keep current screen usable even if this request flakes.
     } finally {
       setStrengthLoading(false);
     }
-  }, [code]);
+  }, [roomCode]);
 
   const loadSeasonSimulation = useCallback(async () => {
     setSeasonLoading(true);
     try {
-      const data = await api.getSeasonSimulation(code);
+      const data = await api.getSeasonSimulation(roomCode);
       setSeasonData(data);
       setSeasonError("");
     } catch (err) {
@@ -323,12 +324,12 @@ export default function Results() {
     } finally {
       setSeasonLoading(false);
     }
-  }, [code]);
+  }, [roomCode]);
 
   const loadReplay = useCallback(async () => {
     setReplayLoading(true);
     try {
-      const data = await api.getRoomReplay(code, 600);
+      const data = await api.getRoomReplay(roomCode, 600);
       const events = data?.events || [];
       setReplayEvents(events);
       setReplayIndex(events.length ? events.length - 1 : 0);
@@ -338,19 +339,36 @@ export default function Results() {
     } finally {
       setReplayLoading(false);
     }
-  }, [code]);
+  }, [roomCode]);
 
   useEffect(() => {
     let active = true;
     if (!socket) return undefined;
 
-    socket.emit("auction:getState", { roomCode: code }, (res) => {
+    if (roomCode && user?.userId) {
+      socket.emit("room:join", {
+        roomCode,
+        userId: user.userId,
+        userName: user.userName,
+        teamName: user.teamName,
+      }, (res) => {
+        if (!active || !res?.success) return;
+        if (res.room) {
+          setRoom(res.room);
+          if (res.room.joinedTeams) {
+            setState((prev) => prev ? { ...prev, teams: res.room.joinedTeams } : prev);
+          }
+        }
+      });
+    }
+
+    socket.emit("auction:getState", { roomCode }, (res) => {
       if (!active) return;
       setLoading(false);
       if (res?.success) setState(res.state);
     });
 
-    api.getRoom(code).then((data) => {
+    api.getRoom(roomCode).then((data) => {
       if (active) setRoom(data);
     }).catch(() => {});
 
@@ -361,7 +379,7 @@ export default function Results() {
     return () => {
       active = false;
     };
-  }, [socket, code, refreshStrengths, loadSeasonSimulation, loadReplay]);
+  }, [socket, roomCode, user?.userId, user?.userName, user?.teamName, refreshStrengths, loadSeasonSimulation, loadReplay]);
 
   useEffect(() => {
     if (xiHydrated.current || Object.keys(teamStrengths).length === 0) return;
@@ -629,8 +647,11 @@ export default function Results() {
     setSimulationError("");
     setSimulating(true);
     try {
+      if (!roomCode) {
+        throw new Error("Room code missing");
+      }
       if (socket) {
-        socket.emit("match:simulate", { roomCode: code, userId: user.userId }, async (res) => {
+        socket.emit("match:simulate", { roomCode, userId: user.userId }, async (res) => {
           if (!res?.success) {
             setSimulationError(res?.error || "Simulation failed");
             setSimulating(false);
@@ -646,7 +667,7 @@ export default function Results() {
           setSimulating(false);
         });
       } else {
-        const data = await api.simulateMatch(code, { userId: user.userId });
+        const data = await api.simulateMatch(roomCode, { userId: user.userId });
         setSeasonData({
           simulationType: data.simulationType,
           standings: data.standings,
@@ -768,30 +789,51 @@ export default function Results() {
 
   return (
     <div style={{ background: T.bg, minHeight: "100vh", fontFamily: T.font, color: T.text }}>
-      <div style={{ background: "#060912", borderBottom: `1px solid ${T.border}`, padding: "0 20px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 100 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <div className="results-topbar" style={{ background: "#060912", borderBottom: `1px solid ${T.border}`, padding: "8px 20px", minHeight: 56, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 100, gap: 10, flexWrap: "wrap", overflowX: "hidden" }}>
+        <style>{`
+          @media (max-width: 768px) {
+            .results-topbar {
+              padding: 8px 12px !important;
+              align-items: flex-start !important;
+            }
+            .results-topbar-left {
+              width: 100% !important;
+              min-width: 0 !important;
+            }
+            .results-topbar-actions {
+              width: 100% !important;
+              justify-content: flex-start !important;
+              gap: 6px !important;
+            }
+            .results-topbar-btn {
+              font-size: 11px !important;
+              padding: 6px 10px !important;
+            }
+          }
+        `}</style>
+        <div className="results-topbar-left" style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0, flex: "1 1 320px", flexWrap: "wrap" }}>
           <button onClick={() => navigate("/rooms")} style={{ background: "none", border: "none", cursor: "pointer", color: T.mid, padding: 4 }}>
             <ArrowLeft size={18} />
           </button>
-          <div>
-            <span style={{ fontSize: 15, fontWeight: 800, color: T.text, letterSpacing: 1 }}>Auction Results</span>
+          <div style={{ minWidth: 0 }}>
+            <span style={{ fontSize: 15, fontWeight: 800, color: T.text, letterSpacing: 1, whiteSpace: "nowrap" }}>Auction Results</span>
             <span style={{ fontFamily: T.mono, fontSize: 9, color: T.dim, marginLeft: 8 }}>#{code}</span>
           </div>
           <span style={{ background: `${T.green}22`, color: T.green, border: `1px solid ${T.green}44`, fontFamily: T.mono, fontSize: 9, padding: "2px 8px", borderRadius: 99, letterSpacing: 1 }}>
             COMPLETED
           </span>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          <button onClick={() => setXiOpen((prev) => !prev)} style={{ background: xiOpen ? `${T.blue}44` : `${T.blue}22`, color: T.blue, border: `1px solid ${T.blue}44`, borderRadius: 10, padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
+        <div className="results-topbar-actions" style={{ display: "flex", gap: 8, flex: "1 1 420px", justifyContent: "flex-end", flexWrap: "wrap" }}>
+          <button className="results-topbar-btn" onClick={() => setXiOpen((prev) => !prev)} style={{ background: xiOpen ? `${T.blue}44` : `${T.blue}22`, color: T.blue, border: `1px solid ${T.blue}44`, borderRadius: 10, padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
             <Swords size={14} /> {xiOpen ? "Close XI" : "Select XI"}
           </button>
-          <button onClick={handleCopySummary} style={{ background: `${T.cyan}18`, color: T.cyan, border: `1px solid ${T.cyan}44`, borderRadius: 10, padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
+          <button className="results-topbar-btn" onClick={handleCopySummary} style={{ background: `${T.cyan}18`, color: T.cyan, border: `1px solid ${T.cyan}44`, borderRadius: 10, padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
             {summaryCopied ? <Check size={14} /> : <Copy size={14} />} {summaryCopied ? "Copied" : "Share Summary"}
           </button>
-          <button onClick={handleDownload} style={{ background: `${T.green}18`, color: T.green, border: `1px solid ${T.green}44`, borderRadius: 10, padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
+          <button className="results-topbar-btn" onClick={handleDownload} style={{ background: `${T.green}18`, color: T.green, border: `1px solid ${T.green}44`, borderRadius: 10, padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
             <Download size={14} /> Export CSV
           </button>
-          <button onClick={handlePrint} style={{ background: "rgba(255,255,255,0.06)", color: T.mid, border: `1px solid ${T.border}`, borderRadius: 10, padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
+          <button className="results-topbar-btn" onClick={handlePrint} style={{ background: "rgba(255,255,255,0.06)", color: T.mid, border: `1px solid ${T.border}`, borderRadius: 10, padding: "7px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
             🖨 Print
           </button>
         </div>

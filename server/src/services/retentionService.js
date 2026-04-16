@@ -27,7 +27,12 @@ class RetentionService {
   _resolveCanonicalTeamName(name, teamLookup) {
     if (!name) return "";
     const normalized = this._normalizeTeamName(name);
-    return teamLookup.get(normalized) || String(name).trim();
+    const LEGACY_TEAM_ALIASES = {
+      "royal challengers bangalore": "Royal Challengers Bengaluru",
+      "kings xi punjab": "Punjab Kings",
+      "delhi daredevils": "Delhi Capitals",
+    };
+    return teamLookup.get(normalized) || LEGACY_TEAM_ALIASES[normalized] || String(name).trim();
   }
 
   /**
