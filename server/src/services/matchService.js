@@ -45,6 +45,48 @@ const TEAM_VENUE_MAP = {
 };
 
 class MatchService {
+  _pythonCandidates() {
+    const envBin = String(process.env.PYTHON_BIN || process.env.PYTHON_PATH || "").trim();
+    return [envBin, "python3", "python"].filter(Boolean);
+  }
+
+  _isMissingBinaryError(err) {
+    return err?.code === "ENOENT" || err?.errno === "ENOENT";
+  }
+
+  _formatPythonMissingError() {
+    const envHint = process.env.PYTHON_BIN || process.env.PYTHON_PATH
+      ? `Configured python binary "${process.env.PYTHON_BIN || process.env.PYTHON_PATH}" was not found. `
+      : "";
+    return new Error(
+      `${envHint}Python runtime is unavailable in this environment. ` +
+      `Install Python 3 on the server image, or set PYTHON_BIN to a valid executable path (for example: /usr/bin/python3).`
+    );
+  }
+
+  async _execPython(args) {
+    const candidates = this._pythonCandidates();
+    let lastErr = null;
+
+    for (const bin of candidates) {
+      try {
+        return await execFileAsync(bin, args, {
+          cwd: dataDir,
+          maxBuffer: 10 * 1024 * 1024,
+        });
+      } catch (err) {
+        if (this._isMissingBinaryError(err)) {
+          lastErr = err;
+          continue;
+        }
+        throw err;
+      }
+    }
+
+    if (lastErr) throw this._formatPythonMissingError();
+    throw new Error("Failed to launch Python simulation process");
+  }
+
   /**
    * buildRatingsForTeam — enrich a squad with computed ratingData.
    * Accepts raw squad entries where .player and .leaguePlayer may be populated.
@@ -182,10 +224,7 @@ class MatchService {
         args.push("--seed", String(seed));
       }
 
-      const { stdout, stderr } = await execFileAsync("python3", args, {
-        cwd: dataDir,
-        maxBuffer: 10 * 1024 * 1024,
-      });
+      const { stdout, stderr } = await this._execPython(args);
 
       if (stderr && stderr.trim()) {
         console.warn("[matchService] Python simulator stderr:", stderr.trim());
