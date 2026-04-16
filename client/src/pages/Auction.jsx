@@ -127,6 +127,15 @@ const resolvePlayerPhase = (player, currentBidTeam) => {
 
 const normalizePlayerName = (name = "") => String(name).trim().toLowerCase().replace(/\s+/g, " ");
 const normalizeTeamName = (name = "") => String(name).trim().toLowerCase().replace(/\s+/g, " ");
+const resolveCanonicalRoomTeamName = (teamName = "", teams = []) => {
+  const normalizedTarget = normalizeTeamName(teamName);
+  if (!normalizedTarget) return "";
+  const match = (teams || []).find((team) => (
+    normalizeTeamName(team?.teamName) === normalizedTarget ||
+    normalizeTeamName(team?.teamShortName) === normalizedTarget
+  ));
+  return match?.teamName || teamName;
+};
 
 function parseMatchupLabel(label = "") {
   const runsMatch = /(\d+)r/i.exec(label);
@@ -2488,8 +2497,15 @@ export default function Auction() {
 
   const handleRtm = useCallback((action) => {
     if (isSpectatorMode || !socket) return;
-    socket.emit(action === "use" ? "auction:rtmUse" : "auction:rtmPass", { roomCode: code, userId: user.userId, teamName: user.teamName });
-  }, [socket, code, user, isSpectatorMode]);
+    const canonicalTeamName = resolveCanonicalRoomTeamName(
+      myTeam?.teamName || user.teamName || user.teamShortName || "",
+      teams
+    );
+    socket.emit(
+      action === "use" ? "auction:rtmUse" : "auction:rtmPass",
+      { roomCode: code, userId: user.userId, teamName: canonicalTeamName || user.teamName }
+    );
+  }, [socket, code, user, isSpectatorMode, myTeam, teams]);
 
   const handlePause = () => { socket?.emit("auction:pause", { roomCode: code, userId: user.userId }); };
   const handleResume = () => { socket?.emit("auction:resume", { roomCode: code, userId: user.userId }); };
@@ -2523,11 +2539,20 @@ export default function Auction() {
 
   const canBid = !isSpectatorMode && auctionStatus === "BIDDING" && currentBidTeam !== user.teamName && myTeam && remainingPurse >= minNextBid;
   const pendingRtmTeam = rtmPending?.rtmTeam || rtmPending?.rtmEligibleTeam || "";
-  const userTeamForRtm = user.teamName || myTeam?.teamName || "";
+  const canonicalPendingRtmTeam = resolveCanonicalRoomTeamName(pendingRtmTeam, teams);
+  const userTeamCandidates = [
+    myTeam?.teamName,
+    myTeam?.teamShortName,
+    user.teamName,
+    user.teamShortName,
+  ]
+    .map((name) => resolveCanonicalRoomTeamName(name || "", teams))
+    .map((name) => normalizeTeamName(name))
+    .filter(Boolean);
   const isRtmEligible =
     !isSpectatorMode &&
     auctionStatus === "RTM_PENDING" &&
-    normalizeTeamName(pendingRtmTeam) === normalizeTeamName(userTeamForRtm);
+    userTeamCandidates.includes(normalizeTeamName(canonicalPendingRtmTeam));
   const timerPressure = timerRemaining > 0 && timerRemaining <= 5;
   const timerColor = timerRemaining <= 5 ? T.red : timerRemaining <= 10 ? T.orange : T.green;
   const timerDisplay = String(Math.max(0, Math.min(99, Math.ceil(Number(timerRemaining) || 0)))).padStart(2, "0");
