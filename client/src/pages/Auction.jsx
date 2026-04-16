@@ -1404,32 +1404,53 @@ function SetSplash({ transition }) {
   );
 }
 
-// ─── RTM banner ──────────────────────────────────────────────────────────────
-function RtmBanner({ rtmPending, currentPlayer, onRtm, formatPrice }) {
+// ─── RTM decision overlay ────────────────────────────────────────────────────
+function RtmDecisionOverlay({ rtmPending, currentPlayer, onRtm, formatPrice }) {
   return (
-    <GCard glow={T.gold} style={{ padding: "16px 20px" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 40, height: 40, borderRadius: 10, background: `${T.gold}22`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <AlertTriangle size={20} color={T.gold} />
-          </div>
-          <div>
-            <div style={{ fontFamily: T.font, fontSize: 15, fontWeight: 800, color: T.gold, letterSpacing: 1 }}>RIGHT TO MATCH AVAILABLE</div>
-            <div style={{ fontFamily: T.mono, fontSize: 11, color: T.textMid, marginTop: 2 }}>Match {formatPrice(rtmPending?.currentBid)} to reclaim {currentPlayer?.name}</div>
-          </div>
+    <div style={{
+      position: "absolute",
+      inset: 0,
+      zIndex: 26,
+      background: "rgba(5,8,18,0.86)",
+      backdropFilter: "blur(8px)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 14,
+    }}>
+      <div style={{
+        width: "min(520px, 100%)",
+        background: "linear-gradient(145deg, rgba(20,26,40,0.98), rgba(10,14,24,0.98))",
+        border: `1.5px solid ${T.gold}66`,
+        borderRadius: 16,
+        padding: "18px 16px",
+        boxShadow: `0 0 40px ${T.gold}30`,
+        textAlign: "center",
+      }}>
+        <div style={{ width: 44, height: 44, borderRadius: 12, background: `${T.gold}22`, display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
+          <AlertTriangle size={22} color={T.gold} />
         </div>
-        <div style={{ display: "flex", gap: 10 }}>
+        <div style={{ fontFamily: T.mono, fontSize: 11, letterSpacing: 2, color: T.gold, marginBottom: 6 }}>
+          RTM DECISION
+        </div>
+        <div style={{ fontFamily: T.font, fontSize: 18, fontWeight: 900, color: T.text, lineHeight: 1.25 }}>
+          Use RTM for {currentPlayer?.name}?
+        </div>
+        <div style={{ fontFamily: T.mono, fontSize: 12, color: T.textMid, marginTop: 6, marginBottom: 14 }}>
+          Match {formatPrice(rtmPending?.currentBid)} to reclaim this player
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
           <button onClick={() => onRtm("use")}
-            style={{ background: `linear-gradient(135deg, ${T.gold}, ${T.goldDim})`, color: "#000", border: "none", cursor: "pointer", padding: "10px 20px", borderRadius: 10, fontFamily: T.font, fontSize: 14, fontWeight: 800, letterSpacing: 1 }}>
-            USE RTM · {formatPrice(rtmPending?.currentBid)}
+            style={{ background: `linear-gradient(135deg, ${T.gold}, ${T.goldDim})`, color: "#000", border: "none", cursor: "pointer", padding: "11px 10px", borderRadius: 10, fontFamily: T.font, fontSize: 13, fontWeight: 900, letterSpacing: 0.8 }}>
+            YES · USE RTM
           </button>
           <button onClick={() => onRtm("pass")}
-            style={{ background: T.bgGlass2, border: `1px solid ${T.border}`, color: T.text, cursor: "pointer", padding: "10px 20px", borderRadius: 10, fontFamily: T.font, fontSize: 14, fontWeight: 700 }}>
-            PASS
+            style={{ background: T.bgGlass2, border: `1px solid ${T.borderHi}`, color: T.text, cursor: "pointer", padding: "11px 10px", borderRadius: 10, fontFamily: T.font, fontSize: 13, fontWeight: 800 }}>
+            NO · PASS
           </button>
         </div>
       </div>
-    </GCard>
+    </div>
   );
 }
 
@@ -2196,8 +2217,13 @@ export default function Auction() {
   const timerRef = useRef(null);
   const timerEndRef = useRef(null);
   const prevTimerSecRef = useRef(-1);
+  const auctionStatusRef = useRef("WAITING");
   const chatVisibleRef = useRef(true); // tracks if chat panel is currently open
   const joinTimeRef = useRef(Date.now()); // used to suppress first-join reconnect toast
+
+  useEffect(() => {
+    auctionStatusRef.current = auctionStatus;
+  }, [auctionStatus]);
 
   const calculateMinBid = useCallback((bid) => {
     const v = Number(bid) || 0;
@@ -2251,6 +2277,9 @@ export default function Auction() {
       startClientTimer(data.timerEndsAt);
     });
     socket.on("auction:bidPlaced", (data) => {
+      // Guard against out-of-order socket delivery:
+      // once RTM is pending, a late bidPlaced event must not roll UI back.
+      if (auctionStatusRef.current === "RTM_PENDING") return;
       if (data.currentPlayer) setCurrentPlayer(normalizeAuctionPlayerPayload(data.currentPlayer));
       setCurrentBid(data.currentBid);
       setCurrentBidTeam(data.currentBidTeam);
@@ -2923,6 +2952,7 @@ export default function Auction() {
         {/* CENTER: Main auction */}
         <div style={{ flex: 1, overflowY: "auto", padding: "20px 24px", display: "flex", flexDirection: "column", gap: 14, position: "relative" }} className={timerPressure ? "timer-pressure" : ""}>
           {playerCardTab !== "analysis" && <SoldOverlay overlay={soldOverlay} />}
+          {isRtmEligible && <RtmDecisionOverlay rtmPending={rtmPending} currentPlayer={currentPlayer} onRtm={handleRtm} formatPrice={formatPrice} />}
 
           {/* Player card */}
           {currentPlayer && auctionStatus !== "PAUSED" ? (
@@ -2946,9 +2976,6 @@ export default function Auction() {
               </div>
             </GCard>
           )}
-
-          {/* RTM */}
-          {isRtmEligible && <RtmBanner rtmPending={rtmPending} currentPlayer={currentPlayer} onRtm={handleRtm} formatPrice={formatPrice} />}
 
           {/* Bid button */}
           {canBid && !soldOverlay && (
@@ -3031,8 +3058,9 @@ export default function Auction() {
 
           {/* AUCTION TAB */}
           {mobileTab === "auction" && (
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
               {activePlayerPhase !== "revealed" && <SoldOverlay overlay={soldOverlay} />}
+              {isRtmEligible && <RtmDecisionOverlay rtmPending={rtmPending} currentPlayer={currentPlayer} onRtm={handleRtm} formatPrice={formatPrice} />}
 
               {currentPlayer && auctionStatus !== "PAUSED" ? (
                 <>
@@ -3217,13 +3245,6 @@ export default function Auction() {
                       {currentPlayer.skills.slice(0, 3).map(s => (
                         <span key={s} style={{ background: T.bgGlass2, border: `1px solid ${T.border}`, color: T.textMid, fontFamily: T.font, fontSize: 10, padding: "2px 8px", borderRadius: 6 }}>{s}</span>
                       ))}
-                    </div>
-                  )}
-
-                  {/* RTM */}
-                  {isRtmEligible && (
-                    <div style={{ padding: "0 14px 12px" }}>
-                      <RtmBanner rtmPending={rtmPending} currentPlayer={currentPlayer} onRtm={handleRtm} formatPrice={formatPrice} />
                     </div>
                   )}
 
