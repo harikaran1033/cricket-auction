@@ -58,7 +58,7 @@ export default function LiveRooms() {
   };
 
   return (
-    <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex-1 w-full px-6 sm:px-8 py-10">
+    <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex-1 w-full px-4 sm:px-8 py-6 sm:py-10">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-10">

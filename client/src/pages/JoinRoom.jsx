@@ -101,7 +101,7 @@ export default function JoinRoom() {
   };
 
   return (
-    <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex-1 flex items-center justify-center px-6 py-16">
+    <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16">
       <div className="fixed inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `linear-gradient(${COLORS.border} 1px, transparent 1px), linear-gradient(90deg, ${COLORS.border} 1px, transparent 1px)`, backgroundSize: "48px 48px" }} />
 
       <div className="relative w-full max-w-xl">
@@ -109,7 +109,7 @@ export default function JoinRoom() {
           <ArrowLeft size={16} /> Back to Home
         </button>
 
-        <div style={{ background: "rgba(30, 41, 59, 0.8)", border: `1px solid ${COLORS.border}`, backdropFilter: "blur(20px)" }} className="rounded-3xl p-10">
+        <div style={{ background: "rgba(30, 41, 59, 0.8)", border: `1px solid ${COLORS.border}`, backdropFilter: "blur(20px)" }} className="rounded-3xl p-6 sm:p-10">
           <div className="flex items-center gap-4 mb-10">
             <div style={{ background: `linear-gradient(135deg, ${COLORS.success}, #00A040)`, boxShadow: `0 0 20px ${COLORS.success}55` }} className="w-12 h-12 rounded-xl flex items-center justify-center">
               <LogIn size={20} color="#0F172A" />

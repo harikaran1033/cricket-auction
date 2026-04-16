@@ -81,7 +81,7 @@ export default function CreateRoom() {
   };
 
   return (
-    <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex-1 flex items-center justify-center px-6 py-16">
+    <div style={{ background: COLORS.bgMain, fontFamily: "'Inter', sans-serif" }} className="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-16">
       <div className="fixed inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `linear-gradient(${COLORS.border} 1px, transparent 1px), linear-gradient(90deg, ${COLORS.border} 1px, transparent 1px)`, backgroundSize: "48px 48px" }} />
       <div className="fixed top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full opacity-10 blur-3xl pointer-events-none" style={{ background: COLORS.primary }} />
 
@@ -90,7 +90,7 @@ export default function CreateRoom() {
           <ArrowLeft size={16} /> Back to Home
         </button>
 
-        <div style={{ background: "rgba(30, 41, 59, 0.8)", border: `1px solid ${COLORS.border}`, backdropFilter: "blur(20px)", boxShadow: `0 0 60px ${COLORS.primary}11` }} className="rounded-3xl p-10">
+        <div style={{ background: "rgba(30, 41, 59, 0.8)", border: `1px solid ${COLORS.border}`, backdropFilter: "blur(20px)", boxShadow: `0 0 60px ${COLORS.primary}11` }} className="rounded-3xl p-6 sm:p-10">
           <div className="flex items-center gap-4 mb-10">
             <div style={{ background: `linear-gradient(135deg, ${COLORS.primary}, #0090FF)`, boxShadow: `0 0 20px ${COLORS.primary}55` }} className="w-12 h-12 rounded-xl flex items-center justify-center">
               <Zap size={20} fill="#0F172A" color="#0F172A" />

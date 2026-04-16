@@ -19,9 +19,11 @@ export default function Retention() {
   const [error, setError] = useState("");
   const [retaining, setRetaining] = useState(false);
   const [activityFeed, setActivityFeed] = useState([]);
+  const [mobileRetentionTab, setMobileRetentionTab] = useState("players"); // "status" | "players" | "activity"
 
   const myTeam = teams.find((t) => t.userId === user.userId);
   const maxRetentions = config?.maxRetentions || 6;
+  const myConfirmed = myTeam?.isReady;
 
   useEffect(() => {
     if (!socket) return;
@@ -125,10 +127,19 @@ export default function Retention() {
           </div>
         </div>
         <div className="flex gap-3">
-          <button onClick={handleConfirm}
-            style={{ background: `linear-gradient(135deg, ${COLORS.success}, #00A040)`, color: "#fff", boxShadow: `0 0 20px ${COLORS.success}44` }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black hover:scale-105 transition-all">
-            <Check size={16} /> Confirm Retentions
+          <button onClick={handleConfirm} disabled={myConfirmed}
+            style={{
+              background: myConfirmed
+                ? `${COLORS.success}33`
+                : `linear-gradient(135deg, ${COLORS.success}, #00A040)`,
+              color: myConfirmed ? COLORS.success : "#fff",
+              border: myConfirmed ? `1px solid ${COLORS.success}55` : "none",
+              boxShadow: myConfirmed ? "none" : `0 0 20px ${COLORS.success}44`,
+              cursor: myConfirmed ? "default" : "pointer",
+            }}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black transition-all">
+            <Check size={16} />
+            {myConfirmed ? "Confirmed — Waiting for others..." : "Confirm Retentions"}
           </button>
           <button onClick={() => navigate(`/room/${code}/lobby`)}
             style={{ background: COLORS.bgCard, color: COLORS.textPrimary, border: `1px solid ${COLORS.border}` }}
@@ -142,10 +153,26 @@ export default function Retention() {
         <div style={{ background: `${COLORS.accent}22`, color: COLORS.accent }} className="px-4 py-3 text-sm text-center">{error}</div>
       )}
 
+      {/* Mobile tab bar (hidden on lg) */}
+      <div style={{ borderBottom: `1px solid ${COLORS.border}`, background: COLORS.bgCard }} className="flex lg:hidden shrink-0">
+        {[["players", "Players"], ["status", "Team"], ["activity", "Activity"]].map(([key, label]) => (
+          <button key={key} onClick={() => setMobileRetentionTab(key)}
+            style={{
+              color: mobileRetentionTab === key ? COLORS.primary : COLORS.textSecondary,
+              borderBottom: `2px solid ${mobileRetentionTab === key ? COLORS.primary : "transparent"}`,
+              background: "transparent",
+            }}
+            className="flex-1 py-3 text-sm font-bold transition-all">
+            {label}
+          </button>
+        ))}
+      </div>
+
       {/* Main 3-col layout */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 overflow-hidden min-h-0">
         {/* Left: Team & Purse */}
-        <div style={{ borderRight: `1px solid ${COLORS.border}`, overflowY: "auto" }} className="p-5 sm:p-6">
+        <div style={{ borderRight: `1px solid ${COLORS.border}`, overflowY: "auto" }}
+          className={`p-5 sm:p-6 ${mobileRetentionTab === "status" ? "block" : "hidden"} lg:block`}>
           <h2 style={{ color: COLORS.textPrimary }} className="font-bold text-base mb-4">Your Team</h2>
 
           {/* Team Card */}
@@ -248,7 +275,8 @@ export default function Retention() {
         </div>
 
         {/* Center: Player Grid */}
-        <div style={{ overflowY: "auto" }} className="lg:col-span-2 p-5 sm:p-6">
+        <div style={{ overflowY: "auto" }}
+          className={`lg:col-span-2 p-5 sm:p-6 ${mobileRetentionTab === "players" ? "block" : "hidden"} lg:block`}>
           <div className="flex items-center justify-between mb-5">
             <h2 style={{ color: COLORS.textPrimary }} className="font-bold text-lg">Select Players to Retain</h2>
             <span style={{ color: COLORS.textSecondary }} className="text-sm">{myTeamPlayers.length} players available</span>
@@ -321,7 +349,8 @@ export default function Retention() {
         </div>
 
         {/* Right: Activity Feed */}
-        <div style={{ borderLeft: `1px solid ${COLORS.border}`, overflowY: "auto" }} className="p-5 sm:p-6">
+        <div style={{ borderLeft: `1px solid ${COLORS.border}`, overflowY: "auto" }}
+          className={`p-5 sm:p-6 ${mobileRetentionTab === "activity" ? "block" : "hidden"} lg:block`}>
           <h2 style={{ color: COLORS.textPrimary }} className="font-bold text-base mb-5">Retention Activity</h2>
           <div className="space-y-4">
             {activityFeed.length === 0 ? (

@@ -563,9 +563,10 @@ function PlayerCard({ player, currentBid, currentBidTeam, timerRemaining, timerD
               key={player.name}
               style={{
                 fontFamily: T.mono, fontWeight: 900, color: T.text,
-                fontSize: 28, letterSpacing: 1.5, lineHeight: 1.0,
+                fontSize: "clamp(17px, 2vw, 26px)", letterSpacing: 1, lineHeight: 1.1,
                 textTransform: "uppercase", marginBottom: 8,
                 animation: "nameCinema 380ms cubic-bezier(0.22,1,0.36,1)",
+                wordBreak: "break-word", overflowWrap: "break-word",
               }}
             >
               {player.name}
@@ -1364,35 +1365,30 @@ function SetSplash({ transition }) {
   const setConf = getSetConfig(transition.setCode || "");
   return (
     <div style={{
-      position: "fixed", inset: 0, zIndex: 3000,
-      background: "rgba(5,8,18,0.9)", backdropFilter: "blur(16px)",
-      display: "flex", alignItems: "center", justifyContent: "center",
+      position: "fixed", top: 64, left: "50%", transform: "translateX(-50%)",
+      zIndex: 3000, pointerEvents: "none",
+      background: `linear-gradient(135deg, rgba(8,12,28,0.97), rgba(13,18,40,0.97))`,
+      backdropFilter: "blur(20px)",
+      border: `1.5px solid ${color}55`,
+      borderRadius: 16, padding: "12px 24px",
+      textAlign: "center",
+      boxShadow: `0 8px 40px rgba(0,0,0,0.7), 0 0 24px ${color}22`,
+      animation: "setSlideDown 0.45s cubic-bezier(0.34,1.56,0.64,1)",
+      minWidth: 240, maxWidth: "calc(100vw - 40px)",
     }}>
-      <div style={{ textAlign: "center", animation: "popIn 0.4s cubic-bezier(0.34,1.56,0.64,1)", maxWidth: 540, padding: "0 24px" }}>
-        <div style={{ fontFamily: T.mono, fontSize: 11, color, letterSpacing: 4, textTransform: "uppercase", marginBottom: 12 }}>
-          {PHASE_LABELS[transition.phase] || "NEXT SET"}
-        </div>
-        <div style={{ fontFamily: T.font, fontSize: 48, fontWeight: 900, color: T.text, textShadow: `0 0 40px ${color}`, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>
-          {transition.setName}
-        </div>
-        {setConf.fullName && setConf.fullName !== transition.setName && (
-          <div style={{ fontFamily: T.font, fontSize: 14, fontWeight: 600, color: color, marginBottom: 10, opacity: 0.9 }}>
-            {setConf.fullName}
-          </div>
-        )}
-        <div style={{ fontFamily: T.mono, fontSize: 13, color: T.textMid, marginBottom: setConf.rules ? 14 : 0 }}>
-          {transition.playersInSet} player{transition.playersInSet !== 1 ? "s" : ""} in this set
-        </div>
-        {setConf.rules && (
-          <div style={{ background: `${color}0D`, border: `1px solid ${color}30`, borderRadius: 12, padding: "10px 16px", marginTop: 10, fontFamily: T.font, fontSize: 11, color: T.textMid, lineHeight: 1.6, textAlign: "left" }}>
-            {setConf.rules}
-          </div>
-        )}
-        {transition.isAccelerated && (
-          <div style={{ color: T.orange, marginTop: 16, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontWeight: 700, fontFamily: T.font }}>
-            <Zap size={18} /> Reduced base prices apply
-          </div>
-        )}
+      <style>{`@keyframes setSlideDown { from { transform:translateX(-50%) translateY(-16px); opacity:0 } to { transform:translateX(-50%) translateY(0); opacity:1 } }`}</style>
+      <div style={{ fontFamily: T.mono, fontSize: 9, color, letterSpacing: 3, textTransform: "uppercase", marginBottom: 5 }}>
+        {PHASE_LABELS[transition.phase] || "NEXT SET"}
+      </div>
+      <div style={{ fontFamily: T.font, fontSize: 26, fontWeight: 900, color: T.text, textShadow: `0 0 20px ${color}`, letterSpacing: 2, textTransform: "uppercase", lineHeight: 1 }}>
+        {transition.setName}
+      </div>
+      {setConf.fullName && setConf.fullName !== transition.setName && (
+        <div style={{ fontFamily: T.font, fontSize: 11, fontWeight: 600, color, marginTop: 3, opacity: 0.9 }}>{setConf.fullName}</div>
+      )}
+      <div style={{ fontFamily: T.mono, fontSize: 10, color: T.textDim, marginTop: 5, display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+        <span>{transition.playersInSet} player{transition.playersInSet !== 1 ? "s" : ""} in set</span>
+        {transition.isAccelerated && <span style={{ color: T.orange }}>⚡ Accelerated</span>}
       </div>
     </div>
   );
@@ -2191,6 +2187,7 @@ export default function Auction() {
   const timerEndRef = useRef(null);
   const prevTimerSecRef = useRef(-1);
   const chatVisibleRef = useRef(true); // tracks if chat panel is currently open
+  const joinTimeRef = useRef(Date.now()); // used to suppress first-join reconnect toast
 
   const calculateMinBid = useCallback((bid) => {
     const v = Number(bid) || 0;
@@ -2385,8 +2382,12 @@ export default function Auction() {
     });
     // Reconnection toast — emitted by server when we re-join a live auction
     socket.on("room:reconnected", (data) => {
-      setReconnectToast(data);
-      setTimeout(() => setReconnectToast(null), 4000);
+      // Suppress on first join — server fires this for any join to a live auction.
+      // Only show when genuinely reconnecting (i.e. page was already open for >3s).
+      if (Date.now() - joinTimeRef.current > 3000) {
+        setReconnectToast(data);
+        setTimeout(() => setReconnectToast(null), 4000);
+      }
     });
     return () => {
       clearClientTimer();
@@ -3014,7 +3015,7 @@ export default function Auction() {
                       </div>
                       <div
                         key={currentPlayer.name}
-                        style={{ fontFamily: T.mono, fontSize: 20, fontWeight: 900, color: T.text, textTransform: "uppercase", letterSpacing: 1.2, lineHeight: 1.0, animation: "nameCinema 360ms cubic-bezier(0.22,1,0.36,1)" }}
+                        style={{ fontFamily: T.mono, fontSize: "clamp(14px, 4.5vw, 20px)", fontWeight: 900, color: T.text, textTransform: "uppercase", letterSpacing: 1, lineHeight: 1.15, animation: "nameCinema 360ms cubic-bezier(0.22,1,0.36,1)", wordBreak: "break-word" }}
                       >
                         {currentPlayer.name}
                       </div>

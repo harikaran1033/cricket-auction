@@ -56,7 +56,7 @@ export default function Home() {
         <div className="absolute top-20 left-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl" style={{ background: COLORS.primary }} />
         <div className="absolute top-40 right-1/4 w-80 h-80 rounded-full opacity-10 blur-3xl" style={{ background: COLORS.accent }} />
 
-        <div className="relative max-w-6xl mx-auto px-6 pt-28 pb-24 text-center">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-28 pb-14 sm:pb-24 text-center">
           {liveRooms.length > 0 && <StatusChip tone="live" pulse label={`${liveRooms.length} LIVE AUCTION${liveRooms.length > 1 ? "S" : ""} NOW`} />}
 
           <h1 style={{ color: COLORS.textPrimary, fontFamily: "var(--font-display)" }} className={`${TYPE_SCALE.display} mb-8 leading-tight`}>
