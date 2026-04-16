@@ -30,6 +30,31 @@ class AuctionEngine extends EventEmitter {
     this.activeTimers = new Map();
   }
 
+  _normalizeTeamName(name) {
+    return String(name || "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  _buildTeamAliasLookup(teams = []) {
+    const lookup = new Map();
+    for (const t of teams) {
+      const full = String(t?.name || "").trim();
+      const short = String(t?.shortName || "").trim();
+      if (!full) continue;
+      lookup.set(this._normalizeTeamName(full), full);
+      if (short) lookup.set(this._normalizeTeamName(short), full);
+    }
+    return lookup;
+  }
+
+  _resolveCanonicalTeamName(name, teamLookup) {
+    if (!name) return "";
+    const normalized = this._normalizeTeamName(name);
+    return teamLookup.get(normalized) || String(name).trim();
+  }
+
   _withPlayerImage(player) {
     if (!player) return player;
     return {
@@ -920,14 +945,16 @@ class AuctionEngine extends EventEmitter {
       return false;
     }
 
-    console.log(`[RTM] Checking RTM for "${currentLP.player.name}" (previousTeam: "${currentLP.previousTeam}")`);
+    const teamLookup = this._buildTeamAliasLookup(room?.league?.teams || []);
+    const canonicalPreviousTeam = this._resolveCanonicalTeamName(currentLP.previousTeam, teamLookup);
+    console.log(`[RTM] Checking RTM for "${currentLP.player.name}" (previousTeam: "${currentLP.previousTeam}" -> "${canonicalPreviousTeam}")`);
 
     // Find the team that previously had this player
     const previousTeam = room.joinedTeams.find(
-      (t) => t.teamName === currentLP.previousTeam
+      (t) => t.teamName === canonicalPreviousTeam
     );
     if (!previousTeam) {
-      console.log(`[RTM] Skipped — previousTeam "${currentLP.previousTeam}" not found in room. Joined teams: [${room.joinedTeams.map(t => t.teamName).join(', ')}]`);
+      console.log(`[RTM] Skipped — previousTeam "${canonicalPreviousTeam}" not found in room. Joined teams: [${room.joinedTeams.map(t => t.teamName).join(', ')}]`);
       return false;
     }
 

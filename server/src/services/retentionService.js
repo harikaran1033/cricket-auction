@@ -5,6 +5,31 @@ const { Room, League, Player, LeaguePlayer, ActivityLog } = require("../models")
  * Validates retention rules, deducts purse, updates squads.
  */
 class RetentionService {
+  _normalizeTeamName(name) {
+    return String(name || "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  _buildTeamAliasLookup(teams = []) {
+    const lookup = new Map();
+    for (const t of teams) {
+      const full = String(t?.name || "").trim();
+      const short = String(t?.shortName || "").trim();
+      if (!full) continue;
+      lookup.set(this._normalizeTeamName(full), full);
+      if (short) lookup.set(this._normalizeTeamName(short), full);
+    }
+    return lookup;
+  }
+
+  _resolveCanonicalTeamName(name, teamLookup) {
+    if (!name) return "";
+    const normalized = this._normalizeTeamName(name);
+    return teamLookup.get(normalized) || String(name).trim();
+  }
+
   /**
    * Get retention config for a room.
    */
@@ -31,10 +56,14 @@ class RetentionService {
       .populate("player")
       .lean();
 
-    // Group by previousTeam
+    const teamLookup = this._buildTeamAliasLookup(room?.league?.teams || []);
+
+    // Group by previousTeam (normalized to league full names when possible)
     const grouped = {};
     for (const lp of leaguePlayers) {
-      const team = lp.previousTeam || "Uncapped";
+      const team = lp.previousTeam
+        ? this._resolveCanonicalTeamName(lp.previousTeam, teamLookup)
+        : "Uncapped";
       if (!grouped[team]) grouped[team] = [];
       grouped[team].push({
         _id: lp._id,
@@ -89,7 +118,9 @@ class RetentionService {
     if (!leaguePlayer) throw new Error("Player not found");
 
     // Validate previous team matches
-    if (leaguePlayer.previousTeam && leaguePlayer.previousTeam !== team.teamName) {
+    const teamLookup = this._buildTeamAliasLookup(league?.teams || []);
+    const canonicalPreviousTeam = this._resolveCanonicalTeamName(leaguePlayer.previousTeam, teamLookup);
+    if (canonicalPreviousTeam && canonicalPreviousTeam !== team.teamName) {
       throw new Error(`${leaguePlayer.player.name} was not in ${team.teamName}`);
     }
 

@@ -126,6 +126,7 @@ const resolvePlayerPhase = (player, currentBidTeam) => {
 };
 
 const normalizePlayerName = (name = "") => String(name).trim().toLowerCase().replace(/\s+/g, " ");
+const normalizeTeamName = (name = "") => String(name).trim().toLowerCase().replace(/\s+/g, " ");
 
 function parseMatchupLabel(label = "") {
   const runsMatch = /(\d+)r/i.exec(label);
@@ -2296,7 +2297,11 @@ export default function Auction() {
     socket.on("auction:rtmPending", (data) => {
       clearClientTimer(); setAuctionStatus("RTM_PENDING");
       if (data.currentPlayer) setCurrentPlayer(normalizeAuctionPlayerPayload(data.currentPlayer));
-      setRtmPending(data); startClientTimer(data.timerEndsAt);
+      setRtmPending({
+        ...data,
+        rtmTeam: data?.rtmTeam || data?.rtmEligibleTeam || null,
+      });
+      startClientTimer(data.timerEndsAt);
       playRtmSound();
     });
     socket.on("auction:setChanged", (data) => {
@@ -2517,7 +2522,12 @@ export default function Auction() {
   };
 
   const canBid = !isSpectatorMode && auctionStatus === "BIDDING" && currentBidTeam !== user.teamName && myTeam && remainingPurse >= minNextBid;
-  const isRtmEligible = !isSpectatorMode && auctionStatus === "RTM_PENDING" && rtmPending?.rtmTeam === user.teamName;
+  const pendingRtmTeam = rtmPending?.rtmTeam || rtmPending?.rtmEligibleTeam || "";
+  const userTeamForRtm = user.teamName || myTeam?.teamName || "";
+  const isRtmEligible =
+    !isSpectatorMode &&
+    auctionStatus === "RTM_PENDING" &&
+    normalizeTeamName(pendingRtmTeam) === normalizeTeamName(userTeamForRtm);
   const timerPressure = timerRemaining > 0 && timerRemaining <= 5;
   const timerColor = timerRemaining <= 5 ? T.red : timerRemaining <= 10 ? T.orange : T.green;
   const timerDisplay = String(Math.max(0, Math.min(99, Math.ceil(Number(timerRemaining) || 0)))).padStart(2, "0");
