@@ -150,6 +150,10 @@ module.exports = function setupSocketHandlers(io) {
     io.to(data.roomCode).emit("auction:pursesRecalculated", data);
   });
 
+  auctionEngine.on("auction:teamsUpdated", (data) => {
+    io.to(data.roomCode).emit(E.ROOM_UPDATED, { joinedTeams: data.teams || [] });
+  });
+
   auctionEngine.on("auction:playerUnsold", (data) => {
     io.to(data.roomCode).emit(E.AUCTION_PLAYER_UNSOLD, data);
     const playerName = data.player?.name || "Unknown Player";

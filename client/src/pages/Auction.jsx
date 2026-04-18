@@ -2208,6 +2208,7 @@ export default function Auction() {
   const [timerDuration, setTimerDuration] = useState(15);
   const [showSoundPanel, setShowSoundPanel] = useState(false);
   const [unreadChatCount, setUnreadChatCount] = useState(0);
+  const [isBidPending, setIsBidPending] = useState(false);
   // ── New feature states (Phase 6) ─────────────────────────────────────────
   const [commentaryBanner, setCommentaryBanner] = useState(null); // { playerName, amount, teamName }
   const [reconnectToast, setReconnectToast] = useState(null);     // { teamName, roomCode }
@@ -2261,6 +2262,7 @@ export default function Auction() {
     });
     socket.on("chat:history", (msgs) => setChatMessages(msgs || []));
     socket.on("auction:playerNominated", (data) => {
+      setIsBidPending(false);
       setSoldOverlay(null); setRtmPending(null); setIsRtmMatch(false); setSetTransition(null);
       setBidLadder([]);
       setCurrentPlayer(normalizeAuctionPlayerPayload(data.player));
@@ -2277,6 +2279,7 @@ export default function Auction() {
       startClientTimer(data.timerEndsAt);
     });
     socket.on("auction:bidPlaced", (data) => {
+      setIsBidPending(false);
       // Guard against out-of-order socket delivery:
       // once RTM is pending, a late bidPlaced event must not roll UI back.
       if (auctionStatusRef.current === "RTM_PENDING") return;
@@ -2304,6 +2307,7 @@ export default function Auction() {
       }
     });
     socket.on("auction:playerSold", (data) => {
+      setIsBidPending(false);
       clearClientTimer(); setAuctionStatus("SOLD");
       setRtmPending(null); setIsRtmMatch(false);
       if (data.teams) {
@@ -2326,6 +2330,7 @@ export default function Auction() {
       setCurrentPlayer(normalizeAuctionPlayerPayload(data.player));
     });
     socket.on("auction:playerUnsold", (data) => {
+      setIsBidPending(false);
       clearClientTimer(); setAuctionStatus("UNSOLD");
       setSoldOverlay({ type: "unsold", player: data.player });
       setStats(s => ({ ...s, totalPlayersUnsold: s.totalPlayersUnsold + 1 }));
@@ -2363,7 +2368,11 @@ export default function Auction() {
       const s = data.stats || data;
       setStats(prev => ({ ...prev, totalPlayersSold: s.totalSold ?? s.totalPlayersSold ?? prev.totalPlayersSold, totalPlayersUnsold: s.totalUnsold ?? s.totalPlayersUnsold ?? prev.totalPlayersUnsold }));
     });
-    socket.on("auction:error", (data) => { setError(data.error); setTimeout(() => setError(""), 3000); });
+    socket.on("auction:error", (data) => {
+      setIsBidPending(false);
+      setError(data.error);
+      setTimeout(() => setError(""), 3000);
+    });
     socket.on("auction:state", (state) => { if (state) applyAuctionState(state); });
     socket.on("room:updated", (data) => {
       setRoomData((prev) => prev ? ({ ...prev, ...(data.host ? { host: data.host } : {}), ...(data.status ? { status: data.status } : {}) }) : prev);
@@ -2519,10 +2528,35 @@ export default function Auction() {
     setError("");
     const bidAmount = Number(amount);
     if (!Number.isFinite(bidAmount) || bidAmount <= 0) return;
+    // Optimistic UI update for instant button/card response.
+    const prevBid = currentBid;
+    const prevBidTeam = currentBidTeam;
+    const prevMinNextBid = minNextBid;
+    const prevPhase = currentPlayer?.auctionPhase;
+    setIsBidPending(true);
+    setCurrentBid(bidAmount);
+    setCurrentBidTeam(user.teamName);
+    setMinNextBid(calculateMinBid(bidAmount));
+    setCurrentPlayer((prev) => prev ? ({ ...prev, auctionPhase: "bid" }) : prev);
+    setIsPricePulsing(true);
+    setTimeout(() => setIsPricePulsing(false), 450);
+
     socket.emit("auction:bid", { roomCode: code, userId: user.userId, teamName: user.teamName, amount: bidAmount }, (res) => {
-      if (!res?.success) { setError(res?.error || "Bid failed"); setTimeout(() => setError(""), 3000); }
+      setIsBidPending(false);
+      if (!res?.success) {
+        // Roll back optimistic state and sync authoritative state from server.
+        setCurrentBid(prevBid);
+        setCurrentBidTeam(prevBidTeam);
+        setMinNextBid(prevMinNextBid);
+        setCurrentPlayer((prev) => prev ? ({ ...prev, auctionPhase: prevPhase || prev.auctionPhase }) : prev);
+        setError(res?.error || "Bid failed");
+        setTimeout(() => setError(""), 3000);
+        socket.emit("auction:getState", { roomCode: code }, (stateRes) => {
+          if (stateRes?.success && stateRes.state) applyAuctionState(stateRes.state);
+        });
+      }
     });
-  }, [socket, code, user, isSpectatorMode]);
+  }, [socket, code, user, isSpectatorMode, currentBid, currentBidTeam, minNextBid, currentPlayer, calculateMinBid]);
 
   const handleRtm = useCallback((action) => {
     if (isSpectatorMode || !socket) return;
@@ -2566,7 +2600,7 @@ export default function Auction() {
     setChatInput("");
   };
 
-  const canBid = !isSpectatorMode && auctionStatus === "BIDDING" && currentBidTeam !== user.teamName && myTeam && remainingPurse >= minNextBid;
+  const canBid = !isSpectatorMode && !isBidPending && auctionStatus === "BIDDING" && currentBidTeam !== user.teamName && myTeam && remainingPurse >= minNextBid;
   const pendingRtmTeam = rtmPending?.rtmTeam || rtmPending?.rtmEligibleTeam || "";
   const canonicalPendingRtmTeam = resolveCanonicalRoomTeamName(pendingRtmTeam, teams);
   const userTeamCandidates = [

@@ -47,19 +47,31 @@ const TEAM_VENUE_MAP = {
 class MatchService {
   _pythonCandidates() {
     const envBin = String(process.env.PYTHON_BIN || process.env.PYTHON_PATH || "").trim();
-    return [envBin, "python3", "python"].filter(Boolean);
+    const defaults = [
+      "python3",
+      "python",
+      "python3.12",
+      "python3.11",
+      "python3.10",
+      "/usr/bin/python3",
+      "/usr/local/bin/python3",
+    ];
+    return [...new Set([envBin, ...defaults].filter(Boolean))];
   }
 
   _isMissingBinaryError(err) {
     return err?.code === "ENOENT" || err?.errno === "ENOENT";
   }
 
-  _formatPythonMissingError() {
+  _formatPythonMissingError(candidates = []) {
     const envHint = process.env.PYTHON_BIN || process.env.PYTHON_PATH
       ? `Configured python binary "${process.env.PYTHON_BIN || process.env.PYTHON_PATH}" was not found. `
       : "";
+    const triedHint = candidates.length
+      ? `Checked: ${candidates.join(", ")}. `
+      : "";
     return new Error(
-      `${envHint}Python runtime is unavailable in this environment. ` +
+      `${envHint}${triedHint}Python runtime is unavailable in this environment. ` +
       `Install Python 3 on the server image, or set PYTHON_BIN to a valid executable path (for example: /usr/bin/python3).`
     );
   }
@@ -83,7 +95,7 @@ class MatchService {
       }
     }
 
-    if (lastErr) throw this._formatPythonMissingError();
+    if (lastErr) throw this._formatPythonMissingError(candidates);
     throw new Error("Failed to launch Python simulation process");
   }
 

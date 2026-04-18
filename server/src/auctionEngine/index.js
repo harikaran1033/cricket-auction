@@ -906,18 +906,6 @@ class AuctionEngine extends EventEmitter {
     // Restart timer
     this._startTimer(roomCode, room._id.toString(), timerMs);
 
-    await ActivityLog.create({
-      room: room._id,
-      type: "BID_PLACED",
-      payload: {
-        playerName: currentPlayer?.player?.name,
-        teamName,
-        amount: bidAmount,
-      },
-      userId,
-      userName: team.userName,
-    });
-
     this.emit("auction:bidPlaced", {
       roomCode,
       roomId: room._id.toString(),
@@ -928,6 +916,21 @@ class AuctionEngine extends EventEmitter {
       currentPlayer: this._buildAuctionPlayerPayload(currentPlayer, auctionState.currentPlayerPhase),
       timerEndsAt: auctionState.timerEndsAt,
       minNextBid: this._calculateMinBid(bidAmount, room.league),
+    });
+
+    // Non-blocking audit log so bid UI update is never delayed by log I/O.
+    ActivityLog.create({
+      room: room._id,
+      type: "BID_PLACED",
+      payload: {
+        playerName: currentPlayer?.player?.name,
+        teamName,
+        amount: bidAmount,
+      },
+      userId,
+      userName: team.userName,
+    }).catch((err) => {
+      console.warn("[AuctionEngine] BID_PLACED log warning:", err.message);
     });
 
     return auctionState;
@@ -1397,9 +1400,29 @@ class AuctionEngine extends EventEmitter {
       acquiredVia,
       revealedPlayer,
       currentSet: auctionState.currentSet,
-      // Send updated team data with populated squad
-      teams: await this._getTeamsWithSquad(room),
+      // Fast-path team delta for immediate UI updates.
+      teams: team ? [{
+        teamName: team.teamName,
+        teamShortName: team.teamShortName,
+        remainingPurse: team.remainingPurse,
+        squadSize: team.squad.length,
+        teamColor: team.teamColor || "",
+        teamLogo:  team.teamLogo  || "",
+      }] : [],
     });
+
+    // Populate all squads in background; emit separately so sold event stays snappy.
+    this._getTeamsWithSquad(room)
+      .then((teams) => {
+        this.emit("auction:teamsUpdated", {
+          roomCode: room.roomCode,
+          roomId: room._id.toString(),
+          teams,
+        });
+      })
+      .catch((err) => {
+        console.warn("[AuctionEngine] teamsUpdated warning:", err.message);
+      });
 
     // ── recalculateAfterSale hook ────────────────────────────────────────
     // Emit a lightweight purse-summary update so all clients can stay in sync
