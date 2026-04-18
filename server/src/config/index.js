@@ -5,6 +5,10 @@ module.exports = {
   mongoUri: process.env.MONGO_URI || "mongodb://localhost:27017/cricket-auction",
   nodeEnv: process.env.NODE_ENV || "development",
   clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
+  clientUrls: String(process.env.CLIENT_URL || "http://localhost:5173")
+    .split(",")
+    .map((url) => url.trim())
+    .filter(Boolean),
 
   // Auction engine defaults
   auction: {

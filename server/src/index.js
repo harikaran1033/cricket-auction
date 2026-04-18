@@ -23,7 +23,15 @@ async function startServer() {
 
   const clientBuildPath = path.join(__dirname, "..", "..", "client", "dist");
   const hasClientBuild = fs.existsSync(clientBuildPath);
-  const corsOrigin = config.clientUrl === "*" ? true : config.clientUrl;
+  const allowedOrigins = config.clientUrls || [];
+  const allowAllOrigins = allowedOrigins.includes("*");
+  const corsOrigin = (origin, callback) => {
+    // Allow non-browser clients and same-origin/server-side calls with no Origin header.
+    if (!origin) return callback(null, true);
+    if (allowAllOrigins) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error(`CORS blocked for origin: ${origin}`), false);
+  };
 
   // Socket.io with CORS
   const io = new Server(server, {
