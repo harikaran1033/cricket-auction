@@ -36,9 +36,14 @@ async function request(path, options = {}) {
   } else {
     const text = await res.text();
     const snippet = text.slice(0, 120).replace(/\s+/g, " ").trim();
+    const missingApiBaseHint =
+      API_BASE === "/api" && text.includes("<!DOCTYPE html>")
+        ? " This usually means SPA fallback rewrote /api to index.html. Set VITE_API_BASE_URL to your backend API URL and redeploy."
+        : "";
     throw new Error(
       `Unexpected response from ${url} (HTTP ${res.status}). ` +
-      `${snippet ? `Body starts with: ${snippet}` : "No response body."}`
+      `${snippet ? `Body starts with: ${snippet}` : "No response body."}` +
+      missingApiBaseHint
     );
   }
 
