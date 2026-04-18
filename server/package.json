@@ -4,7 +4,7 @@
   "description": "Production-grade realtime multiplayer cricket auction engine",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "PYTHON_BIN=${PYTHON_BIN:-python3.11} node src/index.js",
     "dev": "nodemon src/index.js",
     "build:client": "npm --prefix ../client run build",
     "seed": "node src/seed/index.js",
