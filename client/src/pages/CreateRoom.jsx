@@ -32,7 +32,7 @@ export default function CreateRoom() {
       }
     }).catch((err) => {
       console.error("[CreateRoom] Failed to load leagues:", err);
-      setError("Failed to load leagues. Please refresh.");
+      setError(err?.message || "Failed to load leagues. Please refresh.");
     });
   }, []);
 

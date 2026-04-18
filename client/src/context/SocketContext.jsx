@@ -3,16 +3,24 @@ import { io } from "socket.io-client";
 
 const SocketContext = createContext(null);
 
-const SERVER_URL =
-  import.meta.env.VITE_SERVER_URL ||
-  (import.meta.env.DEV ? "http://localhost:4000" : window.location.origin);
+const trimTrailingSlash = (value = "") => value.replace(/\/+$/, "");
+
+const SOCKET_URL = (() => {
+  const explicitSocketUrl = trimTrailingSlash(String(import.meta.env.VITE_SOCKET_URL || "").trim());
+  if (explicitSocketUrl) return explicitSocketUrl;
+
+  const serverUrl = trimTrailingSlash(String(import.meta.env.VITE_SERVER_URL || "").trim());
+  if (serverUrl) return serverUrl;
+
+  return import.meta.env.DEV ? "http://localhost:4000" : window.location.origin;
+})();
 
 export function SocketProvider({ children }) {
   const socketRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const socket = io(SERVER_URL, {
+    const socket = io(SOCKET_URL, {
       transports: ["websocket", "polling"],
       reconnection: true,
       reconnectionAttempts: 10,
