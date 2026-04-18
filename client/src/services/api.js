@@ -41,7 +41,14 @@ async function request(path, options = {}) {
       ...options,
     });
   } catch (err) {
-    throw new Error(`Network error while calling ${url}. Check mobile internet/API URL.`);
+    const origin =
+      typeof window !== "undefined" && window?.location?.origin
+        ? window.location.origin
+        : "unknown-origin";
+    throw new Error(
+      `Network error while calling ${url}. Resolved API_BASE=${API_BASE}, appOrigin=${origin}. ` +
+      `This is usually DNS/CORS/firewall, or mobile using an old cached build.`
+    );
   }
 
   const contentType = (res.headers.get("content-type") || "").toLowerCase();
