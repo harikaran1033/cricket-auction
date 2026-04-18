@@ -381,11 +381,15 @@ export default function Results() {
     };
   }, [socket, roomCode, user?.userId, user?.userName, user?.teamName, refreshStrengths, loadSeasonSimulation, loadReplay]);
 
+  const resolvedMyTeamName =
+    room?.joinedTeams?.find((team) => team.userId === user.userId)?.teamName ||
+    state?.teams?.find((team) => team.userId === user.userId)?.teamName ||
+    user.teamName ||
+    "";
+
   useEffect(() => {
     if (xiHydrated.current || Object.keys(teamStrengths).length === 0) return;
-    const myTs = Object.values(teamStrengths).find(
-      (team) => team.userName === user.userName || team.teamName === user.teamName
-    );
+    const myTs = teamStrengths[resolvedMyTeamName];
     if (!myTs) return;
     const profiles = myTs.playerProfiles || [];
     if (myTs.savedPlayingXI?.length > 0) {
@@ -395,7 +399,7 @@ export default function Results() {
     if (myTs.savedCaptainId) setCapId(myTs.savedCaptainId);
     if (myTs.savedViceCaptainId) setVcpId(myTs.savedViceCaptainId);
     xiHydrated.current = true;
-  }, [teamStrengths, user.userName, user.teamName]);
+  }, [teamStrengths, resolvedMyTeamName]);
 
   useEffect(() => {
     if (!socket) return undefined;
@@ -445,9 +449,7 @@ export default function Results() {
     };
   }, [socket, refreshStrengths]);
 
-  const myStrengthData = Object.values(teamStrengths).find(
-    (team) => team.userName === user.userName || team.teamName === user.teamName
-  );
+  const myStrengthData = teamStrengths[resolvedMyTeamName];
   const myProfiles = myStrengthData?.playerProfiles || [];
   const profileMap = Object.fromEntries(myProfiles.map((player) => [player.playerId, player]));
   const selectedProfiles = selectedIds.map((id) => profileMap[id]).filter(Boolean);
@@ -552,19 +554,36 @@ export default function Results() {
     setXiSaving(true);
     setXiErr("");
     try {
-      await api.submitPlayingXI(code, {
+      const payload = {
+        roomCode,
         userId: user.userId,
         playingXIPlayerIds: selectedIds,
         captainId: capId,
         viceCaptainId: vcpId,
-      });
+      };
+
+      if (socket) {
+        await new Promise((resolve, reject) => {
+          socket.emit("match:submitXI", payload, (res) => {
+            if (res?.success) resolve(res);
+            else reject(new Error(res?.error || "Failed to save"));
+          });
+        });
+      } else {
+        await api.submitPlayingXI(roomCode, {
+          userId: user.userId,
+          playingXIPlayerIds: selectedIds,
+          captainId: capId,
+          viceCaptainId: vcpId,
+        });
+      }
       await refreshStrengths();
     } catch (err) {
       setXiErr(err.message || "Failed to save");
     } finally {
       setXiSaving(false);
     }
-  }, [selectedIds, capId, vcpId, code, user.userId, refreshStrengths]);
+  }, [selectedIds, capId, vcpId, socket, roomCode, user.userId, refreshStrengths]);
 
   useEffect(() => {
     if (!xiHydrated.current) return undefined;
@@ -845,7 +864,7 @@ export default function Results() {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 12 }}>
               <div>
                 <div style={{ fontFamily: T.mono, fontSize: 10, color: T.dim, letterSpacing: 2, textTransform: "uppercase" }}>
-                  PLAYING XI - {user.teamName}
+                  PLAYING XI - {resolvedMyTeamName || user.teamName}
                 </div>
                 <div style={{ fontFamily: T.mono, fontSize: 10, color: T.mid, marginTop: 2 }}>
                   {selectedIds.length}/11 selected{capId ? " · C ✓" : ""}{vcpId ? " · VC ✓" : ""}
