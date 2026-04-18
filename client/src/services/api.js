@@ -13,7 +13,7 @@ function resolveApiBase() {
 const API_BASE = resolveApiBase();
 
 async function request(path, options = {}) {
-  const url = `${API_BASE}${path}`;
+  const url = `${API_BASE}${path}`; 
   let res;
   try {
     res = await fetch(url, {
