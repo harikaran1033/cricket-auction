@@ -1,10 +1,30 @@
 const trimTrailingSlash = (value = "") => value.replace(/\/+$/, "");
 
+function normalizeApiBase(raw = "", { isOverride = false } = {}) {
+  const value = trimTrailingSlash(String(raw || "").trim());
+  if (!value) return "";
+
+  // If a full origin is provided (e.g. https://api.example.com) as VITE_API_BASE_URL,
+  // treat it as server root and append /api automatically.
+  if (isOverride) {
+    try {
+      const parsed = new URL(value);
+      if (!parsed.pathname || parsed.pathname === "/") {
+        return `${value}/api`;
+      }
+    } catch {
+      // Ignore parse errors and fall through to raw value.
+    }
+  }
+
+  return value;
+}
+
 function resolveApiBase() {
-  const apiBaseOverride = trimTrailingSlash(String(import.meta.env.VITE_API_BASE_URL || "").trim());
+  const apiBaseOverride = normalizeApiBase(import.meta.env.VITE_API_BASE_URL, { isOverride: true });
   if (apiBaseOverride) return apiBaseOverride;
 
-  const serverUrl = trimTrailingSlash(String(import.meta.env.VITE_SERVER_URL || "").trim());
+  const serverUrl = normalizeApiBase(import.meta.env.VITE_SERVER_URL);
   if (serverUrl) return `${serverUrl}/api`;
 
   return "/api";
@@ -40,10 +60,15 @@ async function request(path, options = {}) {
       API_BASE === "/api" && text.includes("<!DOCTYPE html>")
         ? " This usually means SPA fallback rewrote /api to index.html. Set VITE_API_BASE_URL to your backend API URL and redeploy."
         : "";
+    const wrongPathHint =
+      text.includes("Cannot GET /leagues")
+        ? " Backend was reached at /leagues, but this API is under /api/leagues. Set VITE_API_BASE_URL to https://<backend-domain>/api (or set VITE_SERVER_URL to https://<backend-domain>)."
+        : "";
     throw new Error(
       `Unexpected response from ${url} (HTTP ${res.status}). ` +
       `${snippet ? `Body starts with: ${snippet}` : "No response body."}` +
-      missingApiBaseHint
+      missingApiBaseHint +
+      wrongPathHint
     );
   }
 
